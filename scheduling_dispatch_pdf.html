@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: letter;
+            margin: 0.5in;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 10px;
+        }
+        
+        .header h1 {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 12px;
+            gap: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group.full-width {
+            flex: none;
+            width: 100%;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .form-group .value {
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            min-width: 200px;
+            padding: 2px 5px;
+        }
+        
+        .form-group.full-width .value {
+            min-width: 100%;
+            width: 100%;
+        }
+        
+        .section-header {
+            font-weight: bold;
+            font-size: 12pt;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        
+        .checkbox-section {
+            margin: 15px 0;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox {
+            width: 15px;
+            height: 15px;
+            border: 2px solid #000;
+            display: inline-block;
+            margin-right: 8px;
+            position: relative;
+            vertical-align: middle;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: -3px;
+            left: 2px;
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        
+        .notes-section {
+            margin: 15px 0;
+        }
+        
+        .notes-box {
+            border: 1px solid #000;
+            min-height: 80px;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+        
+        .footer-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #000;
+        }
+        
+        .company-info {
+            text-align: center;
+            font-size: 10pt;
+            margin-top: 30px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NEW CONSTRUCTION – SCHEDULING DISPATCH REQUEST</h1>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>Today's Date:</label>
+            <span class="value">{{ today_date }}</span>
+        </div>
+        <div class="form-group">
+            <label>Date Needed:</label>
+            <span class="value">{{ date_needed }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>Salesman:</label>
+            <span class="value">{{ salesman }}</span>
+        </div>
+        <div class="form-group">
+            <label>WCSI Field Super:</label>
+            <span class="value">{{ field_super }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group full-width">
+            <label>Builder:</label>
+            <span class="value">{{ builder }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group full-width">
+            <label>Job Address:</label>
+            <span class="value">{{ job_address }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>City:</label>
+            <span class="value">{{ city }}</span>
+        </div>
+        <div class="form-group">
+            <label>Zip:</label>
+            <span class="value">{{ zip }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>Plan/Resident:</label>
+            <span class="value">{{ plan_resident }}</span>
+        </div>
+        <div class="form-group">
+            <label>Subdivision:</label>
+            <span class="value">{{ subdivision }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>Number of Systems:</label>
+            <span class="value">{{ num_systems }}</span>
+        </div>
+        <div class="form-group">
+            <label>Estimated Time Needed:</label>
+            <span class="value">{{ estimated_time }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label>GC Supervisor:</label>
+            <span class="value">{{ gc_supervisor }}</span>
+        </div>
+        <div class="form-group">
+            <label>Lockbox/Gate Code:</label>
+            <span class="value">{{ lockbox_code }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group full-width">
+            <label>GC Supervisor Phone Number:</label>
+            <span class="value">{{ gc_phone }}</span>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group full-width">
+            <label>Builder/GC Super/Homeowner Email Address:</label>
+            <span class="value">{{ email }}</span>
+        </div>
+    </div>
+    
+    <div class="section-header">ROUGH IN</div>
+    
+    <div class="checkbox-grid">
+        <div class="checkbox-item">
+            <span class="checkbox {% if po_required %}checked{% endif %}"></span>
+            <span>PO Required: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not po_required %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if permit_needed %}checked{% endif %}"></span>
+            <span>Permit Needed: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not permit_needed %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if cornice_done %}checked{% endif %}"></span>
+            <span>Cornice Done: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not cornice_done %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if decked_dried %}checked{% endif %}"></span>
+            <span>Decked/Dried In: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not decked_dried %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if hvac_platform %}checked{% endif %}"></span>
+            <span>HVAC Platform: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not hvac_platform %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if power_available %}checked{% endif %}"></span>
+            <span>Power Available: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not power_available %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if generator_needed %}checked{% endif %}"></span>
+            <span>Generator Needed: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not generator_needed %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+        
+        <div class="checkbox-item">
+            <span class="checkbox {% if propane_gas %}checked{% endif %}"></span>
+            <span>Propane Gas Furnace/LP Conversion: Yes</span>
+        </div>
+        <div class="checkbox-item">
+            <span class="checkbox {% if not propane_gas %}checked{% endif %}"></span>
+            <span>No</span>
+        </div>
+    </div>
+    
+    <div class="notes-section">
+        <div class="section-header">NOTES:</div>
+        <div class="notes-box">{{ notes }}</div>
+    </div>
+    
+    <div class="footer-section">
+        <div class="form-row">
+            <div class="form-group">
+                <label>WCSI NC Job Number:</label>
+                <span class="value">{{ wcsi_job_number }}</span>
+            </div>
+            <div class="form-group">
+                <label>Permit Jurisdiction:</label>
+                <span class="value">{{ permit_jurisdiction }}</span>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label>Application Date:</label>
+                <span class="value">{{ application_date }}</span>
+            </div>
+            <div class="form-group">
+                <label>Permit Number:</label>
+                <span class="value">{{ permit_number }}</span>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group full-width">
+                <label>Service Titan Project Number:</label>
+                <span class="value">{{ service_titan_number }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="company-info">
+        <p><strong>Woods Comfort Systems</strong> | San Marcos, Texas | TACLA16934C</p>
+    </div>
+</body>
+</html>

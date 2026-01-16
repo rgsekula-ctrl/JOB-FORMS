@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Plan Walk Sheet - Woods Comfort Systems</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: #2c3e50; color: white; padding: 25px 30px; border-radius: 10px 10px 0 0; }
+        .header h1 { font-size: 1.6em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; }
+        .back-link { display: inline-block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.9; }
+        .form-content { padding: 30px; }
+        .form-section { margin-bottom: 30px; border: 2px solid #e9ecef; border-radius: 8px; padding: 20px; background: #f8f9fa; }
+        .form-section h2 { color: #2c3e50; font-size: 1.2em; margin-bottom: 20px; padding: 15px; background: white; margin: -20px -20px 20px -20px; border-radius: 6px 6px 0 0; border-bottom: 3px solid #667eea; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+        .form-row.four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        .form-row.single { grid-template-columns: 1fr; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 600; color: #2c3e50; margin-bottom: 5px; font-size: 0.9em; }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.95em; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
+        .form-group textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+        .form-group input.small { max-width: 100px; }
+        .radio-group { display: flex; gap: 15px; margin-top: 5px; flex-wrap: wrap; }
+        .radio-item { display: flex; align-items: center; gap: 5px; }
+        .radio-item input[type="radio"] { cursor: pointer; }
+        .radio-item label { cursor: pointer; font-weight: normal; }
+        .system-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #667eea; }
+        .system-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .system-header span { color: #667eea; font-weight: bold; font-size: 1.1em; }
+        .system-header input { flex: 1; max-width: 300px; }
+        .submit-section { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e9ecef; text-align: center; }
+        .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 60px; font-size: 1.2em; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s; font-weight: 600; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+        .inline-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .inline-group label { font-weight: normal; margin-bottom: 0; }
+        @media (max-width: 768px) { .form-row, .form-row.three-col, .form-row.four-col { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>Design Plan Walk Sheet</h1>
+            <p>For Takeoffs & Installation Planning | Woods Comfort Systems | TACLA16934C</p>
+        </div>
+        
+        <div class="form-content">
+            <form action="/generate-design-walk-pdf" method="POST">
+                
+                <!-- JOB INFORMATION -->
+                <div class="form-section">
+                    <h2>JOB INFORMATION</h2>
+                    <div class="form-row">
+                        <div class="form-group"><label for="builder">Builder:</label><input type="text" id="builder" name="builder" required></div>
+                        <div class="form-group"><label for="address">Address:</label><input type="text" id="address" name="address"></div>
+                    </div>
+                    <div class="form-row three-col">
+                        <div class="form-group"><label for="job_number">Job #:</label><input type="text" id="job_number" name="job_number"></div>
+                        <div class="form-group"><label for="plan_number">Plan #:</label><input type="text" id="plan_number" name="plan_number"></div>
+                        <div class="form-group"><label for="zip">Zip:</label><input type="text" id="zip" name="zip"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="permit_city">Permit City:</label><input type="text" id="permit_city" name="permit_city"></div>
+                        <div class="form-group"><label for="rough_in_date">Rough In Date:</label><input type="date" id="rough_in_date" name="rough_in_date"></div>
+                    </div>
+                </div>
+                
+                <!-- INSULATION & STRUCTURE -->
+                <div class="form-section">
+                    <h2>INSULATION & STRUCTURE</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Attic Insulation:</label>
+                            <div class="inline-group">
+                                <div class="radio-item"><input type="radio" id="ins_r25" name="attic_insulation" value="R25"><label for="ins_r25">R25</label></div>
+                                <div class="radio-item"><input type="radio" id="ins_r38" name="attic_insulation" value="R38"><label for="ins_r38">R38</label></div>
+                                <div class="radio-item"><input type="radio" id="ins_other" name="attic_insulation" value="Other"><label for="ins_other">Other:</label></div>
+                                <input type="text" name="attic_insulation_other" placeholder="Specify..." style="max-width: 120px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Exterior Walls:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="wall_2x4" name="exterior_walls" value="2x4"><label for="wall_2x4">2x4</label></div>
+                                <div class="radio-item"><input type="radio" id="wall_2x6" name="exterior_walls" value="2x6"><label for="wall_2x6">2x6</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fresh Air Marked on Plan:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="fresh_yes" name="fresh_air_marked" value="Yes"><label for="fresh_yes">Yes</label></div>
+                                <div class="radio-item"><input type="radio" id="fresh_no" name="fresh_air_marked" value="No"><label for="fresh_no">No</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Makeup Air:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="makeup_yes" name="makeup_air" value="Yes"><label for="makeup_yes">Yes</label></div>
+                                <div class="radio-item"><input type="radio" id="makeup_no" name="makeup_air" value="No"><label for="makeup_no">No</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Truss Type:</label>
+                            <div class="inline-group">
+                                <div class="radio-item"><input type="radio" id="truss_tgi" name="truss_type" value="TGI"><label for="truss_tgi">TGI</label></div>
+                                <div class="radio-item"><input type="radio" id="truss_web" name="truss_type" value="Web"><label for="truss_web">Web</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="truss_size">Truss Size:</label>
+                            <input type="text" id="truss_size" name="truss_size" placeholder="e.g., 18 inch">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FLUE VENT -->
+                <div class="form-section">
+                    <h2>FLUE VENT</h2>
+                    <div class="form-row three-col">
+                        <div class="form-group">
+                            <label>Flue Vent Needed:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="flue_yes" name="flue_vent" value="Yes"><label for="flue_yes">Yes</label></div>
+                                <div class="radio-item"><input type="radio" id="flue_no" name="flue_vent" value="No"><label for="flue_no">No</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Flue Type:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="flue_metal" name="flue_type" value="Metal"><label for="flue_metal">Metal</label></div>
+                                <div class="radio-item"><input type="radio" id="flue_pvc" name="flue_type" value="PVC"><label for="flue_pvc">PVC</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>PVC Size (if applicable):</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="pvc_2" name="flue_pvc_size" value="2 inch"><label for="pvc_2">2"</label></div>
+                                <div class="radio-item"><input type="radio" id="pvc_3" name="flue_pvc_size" value="3 inch"><label for="pvc_3">3"</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- EQUIPMENT -->
+                <div class="form-section">
+                    <h2>EQUIPMENT</h2>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <span>SYSTEM 1:</span>
+                            <input type="text" name="sys1_name" placeholder="e.g., Main, Master, Living Room">
+                        </div>
+                        <div class="form-row four-col">
+                            <div class="form-group"><label for="sys1_ah_furnace">A/H or Furnace Model:</label><input type="text" id="sys1_ah_furnace" name="sys1_ah_furnace"></div>
+                            <div class="form-group"><label for="sys1_coil">Heat Strip/Coil Model:</label><input type="text" id="sys1_coil" name="sys1_coil"></div>
+                            <div class="form-group"><label for="sys1_condenser">Condenser/Heat Pump:</label><input type="text" id="sys1_condenser" name="sys1_condenser"></div>
+                            <div class="form-group"><label for="sys1_filter">Media Filter Size:</label><input type="text" id="sys1_filter" name="sys1_filter" placeholder="e.g., 20x25x4"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <span>SYSTEM 2:</span>
+                            <input type="text" name="sys2_name" placeholder="e.g., Main, Master, Living Room">
+                        </div>
+                        <div class="form-row four-col">
+                            <div class="form-group"><label for="sys2_ah_furnace">A/H or Furnace Model:</label><input type="text" id="sys2_ah_furnace" name="sys2_ah_furnace"></div>
+                            <div class="form-group"><label for="sys2_coil">Heat Strip/Coil Model:</label><input type="text" id="sys2_coil" name="sys2_coil"></div>
+                            <div class="form-group"><label for="sys2_condenser">Condenser/Heat Pump:</label><input type="text" id="sys2_condenser" name="sys2_condenser"></div>
+                            <div class="form-group"><label for="sys2_filter">Media Filter Size:</label><input type="text" id="sys2_filter" name="sys2_filter" placeholder="e.g., 20x25x4"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <span>SYSTEM 3:</span>
+                            <input type="text" name="sys3_name" placeholder="e.g., Main, Master, Living Room">
+                        </div>
+                        <div class="form-row four-col">
+                            <div class="form-group"><label for="sys3_ah_furnace">A/H or Furnace Model:</label><input type="text" id="sys3_ah_furnace" name="sys3_ah_furnace"></div>
+                            <div class="form-group"><label for="sys3_coil">Heat Strip/Coil Model:</label><input type="text" id="sys3_coil" name="sys3_coil"></div>
+                            <div class="form-group"><label for="sys3_condenser">Condenser/Heat Pump:</label><input type="text" id="sys3_condenser" name="sys3_condenser"></div>
+                            <div class="form-group"><label for="sys3_filter">Media Filter Size:</label><input type="text" id="sys3_filter" name="sys3_filter" placeholder="e.g., 20x25x4"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <span>SYSTEM 4:</span>
+                            <input type="text" name="sys4_name" placeholder="e.g., Main, Master, Living Room">
+                        </div>
+                        <div class="form-row four-col">
+                            <div class="form-group"><label for="sys4_ah_furnace">A/H or Furnace Model:</label><input type="text" id="sys4_ah_furnace" name="sys4_ah_furnace"></div>
+                            <div class="form-group"><label for="sys4_coil">Heat Strip/Coil Model:</label><input type="text" id="sys4_coil" name="sys4_coil"></div>
+                            <div class="form-group"><label for="sys4_condenser">Condenser/Heat Pump:</label><input type="text" id="sys4_condenser" name="sys4_condenser"></div>
+                            <div class="form-group"><label for="sys4_filter">Media Filter Size:</label><input type="text" id="sys4_filter" name="sys4_filter" placeholder="e.g., 20x25x4"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <span>SYSTEM 5:</span>
+                            <input type="text" name="sys5_name" placeholder="e.g., Main, Master, Living Room">
+                        </div>
+                        <div class="form-row four-col">
+                            <div class="form-group"><label for="sys5_ah_furnace">A/H or Furnace Model:</label><input type="text" id="sys5_ah_furnace" name="sys5_ah_furnace"></div>
+                            <div class="form-group"><label for="sys5_coil">Heat Strip/Coil Model:</label><input type="text" id="sys5_coil" name="sys5_coil"></div>
+                            <div class="form-group"><label for="sys5_condenser">Condenser/Heat Pump:</label><input type="text" id="sys5_condenser" name="sys5_condenser"></div>
+                            <div class="form-group"><label for="sys5_filter">Media Filter Size:</label><input type="text" id="sys5_filter" name="sys5_filter" placeholder="e.g., 20x25x4"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <span>SYSTEM 6:</span>
+                            <input type="text" name="sys6_name" placeholder="e.g., Main, Master, Living Room">
+                        </div>
+                        <div class="form-row four-col">
+                            <div class="form-group"><label for="sys6_ah_furnace">A/H or Furnace Model:</label><input type="text" id="sys6_ah_furnace" name="sys6_ah_furnace"></div>
+                            <div class="form-group"><label for="sys6_coil">Heat Strip/Coil Model:</label><input type="text" id="sys6_coil" name="sys6_coil"></div>
+                            <div class="form-group"><label for="sys6_condenser">Condenser/Heat Pump:</label><input type="text" id="sys6_condenser" name="sys6_condenser"></div>
+                            <div class="form-group"><label for="sys6_filter">Media Filter Size:</label><input type="text" id="sys6_filter" name="sys6_filter" placeholder="e.g., 20x25x4"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- STOVE VENT -->
+                <div class="form-section">
+                    <h2>STOVE VENT</h2>
+                    <div class="form-row four-col">
+                        <div class="form-group"><label for="stove_vent_qty">Quantity Needed:</label><input type="number" id="stove_vent_qty" name="stove_vent_qty" min="0"></div>
+                        <div class="form-group"><label for="stove_vent_size">Size:</label><input type="text" id="stove_vent_size" name="stove_vent_size" placeholder="e.g., 6 inch"></div>
+                        <div class="form-group">
+                            <label>Termination:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="stove_roof" name="stove_vent_term" value="Roof"><label for="stove_roof">Roof</label></div>
+                                <div class="radio-item"><input type="radio" id="stove_wall" name="stove_vent_term" value="Wall"><label for="stove_wall">Wall</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label for="stove_vent_feet">Feet Needed:</label><input type="number" id="stove_vent_feet" name="stove_vent_feet"></div>
+                    </div>
+                </div>
+                
+                <!-- DRYER VENT -->
+                <div class="form-section">
+                    <h2>DRYER VENT</h2>
+                    <div class="form-row four-col">
+                        <div class="form-group"><label for="dryer_qty">Quantity Needed:</label><input type="number" id="dryer_qty" name="dryer_qty" min="0"></div>
+                        <div class="form-group"><label for="dryer_feet">Feet Needed:</label><input type="number" id="dryer_feet" name="dryer_feet"></div>
+                        <div class="form-group">
+                            <label>Dryer Box Size:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="dryer_2x4" name="dryer_box_size" value="2x4"><label for="dryer_2x4">2x4</label></div>
+                                <div class="radio-item"><input type="radio" id="dryer_2x6" name="dryer_box_size" value="2x6"><label for="dryer_2x6">2x6</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Termination:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="dryer_roof" name="dryer_term" value="Roof"><label for="dryer_roof">Roof</label></div>
+                                <div class="radio-item"><input type="radio" id="dryer_wall" name="dryer_term" value="Wall"><label for="dryer_wall">Wall</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BATH FANS -->
+                <div class="form-section">
+                    <h2>BATH FANS</h2>
+                    <div class="form-row four-col">
+                        <div class="form-group"><label for="bath_fan_model">Bath Fan Model:</label><input type="text" id="bath_fan_model" name="bath_fan_model"></div>
+                        <div class="form-group"><label for="bath_fan_qty">Quantity Needed:</label><input type="number" id="bath_fan_qty" name="bath_fan_qty"></div>
+                        <div class="form-group"><label for="bath_fan_vent_size">Vent Size:</label><input type="text" id="bath_fan_vent_size" name="bath_fan_vent_size"></div>
+                        <div class="form-group"><label for="bath_fan_feet">Feet Needed:</label><input type="number" id="bath_fan_feet" name="bath_fan_feet"></div>
+                    </div>
+                </div>
+                
+                <!-- DRAIN -->
+                <div class="form-section">
+                    <h2>DRAIN</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Primary Drain Marked:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="drain_yes" name="drain_marked" value="Yes"><label for="drain_yes">Yes</label></div>
+                                <div class="radio-item"><input type="radio" id="drain_no" name="drain_marked" value="No"><label for="drain_no">No</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Secondary Drain Marked:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="sec_drain_yes" name="secondary_drain_marked" value="Yes"><label for="sec_drain_yes">Yes</label></div>
+                                <div class="radio-item"><input type="radio" id="sec_drain_no" name="secondary_drain_marked" value="No"><label for="sec_drain_no">No</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- THERMOSTATS & CONTROLS -->
+                <div class="form-section">
+                    <h2>THERMOSTATS & CONTROLS</h2>
+                    <div class="form-row">
+                        <div class="form-group"><label for="thermostat_type">Thermostat Type:</label><input type="text" id="thermostat_type" name="thermostat_type" placeholder="e.g., Honeywell T6, Ecobee"></div>
+                        <div class="form-group"><label for="thermostat_qty">Number of Thermostats:</label><input type="number" id="thermostat_qty" name="thermostat_qty"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="zone_boards">Zone Boards:</label><input type="text" id="zone_boards" name="zone_boards" placeholder="Type and quantity"></div>
+                        <div class="form-group"><label for="secondary_controls">Secondary Controls:</label><input type="text" id="secondary_controls" name="secondary_controls" placeholder="Any additional controls"></div>
+                    </div>
+                </div>
+                
+                <!-- COMMENTS -->
+                <div class="form-section">
+                    <h2>COMMENTS / NOTES</h2>
+                    <div class="form-row single">
+                        <div class="form-group"><label for="comments">Additional Notes:</label><textarea id="comments" name="comments" rows="5" placeholder="Any additional information, special requirements, or notes..."></textarea></div>
+                    </div>
+                </div>
+                
+                <div class="submit-section"><button type="submit" class="btn-submit">📄 Generate PDF</button></div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

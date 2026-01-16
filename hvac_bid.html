@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVAC Bid Sheet - Woods Comfort Systems</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .form-content {
+            padding: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 35px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .form-section h2 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            background: white;
+            padding: 15px;
+            margin: -20px -20px 20px -20px;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row.two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .system-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .system-table th {
+            background: #2c3e50;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .system-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .system-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .system-table input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .submit-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 60px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .info-note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>HVAC BID SHEET</h1>
+            <p>Comprehensive Bidding Calculator with Auto-Pricing</p>
+        </div>
+        
+        <div class="form-content">
+            <form action="/generate-hvac-bid-pdf" method="POST">
+                
+                <!-- Job & Proposal Information -->
+                <div class="form-section">
+                    <h2>JOB & PROPOSAL INFORMATION</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="builder">Builder:</label>
+                            <input type="text" id="builder" name="builder" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="job_name">Job Name:</label>
+                            <input type="text" id="job_name" name="job_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" name="date" value="{{ today }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="job_address">Job Address:</label>
+                            <input type="text" id="job_address" name="job_address">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City:</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">ZIP:</label>
+                            <input type="text" id="zip" name="zip">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sales">Sales:</label>
+                            <input type="text" id="sales" name="sales" value="Ryan Sekula">
+                        </div>
+                        <div class="form-group">
+                            <label for="design">Design:</label>
+                            <input type="text" id="design" name="design">
+                        </div>
+                        <div class="form-group">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="num_systems">Number of Systems:</label>
+                            <input type="number" id="num_systems" name="num_systems" min="1" max="6" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="brand">Brand:</label>
+                            <select id="brand" name="brand">
+                                <option value="Lennox">Lennox</option>
+                                <option value="Carrier">Carrier</option>
+                                <option value="Trane">Trane</option>
+                                <option value="Rheem">Rheem</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="heat_type">Heat Type:</label>
+                            <select id="heat_type" name="heat_type">
+                                <option value="Heat Pump & Electric">Heat Pump & Electric</option>
+                                <option value="AC & Gas">AC & Gas</option>
+                                <option value="AC & LP Gas">AC & LP Gas</option>
+                                <option value="AC & Electric">AC & Electric</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="afue">AFUE:</label>
+                            <select id="afue" name="afue">
+                                <option value="">N/A</option>
+                                <option value="0.8">0.8 (80%)</option>
+                                <option value="0.9">0.9 (90%)</option>
+                                <option value="0.95">0.95 (95%)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Configuration -->
+                <div class="form-section">
+                    <h2>SYSTEM CONFIGURATION</h2>
+                    <div class="info-note">
+                        💡 Fill in system details. Lineset size and cost will be auto-calculated in the PDF.
+                    </div>
+                    
+                    <table class="system-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">System</th>
+                                <th style="width: 80px;">Tonnage</th>
+                                <th style="width: 100px;">Equip Cost</th>
+                                <th>Zone Name</th>
+                                <th>Outdoor Model</th>
+                                <th>Indoor Model</th>
+                                <th style="width: 60px;">SEER</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>System 1:</strong></td>
+                                <td><input type="number" name="sys1_tonnage" step="0.5" placeholder="3"></td>
+                                <td><input type="number" name="sys1_cost" placeholder="3000"></td>
+                                <td><input type="text" name="sys1_zone" placeholder="First Floor"></td>
+                                <td><input type="text" name="sys1_outdoor" placeholder="EL19KPV"></td>
+                                <td><input type="text" name="sys1_indoor" placeholder="CBK45UHV"></td>
+                                <td><input type="number" name="sys1_seer" placeholder="19"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>System 2:</strong></td>
+                                <td><input type="number" name="sys2_tonnage" step="0.5"></td>
+                                <td><input type="number" name="sys2_cost"></td>
+                                <td><input type="text" name="sys2_zone"></td>
+                                <td><input type="text" name="sys2_outdoor"></td>
+                                <td><input type="text" name="sys2_indoor"></td>
+                                <td><input type="number" name="sys2_seer"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>System 3:</strong></td>
+                                <td><input type="number" name="sys3_tonnage" step="0.5"></td>
+                                <td><input type="number" name="sys3_cost"></td>
+                                <td><input type="text" name="sys3_zone"></td>
+                                <td><input type="text" name="sys3_outdoor"></td>
+                                <td><input type="text" name="sys3_indoor"></td>
+                                <td><input type="number" name="sys3_seer"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>System 4:</strong></td>
+                                <td><input type="number" name="sys4_tonnage" step="0.5"></td>
+                                <td><input type="number" name="sys4_cost"></td>
+                                <td><input type="text" name="sys4_zone"></td>
+                                <td><input type="text" name="sys4_outdoor"></td>
+                                <td><input type="text" name="sys4_indoor"></td>
+                                <td><input type="number" name="sys4_seer"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>System 5:</strong></td>
+                                <td><input type="number" name="sys5_tonnage" step="0.5"></td>
+                                <td><input type="number" name="sys5_cost"></td>
+                                <td><input type="text" name="sys5_zone"></td>
+                                <td><input type="text" name="sys5_outdoor"></td>
+                                <td><input type="text" name="sys5_indoor"></td>
+                                <td><input type="number" name="sys5_seer"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>System 6:</strong></td>
+                                <td><input type="number" name="sys6_tonnage" step="0.5"></td>
+                                <td><input type="number" name="sys6_cost"></td>
+                                <td><input type="text" name="sys6_zone"></td>
+                                <td><input type="text" name="sys6_outdoor"></td>
+                                <td><input type="text" name="sys6_indoor"></td>
+                                <td><input type="number" name="sys6_seer"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Key Materials -->
+                <div class="form-section">
+                    <h2>KEY MATERIALS (Adjustable Quantities)</h2>
+                    <div class="info-note">
+                        💡 Most materials auto-calculate based on systems. Adjust these key items as needed.
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="two_story_adder">2-Story Adder:</label>
+                            <input type="number" id="two_story_adder" name="two_story_adder" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="supply_outlets">Supply Outlets:</label>
+                            <input type="number" id="supply_outlets" name="supply_outlets" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="returns">Returns:</label>
+                            <input type="number" id="returns" name="returns" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jumper_returns">Jumper Duct Returns:</label>
+                            <input type="number" id="jumper_returns" name="jumper_returns" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="panasonic_fans">Panasonic Whisper Fans:</label>
+                            <input type="number" id="panasonic_fans" name="panasonic_fans" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="long_range_vent">Long Range Vent:</label>
+                            <input type="number" id="long_range_vent" name="long_range_vent" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="long_dryer_vent">Long Dryer Vent:</label>
+                            <input type="number" id="long_dryer_vent" name="long_dryer_vent" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="ecobee_pro">Ecobee Pro Thermostats:</label>
+                            <input type="number" id="ecobee_pro" name="ecobee_pro" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="fresh_air">FIN180 Fresh Air:</label>
+                            <input type="number" id="fresh_air" name="fresh_air" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="makeup_air">MD8TU Makeup Air:</label>
+                            <input type="number" id="makeup_air" name="makeup_air" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="misc_material">Miscellaneous Material $:</label>
+                            <input type="number" id="misc_material" name="misc_material" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Labor & Pricing -->
+                <div class="form-section">
+                    <h2>LABOR & PRICING ADJUSTMENTS</h2>
+                    <div class="info-note">
+                        💡 Labor is mostly auto-calculated. Adjust margin % to set your profit target.
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="final_labor_hrs">Final Labor Hours:</label>
+                            <input type="number" id="final_labor_hrs" name="final_labor_hrs" value="0" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="travel_cost">Travel Cost $:</label>
+                            <input type="number" id="travel_cost" name="travel_cost" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="misc_labor">Miscellaneous Labor $:</label>
+                            <input type="number" id="misc_labor" name="misc_labor" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="margin_percent">Margin % (0.35 = 35%):</label>
+                            <input type="number" id="margin_percent" name="margin_percent" value="0.35" step="0.01" min="0" max="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="misc_cost">Miscellaneous Cost $:</label>
+                            <input type="number" id="misc_cost" name="misc_cost" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit">📊 Generate Bid Sheet PDF</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

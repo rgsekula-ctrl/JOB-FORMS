@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Calculation Request - Woods Comfort Systems</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: #1565C0; color: white; padding: 25px 30px; border-radius: 10px 10px 0 0; }
+        .header h1 { font-size: 1.6em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 0.95em; }
+        .back-link { display: inline-block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.9; }
+        
+        .form-content { padding: 25px; }
+        
+        .section { border: 2px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #fafafa; }
+        .section h2 { color: #1565C0; font-size: 1.1em; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #1565C0; }
+        
+        .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 12px; }
+        .form-row.two-col { grid-template-columns: 1fr 1fr; }
+        .form-row.four-col { grid-template-columns: repeat(4, 1fr); }
+        .form-row.single { grid-template-columns: 1fr; }
+        
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 600; color: #333; margin-bottom: 4px; font-size: 0.85em; }
+        .form-group input, .form-group select, .form-group textarea { 
+            padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9em; 
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
+            outline: none; border-color: #1565C0; box-shadow: 0 0 3px rgba(21,101,192,0.3);
+        }
+        
+        /* Checkbox groups */
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+        .checkbox-group label { font-weight: normal; display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 0.9em; }
+        .checkbox-group input[type="checkbox"], .checkbox-group input[type="radio"] { width: 16px; height: 16px; cursor: pointer; }
+        
+        .inline-field { display: flex; align-items: center; gap: 8px; }
+        .inline-field label { font-weight: 600; font-size: 0.85em; white-space: nowrap; }
+        .inline-field input, .inline-field select { flex: 1; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9em; }
+        
+        .field-label { font-weight: 600; color: #333; font-size: 0.85em; margin-bottom: 6px; display: block; }
+        
+        .subsection { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+        .subsection-title { font-weight: 600; color: #555; font-size: 0.9em; margin-bottom: 10px; }
+        
+        .submit-section { margin-top: 25px; padding-top: 20px; border-top: 2px solid #e0e0e0; text-align: center; }
+        .btn { padding: 12px 35px; font-size: 1em; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; margin: 0 8px; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #1565C0, #1976D2); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(21,101,192,0.4); }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: linear-gradient(135deg, #2E7D32, #388E3C); color: white; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(46,125,50,0.4); }
+        
+        textarea { resize: vertical; min-height: 60px; }
+        
+        @media (max-width: 768px) {
+            .form-row, .form-row.two-col, .form-row.four-col { grid-template-columns: 1fr; }
+            .checkbox-group { flex-direction: column; align-items: flex-start; }
+        }
+        
+        /* Print styles */
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            .header { background: #1565C0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .submit-section { display: none; }
+            .back-link { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>📝 Load Calculation Request Form</h1>
+            <p>Manual J Request - Design Team Information</p>
+        </div>
+        
+        <div class="form-content">
+            <form id="bidInfoForm" action="/generate-bid-info-pdf" method="POST">
+                
+                <!-- PROJECT INFORMATION -->
+                <div class="section">
+                    <h2>PROJECT INFORMATION</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Salesperson:</label>
+                            <input type="text" name="salesperson" value="Ryan Sekula">
+                        </div>
+                        <div class="form-group">
+                            <label>Bid Type:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="bid_type" value="Load Only"> Load Only</label>
+                                <label><input type="radio" name="bid_type" value="Full Bid" checked> Full Bid</label>
+                                <label><input type="radio" name="bid_type" value="Preliminary Bid"> Preliminary Bid</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date:</label>
+                            <input type="date" name="due_date">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label>Builder/Customer Name:</label>
+                            <input type="text" name="builder_name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Job Location (Address or Lot & Sub):</label>
+                            <input type="text" name="job_location">
+                        </div>
+                        <div class="form-group">
+                            <label>Permit Required:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="permit_required" value="Yes"> Yes</label>
+                                <label><input type="radio" name="permit_required" value="No" checked> No</label>
+                                <label style="margin-left: 15px;">Cost: $</label>
+                                <input type="number" name="permit_cost" style="width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label>Special County or Municipality Requirements:</label>
+                            <input type="text" name="special_requirements" placeholder="e.g., Austin Energy, Hays County, etc.">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>House Direction (Front Door Faces):</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="house_direction" value="North"> N</label>
+                                <label><input type="radio" name="house_direction" value="NE"> NE</label>
+                                <label><input type="radio" name="house_direction" value="NW"> NW</label>
+                                <label><input type="radio" name="house_direction" value="South"> S</label>
+                                <label><input type="radio" name="house_direction" value="SE"> SE</label>
+                                <label><input type="radio" name="house_direction" value="SW"> SW</label>
+                                <label><input type="radio" name="house_direction" value="East"> E</label>
+                                <label><input type="radio" name="house_direction" value="West"> W</label>
+                                <label><input type="radio" name="house_direction" value="Worst Case" checked> Worst</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Energy Star:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="energy_star" value="Yes"> Yes</label>
+                                <label><input type="radio" name="energy_star" value="No" checked> No</label>
+                                <input type="text" name="energy_star_comments" placeholder="Comments" style="flex: 2;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CONSTRUCTION SPECIFICATIONS -->
+                <div class="section">
+                    <h2>CONSTRUCTION SPECIFICATIONS</h2>
+                    
+                    <div class="subsection">
+                        <div class="subsection-title">Insulation</div>
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label>Walls:</label>
+                                <div class="checkbox-group" style="margin-top: 6px;">
+                                    <label><input type="radio" name="insulation_walls" value="Foam" checked> Foam</label>
+                                    <label><input type="radio" name="insulation_walls" value="R13"> R13</label>
+                                    <label><input type="radio" name="insulation_walls" value="R15"> R15</label>
+                                    <label><input type="radio" name="insulation_walls" value="R19"> R19</label>
+                                    <input type="text" name="insulation_walls_other" placeholder="Other" style="width: 80px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ceiling:</label>
+                                <div class="checkbox-group" style="margin-top: 6px;">
+                                    <label><input type="radio" name="insulation_ceiling" value="Foam (R25)" checked> Foam (R25)</label>
+                                    <label><input type="radio" name="insulation_ceiling" value="R30"> R30</label>
+                                    <label><input type="radio" name="insulation_ceiling" value="R38"> R38</label>
+                                    <input type="text" name="insulation_ceiling_other" placeholder="Other" style="width: 80px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label>Crawl Walls:</label>
+                                <input type="text" name="crawl_walls" placeholder="If applicable">
+                            </div>
+                            <div class="form-group">
+                                <label>Floor Over Garage:</label>
+                                <input type="text" name="floor_over_garage" placeholder="If applicable">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="subsection">
+                        <div class="subsection-title">Windows</div>
+                        <div class="form-row four-col">
+                            <div class="form-group">
+                                <label>Type:</label>
+                                <div class="checkbox-group" style="margin-top: 6px;">
+                                    <label><input type="checkbox" name="windows_clear"> Clear</label>
+                                    <label><input type="checkbox" name="windows_lowe" checked> LowE</label>
+                                    <label><input type="checkbox" name="windows_wood"> Wood</label>
+                                    <label><input type="checkbox" name="windows_vinyl" checked> Vinyl</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>U-value:</label>
+                                <input type="text" name="windows_uvalue" placeholder="e.g., 0.30">
+                            </div>
+                            <div class="form-group">
+                                <label>SHGC:</label>
+                                <input type="text" name="windows_shgc" placeholder="e.g., 0.25">
+                            </div>
+                            <div class="form-group">
+                                <label>Other:</label>
+                                <input type="text" name="windows_other">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Foundation:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="foundation" value="Slab" checked> Slab</label>
+                                <label><input type="radio" name="foundation" value="Vented Crawl"> Vented Crawl</label>
+                                <label><input type="radio" name="foundation" value="Cond. Crawl"> Cond. Crawl</label>
+                                <label><input type="radio" name="foundation" value="Unfin. Basement"> Unfin. Basement</label>
+                                <label><input type="radio" name="foundation" value="Fin. Basement"> Fin. Basement</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Foundation Other:</label>
+                            <input type="text" name="foundation_other">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Roof:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="roof_type" value="Shingle" checked> Shingle</label>
+                                <label><input type="radio" name="roof_type" value="Metal"> Metal</label>
+                                <label><input type="radio" name="roof_type" value="Tile"> Tile</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Truss / TGI:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="truss_type" value="Truss" checked> Truss</label>
+                                <label><input type="radio" name="truss_type" value="TGI"> TGI</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Depth:</label>
+                            <input type="text" name="truss_depth" placeholder="e.g., 24&quot;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>O.C. Width:</label>
+                            <input type="text" name="oc_width" placeholder="e.g., 24&quot;">
+                        </div>
+                        <div class="form-group"></div>
+                    </div>
+                </div>
+                
+                <!-- EQUIPMENT INFORMATION -->
+                <div class="section">
+                    <h2>EQUIPMENT INFORMATION</h2>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>System Breakdown:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="system_breakdown" value="1 System"> 1 System</label>
+                                <label><input type="radio" name="system_breakdown" value="1 Sys Per Floor"> 1 Sys Per Floor</label>
+                                <label><input type="radio" name="system_breakdown" value="Zoning"> Zoning</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>System Breakdown Comments:</label>
+                            <input type="text" name="system_breakdown_comments">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>System Type:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="system_type" value="Gas"> Gas</label>
+                                <label><input type="radio" name="system_type" value="Electric" checked> Electric</label>
+                                <label><input type="radio" name="system_type" value="Dual Fuel"> Dual Fuel</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Specify if Multiple Types:</label>
+                            <input type="text" name="system_type_specify">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Brand:</label>
+                            <select name="brand">
+                                <option value="Lennox" selected>Lennox</option>
+                                <option value="Carrier">Carrier</option>
+                                <option value="Trane">Trane</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Gas AFUE (if applicable):</label>
+                            <select name="afue">
+                                <option value="">N/A</option>
+                                <option value="80%">80%</option>
+                                <option value="95%">95%</option>
+                                <option value="96%">96%</option>
+                                <option value="97%">97%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>SEER:</label>
+                            <select name="seer">
+                                <option value="14.3">14.3 SEER2</option>
+                                <option value="15.2">15.2 SEER2</option>
+                                <option value="16" selected>16 SEER2</option>
+                                <option value="17">17 SEER2</option>
+                                <option value="18">18 SEER2</option>
+                                <option value="19">19 SEER2</option>
+                                <option value="20+">20+ SEER2</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Furnace Model (if specified):</label>
+                            <input type="text" name="furnace_model" placeholder="e.g., ML296UH070">
+                        </div>
+                        <div class="form-group">
+                            <label>Condenser Model (if specified):</label>
+                            <input type="text" name="condenser_model" placeholder="e.g., ML14KP1-036">
+                        </div>
+                        <div class="form-group">
+                            <label>Coil Model (if specified):</label>
+                            <input type="text" name="coil_model" placeholder="e.g., CBK45UHVT-036">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Thermostat Model/Type:</label>
+                            <input type="text" name="thermostat_model" placeholder="e.g., Ecobee Pro, Honeywell T6">
+                        </div>
+                        <div class="form-group">
+                            <label>Thermostat Comments:</label>
+                            <input type="text" name="thermostat_comments" placeholder="Specify if different by system">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- VENTILATION SPECIFICATIONS -->
+                <div class="section">
+                    <h2>VENTILATION SPECIFICATIONS</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Bath Fans:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="checkbox" name="bath_fans_na"> N/A</label>
+                                <input type="text" name="bath_fan_model" placeholder="Type/Model" style="flex: 2;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bath Fan Comments:</label>
+                            <input type="text" name="bath_fan_comments">
+                        </div>
+                        <div class="form-group">
+                            <label>Bath Fan Qty:</label>
+                            <input type="number" name="bath_fan_qty" placeholder="e.g., 3">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Bath & Dryer Terminations:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="checkbox" name="term_roof" checked> Roof</label>
+                                <label><input type="checkbox" name="term_sidewall"> Sidewall</label>
+                                <label><input type="checkbox" name="term_soffit"> Soffit</label>
+                                <input type="text" name="termination_other" placeholder="Other" style="width: 100px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Kitchen Venting:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="kitchen_venting" value="Microwave" checked> Microwave</label>
+                                <label><input type="radio" name="kitchen_venting" value="Hood"> Hood</label>
+                                <label><input type="radio" name="kitchen_venting" value="Downdraft"> Downdraft</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Kitchen Vent Size:</label>
+                            <input type="text" name="kitchen_vent_size" placeholder="e.g., 6&quot; round">
+                        </div>
+                        <div class="form-group">
+                            <label>Include Makeup Air:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="makeup_air" value="Yes"> Yes</label>
+                                <label><input type="radio" name="makeup_air" value="No" checked> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Fresh Air:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="fresh_air" value="Yes" checked> Yes</label>
+                                <label><input type="radio" name="fresh_air" value="No"> No</label>
+                                <input type="text" name="fresh_air_model" placeholder="Model" style="flex: 2;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Fresh Air - Specify System:</label>
+                            <input type="text" name="fresh_air_system" placeholder="Specify system or if more than one">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Dehumidifier:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="dehumidifier" value="Yes"> Yes</label>
+                                <label><input type="radio" name="dehumidifier" value="No" checked> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Dehumidifier Comments:</label>
+                            <input type="text" name="dehumidifier_comments">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DESIGN SPECIFICATIONS -->
+                <div class="section">
+                    <h2>DESIGN SPECIFICATIONS</h2>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Furnace/AH Location:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="furnace_location" value="Attic" checked> Attic</label>
+                                <label><input type="radio" name="furnace_location" value="Crawl"> Crawl</label>
+                                <label><input type="radio" name="furnace_location" value="Basement"> Basement</label>
+                                <label><input type="radio" name="furnace_location" value="Per Print"> Per Print</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Furnace Location Other:</label>
+                            <input type="text" name="furnace_location_other">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Supply Locations:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="supply_locations" value="Inside Wall"> Inside Wall</label>
+                                <label><input type="radio" name="supply_locations" value="Outside Wall"> Outside Wall</label>
+                                <label><input type="radio" name="supply_locations" value="Inside the Envelope" checked> Inside the Envelope</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Supply Location Other:</label>
+                            <input type="text" name="supply_location_other">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Misc. Supply:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="checkbox" name="supply_master_toilet"> Master Toilet</label>
+                                <label><input type="checkbox" name="supply_master_walkin"> Master Walk-in</label>
+                                <label><input type="checkbox" name="supply_all_walkins"> All Walk-ins</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Misc. Supply Comments:</label>
+                            <input type="text" name="supply_comments">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label>Return Locations:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="checkbox" name="return_central"> Central (per floor)</label>
+                                <label><input type="checkbox" name="return_central_master"> Central + Master</label>
+                                <label><input type="checkbox" name="return_central_beds"> Central + Beds</label>
+                                <label><input type="checkbox" name="return_individual"> Individual</label>
+                                <label><input type="checkbox" name="return_jumper" checked> Jumper Ducts</label>
+                                <label><input type="checkbox" name="return_transfer"> Transfer Grilles</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Ductwork Type:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="ductwork_type" value="Fiberglass Duct & Flex" checked> Fiberglass Duct & Flex</label>
+                                <label><input type="radio" name="ductwork_type" value="Metal Duct & Pipe"> Metal Duct & Pipe</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Duct Insulation:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="duct_insulation" value="R-4"> R-4</label>
+                                <label><input type="radio" name="duct_insulation" value="R-6"> R-6</label>
+                                <label><input type="radio" name="duct_insulation" value="R-8" checked> R-8</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Value Engineering:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="value_engineering" value="Aggressive"> Aggressive</label>
+                                <label><input type="radio" name="value_engineering" value="Middle of Road" checked> Middle</label>
+                                <label><input type="radio" name="value_engineering" value="Conservative"> Conservative</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Condenser Set:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="condenser_set" value="Pad" checked> Pad</label>
+                                <label><input type="radio" name="condenser_set" value="Poles"> Poles</label>
+                                <label><input type="radio" name="condenser_set" value="Brackets"> Brackets</label>
+                                <label><input type="radio" name="condenser_set" value="Rooftop"> Rooftop</label>
+                                <label><input type="radio" name="condenser_set" value="N/A"> N/A</label>
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
+                    </div>
+                </div>
+                
+                <!-- INDOOR AIR QUALITY / OPTIONS -->
+                <div class="section">
+                    <h2>INDOOR AIR QUALITY / OPTIONS</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Filtration:</label>
+                            <div class="checkbox-group" style="margin-top: 6px;">
+                                <label><input type="radio" name="filtration" value="1 inch Disposable"> 1" Disposable</label>
+                                <label><input type="radio" name="filtration" value="Media" checked> Media</label>
+                                <label><input type="radio" name="filtration" value="Electronic Air Cleaner"> Electronic Air Cleaner</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>MERV Rating:</label>
+                            <input type="text" name="merv_rating" placeholder="e.g., MERV 11">
+                        </div>
+                        <div class="form-group">
+                            <label>Filter Model/Comments:</label>
+                            <input type="text" name="filter_comments">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>Humidifier:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="humidifier" value="Yes"> Yes</label>
+                                <label><input type="radio" name="humidifier" value="No" checked> No</label>
+                                <input type="text" name="humidifier_model" placeholder="Model" style="flex: 2;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Dehumidifier:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="iaq_dehumidifier" value="Yes"> Yes</label>
+                                <label><input type="radio" name="iaq_dehumidifier" value="No" checked> No</label>
+                                <input type="text" name="iaq_dehumidifier_model" placeholder="Model" style="flex: 2;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>ERV/HRV:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="erv_hrv" value="Yes"> Yes</label>
+                                <label><input type="radio" name="erv_hrv" value="No" checked> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>ERV/HRV - Specify System:</label>
+                            <input type="text" name="erv_hrv_system" placeholder="Specify system or if more than one">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label>UV Light:</label>
+                            <div class="inline-field" style="margin-top: 6px;">
+                                <label><input type="radio" name="uv_light" value="Yes"> Yes</label>
+                                <label><input type="radio" name="uv_light" value="No" checked> No</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>UV Light Model:</label>
+                            <input type="text" name="uv_light_model">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COMMENTS -->
+                <div class="section">
+                    <h2>COMMENTS</h2>
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <textarea name="comments" rows="4" placeholder="Additional notes, special instructions, or requirements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="submit-section">
+                    <button type="button" class="btn btn-secondary" onclick="window.print()">🖨️ Print Form</button>
+                    <button type="submit" class="btn btn-primary">📄 Generate PDF</button>
+                    <button type="button" class="btn btn-success" onclick="copyToClipboard()">📋 Copy Summary</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function copyToClipboard() {
+            const form = document.getElementById('bidInfoForm');
+            const formData = new FormData(form);
+            
+            let summary = "=== BID INFO SHEET ===\n\n";
+            summary += "SALESPERSON: " + formData.get('salesperson') + "\n";
+            summary += "BID TYPE: " + formData.get('bid_type') + "\n";
+            summary += "DUE DATE: " + formData.get('due_date') + "\n";
+            summary += "BUILDER: " + formData.get('builder_name') + "\n";
+            summary += "LOCATION: " + formData.get('job_location') + "\n\n";
+            
+            summary += "CONSTRUCTION:\n";
+            summary += "- Walls: " + formData.get('insulation_walls') + "\n";
+            summary += "- Ceiling: " + formData.get('insulation_ceiling') + "\n";
+            summary += "- Foundation: " + formData.get('foundation') + "\n";
+            summary += "- Roof: " + formData.get('roof_type') + "\n\n";
+            
+            summary += "EQUIPMENT:\n";
+            summary += "- System: " + formData.get('system_breakdown') + "\n";
+            summary += "- Type: " + formData.get('system_type') + "\n";
+            summary += "- Brand: " + formData.get('brand') + "\n";
+            summary += "- SEER: " + formData.get('seer') + "\n\n";
+            
+            summary += "COMMENTS: " + formData.get('comments') + "\n";
+            
+            navigator.clipboard.writeText(summary).then(() => {
+                alert('Summary copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

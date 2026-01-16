@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woods Comfort Systems - Forms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .forms-list {
+            padding: 40px;
+        }
+        
+        .form-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .form-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left-color: #764ba2;
+        }
+        
+        .form-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .form-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .form-card a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Woods Comfort Systems</h1>
+            <p>Forms Application - TACLA16934C</p>
+        </div>
+        
+        <div class="forms-list">
+            <h2 style="margin-bottom: 30px; color: #2c3e50;">Available Forms</h2>
+            
+            <div class="form-card" style="border-left-color: #1565C0; background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);">
+                <a href="/bid-info">
+                    <h3>📝 Load Calculation Request Form</h3>
+                    <p>Request Manual J load calculations from design team. Captures construction specs, equipment preferences, ventilation, and IAQ options.</p>
+                </a>
+            </div>
+            
+            <div class="form-card">
+                <a href="/scheduling-dispatch">
+                    <h3>📋 New Construction Scheduling Dispatch Request</h3>
+                    <p>Schedule rough-in installations, track job details, and coordinate with GC supervisors.</p>
+                </a>
+            </div>
+            
+            <div class="form-card">
+                <a href="/special-order">
+                    <h3>📦 Special Order Request Form</h3>
+                    <p>Request quotes and orders for special equipment and materials with vendor tracking.</p>
+                </a>
+            </div>
+            
+            <div class="form-card" style="border-left-color: #E91E63; background: linear-gradient(135deg, #fce4ec 0%, #f8f9fa 100%);">
+                <a href="/change-order">
+                    <h3>🔄 Changes / Upgrades / Additions (Pink Sheet)</h3>
+                    <p>Track equipment changes, upgrades, and returns with model and serial numbers.</p>
+                </a>
+            </div>
+            
+            <div class="form-card">
+                <a href="/hvac-bid">
+                    <h3>📊 HVAC Bid Sheet</h3>
+                    <p>Comprehensive bidding calculator with auto-calculated materials, labor, and pricing.</p>
+                </a>
+            </div>
+            
+            <div class="form-card">
+                <a href="/design-walk">
+                    <h3>📐 Design Plan Walk Sheet</h3>
+                    <p>Equipment specifications and installation planning for takeoffs.</p>
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>San Marcos, Texas | License: TACLA16934C</p>
+        </div>
+    </div>
+</body>
+</html>

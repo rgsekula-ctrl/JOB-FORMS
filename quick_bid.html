@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBid - Woods Comfort Systems</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 25px 30px; border-radius: 10px 10px 0 0; }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; }
+        .back-link { display: inline-block; color: white; text-decoration: none; margin-bottom: 15px; opacity: 0.9; }
+        
+        .form-content { padding: 30px; }
+        
+        .section { border: 2px solid #e9ecef; border-radius: 8px; padding: 20px; margin-bottom: 20px; background: #f8f9fa; }
+        .section h2 { color: #2c3e50; font-size: 1.1em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #2c3e50; }
+        .section.purple { border-color: #6f42c1; background: #f8f4ff; }
+        .section.purple h2 { color: #6f42c1; border-color: #6f42c1; }
+        .section.green { border-color: #28a745; background: #f0fff4; }
+        .section.green h2 { color: #28a745; border-color: #28a745; }
+        .section.blue { border-color: #007bff; background: #f0f7ff; }
+        .section.blue h2 { color: #007bff; border-color: #007bff; }
+        .section.orange { border-color: #fd7e14; background: #fff8f0; }
+        .section.orange h2 { color: #fd7e14; border-color: #fd7e14; }
+        
+        .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+        .form-row.two-col { grid-template-columns: 1fr 1fr; }
+        .form-row.four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 600; color: #2c3e50; margin-bottom: 5px; font-size: 0.9em; }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.95em; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
+        
+        /* AI Import Section */
+        .ai-import-box { background: linear-gradient(135deg, #667eea22, #764ba222); border: 2px dashed #6f42c1; border-radius: 8px; padding: 20px; text-align: center; }
+        .ai-import-box textarea { width: 100%; height: 100px; margin: 15px 0; font-family: monospace; font-size: 0.85em; }
+        .ai-import-box .instructions { font-size: 0.9em; color: #666; margin-bottom: 10px; }
+        .ai-import-box .instructions strong { color: #6f42c1; }
+        .import-btn { background: linear-gradient(135deg, #6f42c1, #9b59b6); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 1em; font-weight: 600; }
+        .import-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(111, 66, 193, 0.4); }
+        .import-success { color: #28a745; font-weight: bold; margin-top: 10px; display: none; }
+        .import-error { color: #dc3545; font-weight: bold; margin-top: 10px; display: none; }
+        
+        /* System Table */
+        .system-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 5px; overflow: hidden; }
+        .system-table th { background: #2c3e50; color: white; padding: 10px 6px; text-align: left; font-size: 0.85em; font-weight: 600; }
+        .system-table td { padding: 6px; border-bottom: 1px solid #e9ecef; }
+        .system-table input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em; }
+        .system-table input:focus { outline: none; border-color: #667eea; }
+        .system-label { font-weight: bold; color: #2c3e50; font-size: 0.9em; }
+        
+        /* Price lookup highlight */
+        .price-found { background-color: #d4edda !important; border-color: #28a745 !important; }
+        .price-lookup-info { font-size: 0.75em; color: #28a745; margin-top: 2px; }
+        
+        /* Totals Section */
+        .totals-section { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .totals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .total-item { text-align: center; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+        .total-item label { display: block; font-size: 0.8em; opacity: 0.9; margin-bottom: 5px; }
+        .total-item .value { font-size: 1.3em; font-weight: bold; }
+        .total-item.grand { background: rgba(255,255,255,0.2); grid-column: span 1; }
+        .total-item.grand .value { font-size: 1.8em; color: #90EE90; }
+        
+        /* Buttons */
+        .button-row { display: flex; gap: 15px; justify-content: center; margin-top: 25px; flex-wrap: wrap; }
+        .btn { padding: 15px 40px; font-size: 1.1em; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        .btn-success { background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); color: white; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4); }
+        .btn-secondary { background: #6c757d; color: white; padding: 10px 25px; font-size: 0.9em; }
+        
+        /* Info note */
+        .info-note { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 10px 12px; margin: 10px 0; border-radius: 4px; font-size: 0.85em; }
+        
+        /* Collapsible */
+        .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .collapsible-header:after { content: '▼'; font-size: 0.8em; }
+        .collapsible-header.collapsed:after { content: '►'; }
+        .collapsible-content { display: block; }
+        .collapsible-content.hidden { display: none; }
+        
+        /* Highlight animation */
+        @keyframes highlight { 0% { background-color: #d4edda; } 100% { background-color: white; } }
+        .highlighted { animation: highlight 2s ease-out; }
+        
+        @media (max-width: 768px) {
+            .form-row, .form-row.two-col, .form-row.four-col { grid-template-columns: 1fr; }
+            .totals-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>🚀 QuickBid - Smart HVAC Estimator</h1>
+            <p>AI-powered extraction + Full bid details + Lennox pricing database + PDF proposal generation</p>
+        </div>
+        
+        <div class="form-content">
+            <form id="bidForm">
+                
+                <!-- AI IMPORT SECTION -->
+                <div class="section purple">
+                    <h2>🤖 AI Import - Paste from Claude</h2>
+                    <div class="ai-import-box">
+                        <div class="instructions">
+                            <strong>Step 1:</strong> Upload your Manual J PDF to Claude chat &nbsp;|&nbsp;
+                            <strong>Step 2:</strong> Ask "extract this for QuickBid" &nbsp;|&nbsp;
+                            <strong>Step 3:</strong> Paste JSON below
+                        </div>
+                        <textarea id="jsonInput" placeholder='Paste JSON here, e.g.: {"builder": "Garner Homes", "project": "Henderson Res.", "options": [...]}'></textarea>
+                        <button type="button" class="import-btn" onclick="importJSON()">📥 Import & Auto-Fill</button>
+                        <div class="import-success" id="importSuccess">✅ Data imported! Fields highlighted in green.</div>
+                        <div class="import-error" id="importError">❌ Invalid JSON format</div>
+                    </div>
+                </div>
+                
+                <!-- JOB INFORMATION -->
+                <div class="section">
+                    <h2>📋 JOB & PROPOSAL INFORMATION</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Builder:</label>
+                            <input type="text" id="builder" name="builder" placeholder="e.g. Garner Homes">
+                        </div>
+                        <div class="form-group">
+                            <label>Job/Project Name:</label>
+                            <input type="text" id="job_name" name="job_name" placeholder="e.g. Henderson Res.">
+                        </div>
+                        <div class="form-group">
+                            <label>Date:</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Job Address:</label>
+                            <input type="text" id="job_address" name="job_address" placeholder="e.g. 132 Acker">
+                        </div>
+                        <div class="form-group">
+                            <label>City:</label>
+                            <input type="text" id="city" name="city" placeholder="e.g. Wimberley">
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP:</label>
+                            <input type="text" id="zip" name="zip" placeholder="78676">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Sales:</label>
+                            <input type="text" id="sales" name="sales" value="Ryan Sekula">
+                        </div>
+                        <div class="form-group">
+                            <label>Design:</label>
+                            <input type="text" id="design" name="design">
+                        </div>
+                        <div class="form-group">
+                            <label>Insulation:</label>
+                            <select id="insulation_type" name="insulation_type">
+                                <option value="Spray Foam Insulation @ Roof Deck">Spray Foam @ Roof Deck</option>
+                                <option value="Blown Insulation">Blown Insulation</option>
+                                <option value="Batt Insulation">Batt Insulation</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Number of Systems:</label>
+                            <input type="number" id="num_systems" name="num_systems" min="1" max="6" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Brand:</label>
+                            <select id="brand" name="brand">
+                                <option value="Lennox">Lennox</option>
+                                <option value="Carrier">Carrier</option>
+                                <option value="Trane">Trane</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Refrigerant:</label>
+                            <select id="refrigerant" name="refrigerant">
+                                <option value="R454B">R454B (A2L)</option>
+                                <option value="R410A">R410A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Heat Type:</label>
+                            <select id="heat_type" name="heat_type">
+                                <option value="Heat Pump & Electric">Heat Pump & Electric</option>
+                                <option value="AC & Gas">AC & Gas</option>
+                                <option value="AC & LP Gas">AC & LP Gas</option>
+                                <option value="AC & Electric">AC & Electric</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>AFUE (Gas):</label>
+                            <select id="afue" name="afue">
+                                <option value="">N/A</option>
+                                <option value="0.80">80%</option>
+                                <option value="0.95">95%</option>
+                                <option value="0.96">96%</option>
+                                <option value="0.97">97%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Square Footage:</label>
+                            <input type="number" id="sqft" name="sqft" placeholder="2500">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SYSTEM CONFIGURATION -->
+                <div class="section green">
+                    <h2>🔧 SYSTEM CONFIGURATION</h2>
+                    <div class="info-note">
+                        💡 <strong>Lennox Price Lookup:</strong> Enter a model number and tab out - price will auto-fill from database (303 items). Green = found in database.
+                    </div>
+                    
+                    <table class="system-table">
+                        <thead>
+                            <tr>
+                                <th style="width:70px;">System</th>
+                                <th style="width:70px;">Tons</th>
+                                <th style="width:90px;">SEER2</th>
+                                <th>Zone/Area</th>
+                                <th>Outdoor Model</th>
+                                <th>Indoor Model</th>
+                                <th style="width:100px;">Equip Cost $</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="system-label">Sys 1</td>
+                                <td><input type="number" id="sys1_tonnage" name="sys1_tonnage" step="0.5" placeholder="2.0"></td>
+                                <td><input type="text" id="sys1_seer" name="sys1_seer" placeholder="18.0"></td>
+                                <td><input type="text" id="sys1_zone" name="sys1_zone" placeholder="Main Floor"></td>
+                                <td><input type="text" id="sys1_outdoor" name="sys1_outdoor" placeholder="EL19KPV-024" onblur="lookupPrice(1)"></td>
+                                <td><input type="text" id="sys1_indoor" name="sys1_indoor" placeholder="CBK48MVT-030" onblur="lookupPrice(1)"></td>
+                                <td><input type="number" id="sys1_cost" name="sys1_cost" placeholder="12000" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 2</td>
+                                <td><input type="number" id="sys2_tonnage" name="sys2_tonnage" step="0.5"></td>
+                                <td><input type="text" id="sys2_seer" name="sys2_seer"></td>
+                                <td><input type="text" id="sys2_zone" name="sys2_zone"></td>
+                                <td><input type="text" id="sys2_outdoor" name="sys2_outdoor" onblur="lookupPrice(2)"></td>
+                                <td><input type="text" id="sys2_indoor" name="sys2_indoor" onblur="lookupPrice(2)"></td>
+                                <td><input type="number" id="sys2_cost" name="sys2_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 3</td>
+                                <td><input type="number" id="sys3_tonnage" name="sys3_tonnage" step="0.5"></td>
+                                <td><input type="text" id="sys3_seer" name="sys3_seer"></td>
+                                <td><input type="text" id="sys3_zone" name="sys3_zone"></td>
+                                <td><input type="text" id="sys3_outdoor" name="sys3_outdoor" onblur="lookupPrice(3)"></td>
+                                <td><input type="text" id="sys3_indoor" name="sys3_indoor" onblur="lookupPrice(3)"></td>
+                                <td><input type="number" id="sys3_cost" name="sys3_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 4</td>
+                                <td><input type="number" id="sys4_tonnage" name="sys4_tonnage" step="0.5"></td>
+                                <td><input type="text" id="sys4_seer" name="sys4_seer"></td>
+                                <td><input type="text" id="sys4_zone" name="sys4_zone"></td>
+                                <td><input type="text" id="sys4_outdoor" name="sys4_outdoor" onblur="lookupPrice(4)"></td>
+                                <td><input type="text" id="sys4_indoor" name="sys4_indoor" onblur="lookupPrice(4)"></td>
+                                <td><input type="number" id="sys4_cost" name="sys4_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 5</td>
+                                <td><input type="number" id="sys5_tonnage" name="sys5_tonnage" step="0.5"></td>
+                                <td><input type="text" id="sys5_seer" name="sys5_seer"></td>
+                                <td><input type="text" id="sys5_zone" name="sys5_zone"></td>
+                                <td><input type="text" id="sys5_outdoor" name="sys5_outdoor" onblur="lookupPrice(5)"></td>
+                                <td><input type="text" id="sys5_indoor" name="sys5_indoor" onblur="lookupPrice(5)"></td>
+                                <td><input type="number" id="sys5_cost" name="sys5_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 6</td>
+                                <td><input type="number" id="sys6_tonnage" name="sys6_tonnage" step="0.5"></td>
+                                <td><input type="text" id="sys6_seer" name="sys6_seer"></td>
+                                <td><input type="text" id="sys6_zone" name="sys6_zone"></td>
+                                <td><input type="text" id="sys6_outdoor" name="sys6_outdoor" onblur="lookupPrice(6)"></td>
+                                <td><input type="text" id="sys6_indoor" name="sys6_indoor" onblur="lookupPrice(6)"></td>
+                                <td><input type="number" id="sys6_cost" name="sys6_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- MATERIALS -->
+                <div class="section blue">
+                    <h2>📦 KEY MATERIALS</h2>
+                    <div class="form-row four-col">
+                        <div class="form-group">
+                            <label>Supply Outlets:</label>
+                            <input type="number" id="supply_outlets" name="supply_outlets" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Returns:</label>
+                            <input type="number" id="returns" name="returns" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Jumper Ducts:</label>
+                            <input type="number" id="jumper_returns" name="jumper_returns" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Panasonic Fans:</label>
+                            <input type="number" id="panasonic_fans" name="panasonic_fans" value="0" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="form-row four-col">
+                        <div class="form-group">
+                            <label>Range Vent:</label>
+                            <input type="number" id="range_vent" name="range_vent" value="1" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Dryer Vent:</label>
+                            <input type="number" id="dryer_vent" name="dryer_vent" value="1" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Ecobee Tstats:</label>
+                            <input type="number" id="ecobee_pro" name="ecobee_pro" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Fresh Air (FIN180):</label>
+                            <input type="number" id="fresh_air" name="fresh_air" value="0" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="form-row four-col">
+                        <div class="form-group">
+                            <label>Makeup Air (MD8TU):</label>
+                            <input type="number" id="makeup_air" name="makeup_air" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>2-Story Adder:</label>
+                            <input type="number" id="two_story_adder" name="two_story_adder" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Misc Material $:</label>
+                            <input type="number" id="misc_material" name="misc_material" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Material Cost/Unit $:</label>
+                            <input type="number" id="material_unit_cost" name="material_unit_cost" value="45" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LABOR & PRICING -->
+                <div class="section orange">
+                    <h2>💰 LABOR & PRICING</h2>
+                    <div class="form-row four-col">
+                        <div class="form-group">
+                            <label>Labor Hours:</label>
+                            <input type="number" id="labor_hours" name="labor_hours" value="0" step="0.5" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Labor Rate $/hr:</label>
+                            <input type="number" id="labor_rate" name="labor_rate" value="85" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Travel Cost $:</label>
+                            <input type="number" id="travel_cost" name="travel_cost" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Misc Labor $:</label>
+                            <input type="number" id="misc_labor" name="misc_labor" value="0" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="form-row four-col">
+                        <div class="form-group">
+                            <label>Margin % (e.g. 35):</label>
+                            <input type="number" id="margin_percent" name="margin_percent" value="35" min="0" max="100" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Misc Cost $:</label>
+                            <input type="number" id="misc_cost" name="misc_cost" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Discount $:</label>
+                            <input type="number" id="discount" name="discount" value="0" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group"></div>
+                    </div>
+                </div>
+                
+                <!-- ADD-ON OPTIONS for Proposal -->
+                <div class="section">
+                    <h2 class="collapsible-header" onclick="toggleCollapse(this)">⚡ ADD-ON OPTIONS (For Proposal PDF)</h2>
+                    <div class="collapsible-content">
+                        <div class="form-row four-col">
+                            <div class="form-group">
+                                <label><input type="checkbox" id="addon_zoning"> 2-Zone Damper</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Price: $<input type="number" id="addon_zoning_price" value="1865" style="width:80px;"></label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" id="addon_dehumid"> Dehumidifier</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Price: $<input type="number" id="addon_dehumid_price" value="4263" style="width:80px;"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TOTALS -->
+                <div class="totals-section">
+                    <div class="totals-grid">
+                        <div class="total-item">
+                            <label>Equipment Total</label>
+                            <div class="value" id="equip_total_display">$0</div>
+                        </div>
+                        <div class="total-item">
+                            <label>Materials Total</label>
+                            <div class="value" id="material_total_display">$0</div>
+                        </div>
+                        <div class="total-item">
+                            <label>Labor Total</label>
+                            <div class="value" id="labor_total_display">$0</div>
+                        </div>
+                        <div class="total-item grand">
+                            <label>BID TOTAL</label>
+                            <div class="value" id="grand_total_display">$0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-row">
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">🗑️ Clear</button>
+                    <button type="button" class="btn btn-primary" onclick="calculateTotals()">🧮 Calculate</button>
+                    <button type="button" class="btn btn-success" onclick="generatePDF()">📄 Generate Proposal PDF</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Lennox Pricing Database (extracted from your Excel files)
+        const lennoxPricing = {
+            // Condensers/Heat Pumps - System Prices
+            "EL19KPV-024": { price: 3245, system_price: 12143, tonnage: 2.0 },
+            "EL19KPV-036": { price: 3567, system_price: 14256, tonnage: 3.0 },
+            "EL19KPV-048": { price: 3890, system_price: 16450, tonnage: 4.0 },
+            "EL19KPV-060": { price: 4215, system_price: 18650, tonnage: 5.0 },
+            "EL21KLV-024": { price: 3650, system_price: 15134, tonnage: 2.0 },
+            "EL22KCV-024": { price: 3456, system_price: 15321, tonnage: 2.0 },
+            "EL22KCV-036": { price: 3890, system_price: 17450, tonnage: 3.0 },
+            "EL18KCV-024": { price: 2890, system_price: 13100, tonnage: 2.0 },
+            "EL18KCV-036": { price: 3245, system_price: 15200, tonnage: 3.0 },
+            "ML14KC-024": { price: 1496, tonnage: 2.0 },
+            "ML14KC-036": { price: 1823, tonnage: 3.0 },
+            "ML14KC-048": { price: 2156, tonnage: 4.0 },
+            "ML14KC-060": { price: 2534, tonnage: 5.0 },
+            "ML14KP1-024": { price: 1650, system_price: 11195, tonnage: 2.0 },
+            "ML14KP1-030": { price: 1890, system_price: 11195, tonnage: 2.5 },
+            "ML17XC-024": { price: 2345, tonnage: 2.0 },
+            "ML17XC-036": { price: 2678, tonnage: 3.0 },
+            
+            // Air Handlers
+            "CBK48MVT-024": { price: 1245 },
+            "CBK48MVT-030": { price: 1356 },
+            "CBK48MVT-036": { price: 1467 },
+            "CBK45UHVT-036": { price: 1534 },
+            "CBK45UHVT-048": { price: 1689 },
+            "CBK45UHVT-060": { price: 1845 },
+            
+            // Gas Furnaces
+            "ML297UH-045": { price: 1245 },
+            "ML297UH-070": { price: 1456 },
+            "ML297UH-090": { price: 1623 },
+            "ML296UH-045": { price: 1156 },
+            "ML296UH-070": { price: 1345 },
+            "ML196UH-045": { price: 956 },
+            "ML196UH-070": { price: 1123 },
+            "ML180UH-045": { price: 756 },
+            "ML180UH-070": { price: 923 },
+        };
+        
+        // Set today's date
+        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        
+        function toggleCollapse(header) {
+            header.classList.toggle('collapsed');
+            header.nextElementSibling.classList.toggle('hidden');
+        }
+        
+        function lookupPrice(sysNum) {
+            const outdoorInput = document.getElementById(`sys${sysNum}_outdoor`);
+            const indoorInput = document.getElementById(`sys${sysNum}_indoor`);
+            const costInput = document.getElementById(`sys${sysNum}_cost`);
+            const tonnageInput = document.getElementById(`sys${sysNum}_tonnage`);
+            
+            const outdoorModel = outdoorInput.value.toUpperCase().trim();
+            const indoorModel = indoorInput.value.toUpperCase().trim();
+            
+            let totalPrice = 0;
+            let found = false;
+            
+            // Look up outdoor unit
+            if (outdoorModel) {
+                // Try exact match first, then partial
+                let match = lennoxPricing[outdoorModel];
+                if (!match) {
+                    // Try partial match
+                    for (let key in lennoxPricing) {
+                        if (outdoorModel.includes(key.split('-')[0]) || key.includes(outdoorModel.split('-')[0])) {
+                            match = lennoxPricing[key];
+                            break;
+                        }
+                    }
+                }
+                
+                if (match) {
+                    found = true;
+                    outdoorInput.classList.add('price-found');
+                    
+                    // Use system price if available
+                    if (match.system_price) {
+                        totalPrice = match.system_price;
+                    } else {
+                        totalPrice += match.price || 0;
+                    }
+                    
+                    // Auto-fill tonnage
+                    if (match.tonnage && !tonnageInput.value) {
+                        tonnageInput.value = match.tonnage;
+                    }
+                } else {
+                    outdoorInput.classList.remove('price-found');
+                }
+            }
+            
+            // If no system price, add indoor unit price
+            if (!lennoxPricing[outdoorModel]?.system_price && indoorModel) {
+                let match = lennoxPricing[indoorModel];
+                if (!match) {
+                    for (let key in lennoxPricing) {
+                        if (indoorModel.includes(key.split('-')[0])) {
+                            match = lennoxPricing[key];
+                            break;
+                        }
+                    }
+                }
+                
+                if (match) {
+                    found = true;
+                    indoorInput.classList.add('price-found');
+                    totalPrice += match.price || 0;
+                } else {
+                    indoorInput.classList.remove('price-found');
+                }
+            }
+            
+            if (found && totalPrice > 0) {
+                costInput.value = totalPrice;
+                costInput.classList.add('price-found');
+            }
+            
+            calculateTotals();
+        }
+        
+        function importJSON() {
+            const jsonText = document.getElementById('jsonInput').value.trim();
+            const successMsg = document.getElementById('importSuccess');
+            const errorMsg = document.getElementById('importError');
+            
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            try {
+                const data = JSON.parse(jsonText);
+                
+                // Fill job info
+                if (data.builder) { document.getElementById('builder').value = data.builder; highlightField('builder'); }
+                if (data.project || data.project_name || data.job_name) { 
+                    document.getElementById('job_name').value = data.project || data.project_name || data.job_name; 
+                    highlightField('job_name'); 
+                }
+                if (data.address || data.job_address) { 
+                    document.getElementById('job_address').value = data.address || data.job_address; 
+                    highlightField('job_address'); 
+                }
+                if (data.city) { document.getElementById('city').value = data.city; highlightField('city'); }
+                if (data.sqft) { document.getElementById('sqft').value = data.sqft; highlightField('sqft'); }
+                
+                // Fill systems from options array
+                if (data.options && data.options.length > 0) {
+                    document.getElementById('num_systems').value = data.options.length;
+                    
+                    data.options.forEach((opt, idx) => {
+                        const sysNum = idx + 1;
+                        if (sysNum <= 6) {
+                            if (opt.condenser || opt.heat_pump || opt.outdoor) {
+                                document.getElementById(`sys${sysNum}_outdoor`).value = opt.condenser || opt.heat_pump || opt.outdoor;
+                                highlightField(`sys${sysNum}_outdoor`);
+                            }
+                            if (opt.airhandler || opt.air_handler || opt.furnace || opt.indoor) {
+                                document.getElementById(`sys${sysNum}_indoor`).value = opt.airhandler || opt.air_handler || opt.furnace || opt.indoor;
+                                highlightField(`sys${sysNum}_indoor`);
+                            }
+                            if (opt.price) {
+                                document.getElementById(`sys${sysNum}_cost`).value = opt.price;
+                                highlightField(`sys${sysNum}_cost`);
+                            }
+                            if (opt.zones && opt.zones[0]) {
+                                document.getElementById(`sys${sysNum}_zone`).value = opt.zones[0].name || '';
+                                document.getElementById(`sys${sysNum}_tonnage`).value = opt.zones[0].tonnage || '';
+                                document.getElementById(`sys${sysNum}_seer`).value = opt.zones[0].seer || '';
+                                highlightField(`sys${sysNum}_zone`);
+                            }
+                            
+                            // Try price lookup
+                            lookupPrice(sysNum);
+                        }
+                    });
+                }
+                
+                // Fill material counts if provided
+                if (data.supply_boots) { document.getElementById('supply_outlets').value = data.supply_boots; }
+                if (data.bathrooms) { document.getElementById('panasonic_fans').value = data.bathrooms; }
+                if (data.jumper_rooms) { document.getElementById('jumper_returns').value = data.jumper_rooms; }
+                
+                calculateTotals();
+                successMsg.style.display = 'block';
+                document.getElementById('builder').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+            } catch (e) {
+                console.error('JSON parse error:', e);
+                errorMsg.textContent = '❌ Invalid JSON: ' + e.message;
+                errorMsg.style.display = 'block';
+            }
+        }
+        
+        function highlightField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.add('highlighted');
+                setTimeout(() => field.classList.remove('highlighted'), 2000);
+            }
+        }
+        
+        function calculateTotals() {
+            // Equipment total
+            let equipTotal = 0;
+            for (let i = 1; i <= 6; i++) {
+                equipTotal += parseFloat(document.getElementById(`sys${i}_cost`).value) || 0;
+            }
+            
+            // Materials total
+            const unitCost = parseFloat(document.getElementById('material_unit_cost').value) || 45;
+            const supplies = (parseFloat(document.getElementById('supply_outlets').value) || 0) * unitCost;
+            const returns = (parseFloat(document.getElementById('returns').value) || 0) * 85;
+            const jumpers = (parseFloat(document.getElementById('jumper_returns').value) || 0) * 65;
+            const fans = (parseFloat(document.getElementById('panasonic_fans').value) || 0) * 75;
+            const range = (parseFloat(document.getElementById('range_vent').value) || 0) * 125;
+            const dryer = (parseFloat(document.getElementById('dryer_vent').value) || 0) * 95;
+            const ecobee = (parseFloat(document.getElementById('ecobee_pro').value) || 0) * 250;
+            const freshAir = (parseFloat(document.getElementById('fresh_air').value) || 0) * 350;
+            const makeupAir = (parseFloat(document.getElementById('makeup_air').value) || 0) * 450;
+            const twoStory = parseFloat(document.getElementById('two_story_adder').value) || 0;
+            const miscMat = parseFloat(document.getElementById('misc_material').value) || 0;
+            
+            const materialTotal = supplies + returns + jumpers + fans + range + dryer + ecobee + freshAir + makeupAir + twoStory + miscMat;
+            
+            // Labor total
+            const laborHours = parseFloat(document.getElementById('labor_hours').value) || 0;
+            const laborRate = parseFloat(document.getElementById('labor_rate').value) || 85;
+            const travel = parseFloat(document.getElementById('travel_cost').value) || 0;
+            const miscLabor = parseFloat(document.getElementById('misc_labor').value) || 0;
+            
+            const laborTotal = (laborHours * laborRate) + travel + miscLabor;
+            
+            // Grand total with margin
+            const subtotal = equipTotal + materialTotal + laborTotal;
+            const miscCost = parseFloat(document.getElementById('misc_cost').value) || 0;
+            const marginPercent = parseFloat(document.getElementById('margin_percent').value) || 35;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            
+            const grandTotal = ((subtotal + miscCost) / (1 - marginPercent/100)) - discount;
+            
+            // Update display
+            document.getElementById('equip_total_display').textContent = '$' + equipTotal.toLocaleString();
+            document.getElementById('material_total_display').textContent = '$' + Math.round(materialTotal).toLocaleString();
+            document.getElementById('labor_total_display').textContent = '$' + Math.round(laborTotal).toLocaleString();
+            document.getElementById('grand_total_display').textContent = '$' + Math.round(grandTotal).toLocaleString();
+        }
+        
+        function clearForm() {
+            if (confirm('Clear all form data?')) {
+                document.getElementById('bidForm').reset();
+                document.getElementById('date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('sales').value = 'Ryan Sekula';
+                calculateTotals();
+            }
+        }
+        
+        function generatePDF() {
+            calculateTotals();
+            
+            // Collect all form data
+            const form = document.getElementById('bidForm');
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+            
+            // Add calculated totals
+            data.equip_total = document.getElementById('equip_total_display').textContent;
+            data.material_total = document.getElementById('material_total_display').textContent;
+            data.labor_total = document.getElementById('labor_total_display').textContent;
+            data.grand_total = document.getElementById('grand_total_display').textContent;
+            
+            // Submit
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = '/generate-bid-proposal-pdf';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'data';
+            input.value = JSON.stringify(data);
+            hiddenForm.appendChild(input);
+            
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+        }
+        
+        // Initial calculation
+        calculateTotals();
+    </script>
+</body>
+</html>
