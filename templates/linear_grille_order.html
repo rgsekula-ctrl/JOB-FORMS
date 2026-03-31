@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Grille Order - Woods Comfort Systems</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .form-content {
+            padding: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h2 {
+            color: #1a5276;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2980b9;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="date"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2980b9;
+        }
+        
+        /* Grille Tables */
+        .grille-section {
+            margin-bottom: 25px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .grille-header {
+            background: #1a5276;
+            color: white;
+            padding: 12px 15px;
+        }
+        
+        .grille-header h3 {
+            font-size: 1em;
+            margin-bottom: 3px;
+        }
+        
+        .grille-header .options-note {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+        
+        .grille-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .grille-table th {
+            background: #ecf0f1;
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 0.85em;
+            font-weight: 600;
+            border-bottom: 2px solid #bdc3c7;
+        }
+        
+        .grille-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 0.9em;
+        }
+        
+        .grille-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .grille-table input[type="text"] {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .grille-table input[type="text"]:focus {
+            outline: none;
+            border-color: #2980b9;
+            background: #fff;
+        }
+        
+        .qty-input {
+            width: 60px !important;
+            text-align: center;
+        }
+        
+        .model-col {
+            color: #666;
+            font-family: monospace;
+        }
+        
+        .size-col {
+            font-weight: 500;
+        }
+        
+        .cfm-col {
+            color: #27ae60;
+            font-weight: 500;
+        }
+        
+        .options-col {
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        /* Notes Section */
+        .notes-section {
+            margin-top: 20px;
+        }
+        
+        .notes-section textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .submit-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(26, 82, 118, 0.4);
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 82, 118, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .grille-table {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>Linear Grille Order Form</h1>
+            <p>Nailor Linear Slot & Bar Grilles | Woods Comfort Systems</p>
+        </div>
+        
+        <div class="form-content">
+            <form action="/generate-linear-grille-pdf" method="POST">
+                
+                <!-- Job Information -->
+                <div class="form-section">
+                    <h2>Job Information</h2>
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label for="builder">Builder:</label>
+                            <input type="text" id="builder" name="builder">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="job_number">Job Number:</label>
+                            <input type="text" id="job_number" name="job_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="date_request">Date of Request:</label>
+                            <input type="date" id="date_request" name="date_request" value="{{ today }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date_needed">Date Needed By:</label>
+                            <input type="date" id="date_needed" name="date_needed">
+                        </div>
+                        <div class="form-group">
+                            <label for="requested_by">Requested by:</label>
+                            <input type="text" id="requested_by" name="requested_by">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- MUD IN Supply Grilles - Model 5010 -->
+                <div class="grille-section">
+                    <div class="grille-header">
+                        <h3>MUD IN Linear Slot Supply Grille (Model 5010)</h3>
+                        <div class="options-note">Options: KA-Tape & Spackle Frame, MI-Mill/White, MM-Mitered Corners</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">QTY</th>
+                                <th style="width: 80px;">Model</th>
+                                <th style="width: 60px;">Slots</th>
+                                <th>Rough Opening (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                                <th>Options & Codes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="supply_qty_0" class="qty-input"></td>
+                                <td class="model-col">5010</td>
+                                <td>1</td>
+                                <td class="size-col">12" × 2⅛"</td>
+                                <td class="cfm-col">50 CFM</td>
+                                <td><input type="text" name="supply_opts_0" value="KA - MI - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_1" class="qty-input"></td>
+                                <td class="model-col">5010</td>
+                                <td>1</td>
+                                <td class="size-col">18" × 2⅛"</td>
+                                <td class="cfm-col">75 CFM</td>
+                                <td><input type="text" name="supply_opts_1" value="KA - MI - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_2" class="qty-input"></td>
+                                <td class="model-col">5010</td>
+                                <td>1</td>
+                                <td class="size-col">24" × 2⅛"</td>
+                                <td class="cfm-col">100 CFM</td>
+                                <td><input type="text" name="supply_opts_2" value="KA - MI - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_3" class="qty-input"></td>
+                                <td class="model-col">5010</td>
+                                <td>1</td>
+                                <td class="size-col">36" × 2⅛"</td>
+                                <td class="cfm-col">150 CFM</td>
+                                <td><input type="text" name="supply_opts_3" value="KA - MI - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_4" class="qty-input"></td>
+                                <td class="model-col">5010</td>
+                                <td>1</td>
+                                <td class="size-col">48" × 2⅛"</td>
+                                <td class="cfm-col">200 CFM</td>
+                                <td><input type="text" name="supply_opts_4" value="KA - MI - MM"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- MUD IN Return Grilles - Model 49-240 -->
+                <div class="grille-section">
+                    <div class="grille-header">
+                        <h3>MUD IN Linear Bar Return Grille (Model 49-240)</h3>
+                        <div class="options-note">Options: K-Tape & Spackle Frame, AW-Appliance White, A-Aluminum OBD, MM-Mitered</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">QTY</th>
+                                <th style="width: 80px;">Model</th>
+                                <th>Rough Opening (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                                <th>Options & Codes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="return_qty_0" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">10" × 10"</td>
+                                <td class="cfm-col">250 CFM</td>
+                                <td><input type="text" name="return_opts_0" value="K - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="return_qty_1" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">12" × 12"</td>
+                                <td class="cfm-col">360 CFM</td>
+                                <td><input type="text" name="return_opts_1" value="K - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="return_qty_2" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">24" × 12"</td>
+                                <td class="cfm-col">720 CFM</td>
+                                <td><input type="text" name="return_opts_2" value="K - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="return_qty_3" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">30" × 16"</td>
+                                <td class="cfm-col">1,200 CFM</td>
+                                <td><input type="text" name="return_opts_3" value="K - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="return_qty_4" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">30" × 18"</td>
+                                <td class="cfm-col">1,350 CFM</td>
+                                <td><input type="text" name="return_opts_4" value="K - AW - A - MM"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Surface Mount Grilles - Model 49-240 -->
+                <div class="grille-section">
+                    <div class="grille-header">
+                        <h3>Surface Mount Linear Bar Grille (Model 49-240)</h3>
+                        <div class="options-note">Options: A-Frame Type A, AW-Appliance White, A-Aluminum OBD, MM-Mitered</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">QTY</th>
+                                <th style="width: 80px;">Model</th>
+                                <th>Size (L×W)</th>
+                                <th>Options & Codes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="surface_qty_0" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">8" × 4"</td>
+                                <td><input type="text" name="surface_opts_0" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_1" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">10" × 8"</td>
+                                <td><input type="text" name="surface_opts_1" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_2" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">10" × 10"</td>
+                                <td><input type="text" name="surface_opts_2" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_3" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">12" × 12"</td>
+                                <td><input type="text" name="surface_opts_3" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_4" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">12" × 24"</td>
+                                <td><input type="text" name="surface_opts_4" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_5" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">14" × 8"</td>
+                                <td><input type="text" name="surface_opts_5" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_6" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">14" × 24"</td>
+                                <td><input type="text" name="surface_opts_6" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_7" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">14" × 30"</td>
+                                <td><input type="text" name="surface_opts_7" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_8" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">16" × 30"</td>
+                                <td><input type="text" name="surface_opts_8" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_9" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">18" × 30"</td>
+                                <td><input type="text" name="surface_opts_9" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_10" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">20" × 20"</td>
+                                <td><input type="text" name="surface_opts_10" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_11" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">20" × 25"</td>
+                                <td><input type="text" name="surface_opts_11" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_12" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">24" × 12"</td>
+                                <td><input type="text" name="surface_opts_12" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_13" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">24" × 14"</td>
+                                <td><input type="text" name="surface_opts_13" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_14" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">25" × 16"</td>
+                                <td><input type="text" name="surface_opts_14" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_15" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">30" × 12"</td>
+                                <td><input type="text" name="surface_opts_15" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_16" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">30" × 14"</td>
+                                <td><input type="text" name="surface_opts_16" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_17" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">30" × 16"</td>
+                                <td><input type="text" name="surface_opts_17" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_18" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">30" × 18"</td>
+                                <td><input type="text" name="surface_opts_18" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_19" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">36" × 20"</td>
+                                <td><input type="text" name="surface_opts_19" value="A - AW - A - MM"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_20" class="qty-input"></td>
+                                <td class="model-col">49-240</td>
+                                <td class="size-col">36" × 24"</td>
+                                <td><input type="text" name="surface_opts_20" value="A - AW - A - MM"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Notes -->
+                <div class="form-section notes-section">
+                    <h2>Notes</h2>
+                    <textarea name="notes" placeholder="Additional notes, special instructions, or custom sizes..."></textarea>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit">📄 Generate PDF</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

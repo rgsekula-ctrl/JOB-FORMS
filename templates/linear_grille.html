@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Grille Order - Woods Comfort Systems</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #1e293b;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 24px rgba(0,0,0,.08);
+        }
+
+        .header {
+            background: #1e3a5f;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 14px 14px 0 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+            color: #cbd5e1;
+        }
+        .header .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255,255,255,.85);
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color .15s;
+        }
+        .back-link:hover { color: #ffffff; }
+
+        .form-content {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .form-section h2 {
+            color: #ffffff;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #1e3a5f;
+            margin: -20px -20px 18px -20px;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-row.single { grid-template-columns: 1fr; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            font-size: 0.88em;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95em;
+            background: #ffffff;
+            color: #1e293b;
+            transition: border-color .15s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .checkbox-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #374151;
+        }
+        .checkbox-group input[type="checkbox"],
+        .checkbox-group input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+        .checkbox-group.bid label { color: #16a34a; }
+        .checkbox-group.quote label { color: #fbbf24; }
+
+        textarea { resize: vertical; min-height: 60px; }
+
+        .submit-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(59,130,246,.3);
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59,130,246,.5);
+        }
+        .btn-submit:active { transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .checkbox-group { flex-direction: column; align-items: flex-start; }
+        }
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>Nailor Linear Slot & Bar Grille Order Form</h1>
+            <p>Woods Comfort Systems | TACLA16934C</p>
+        </div>
+        
+        <div class="form-content">
+            <form action="/generate-linear-grille-pdf" method="POST">
+                
+                <!-- Order Type -->
+                <div class="checkbox-row">
+                    <div class="checkbox-group bid">
+                        <input type="checkbox" id="is_bid" name="is_bid">
+                        <label for="is_bid">✓ BID - Proceed with Order</label>
+                    </div>
+                    <div class="checkbox-group quote">
+                        <input type="checkbox" id="is_quote" name="is_quote">
+                        <label for="is_quote">📋 QUOTE ONLY - Get Pricing</label>
+                    </div>
+                </div>
+                
+                <!-- Job Information -->
+                <div class="form-section">
+                    <h2>Job Information</h2>
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label for="builder">Builder:</label>
+                            <input type="text" id="builder" name="builder">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="job_number">Job Number:</label>
+                            <input type="text" id="job_number" name="job_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="date_request">Date of Request:</label>
+                            <input type="date" id="date_request" name="date_request" value="{{ today }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date_needed">Date Needed By:</label>
+                            <input type="date" id="date_needed" name="date_needed">
+                        </div>
+                        <div class="form-group">
+                            <label for="requested_by">Requested by:</label>
+                            <input type="text" id="requested_by" name="requested_by">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- MUD-IN Supply Grilles (Model 5010) -->
+                <div class="grille-section">
+                    <div class="grille-header">
+                        <h3>MUD-IN Linear Slot Supply Grille (Model 5010)</h3>
+                        <div class="options-note">Options: KA-Tape & Spackle Frame, MI-Mill/White, MM-Mitered Corners</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">QTY</th>
+                                <th style="width: 90px;">Model</th>
+                                <th style="width: 60px;">Slots</th>
+                                <th>Rough Opening (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="supply_qty_0"></td>
+                                <td class="model-cell">5010</td>
+                                <td>1</td>
+                                <td class="size-cell">12" × 2⅛"</td>
+                                <td class="cfm-cell">50 CFM</td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_1"></td>
+                                <td class="model-cell">5010</td>
+                                <td>1</td>
+                                <td class="size-cell">18" × 2⅛"</td>
+                                <td class="cfm-cell">75 CFM</td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_2"></td>
+                                <td class="model-cell">5010</td>
+                                <td>1</td>
+                                <td class="size-cell">24" × 2⅛"</td>
+                                <td class="cfm-cell">100 CFM</td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_3"></td>
+                                <td class="model-cell">5010</td>
+                                <td>1</td>
+                                <td class="size-cell">36" × 2⅛"</td>
+                                <td class="cfm-cell">150 CFM</td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_qty_4"></td>
+                                <td class="model-cell">5010</td>
+                                <td>1</td>
+                                <td class="size-cell">48" × 2⅛"</td>
+                                <td class="cfm-cell">200 CFM</td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr><td colspan="6" style="background:#e8f4e8; font-weight:bold; font-size:0.85em; color:#1a5276; padding:4px 8px;">CUSTOM SIZES (write-in)</td></tr>
+                            <tr>
+                                <td><input type="text" name="supply_custom_qty_0"></td>
+                                <td class="model-cell">5010</td>
+                                <td><input type="text" name="supply_custom_slots_0" placeholder="#" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="supply_custom_size_0" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="supply_custom_cfm_0" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_custom_qty_1"></td>
+                                <td class="model-cell">5010</td>
+                                <td><input type="text" name="supply_custom_slots_1" placeholder="#" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="supply_custom_size_1" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="supply_custom_cfm_1" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="supply_custom_qty_2"></td>
+                                <td class="model-cell">5010</td>
+                                <td><input type="text" name="supply_custom_slots_2" placeholder="#" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="supply_custom_size_2" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="supply_custom_cfm_2" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td class="options-cell">KA - MI - MM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- MUD-IN Linear Bar Grilles (Model 49-240) -->
+                <div class="grille-section">
+                    <div class="grille-header">
+                        <h3>MUD-IN Linear Bar Grille (Model 49-240)</h3>
+                        <div class="options-note">Options: K-Tape & Spackle Frame, AW-Appliance White, A-Aluminum OBD, MM-Mitered</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">QTY</th>
+                                <th style="width: 90px;">Model</th>
+                                <th>Rough Opening (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                                <th style="width: 80px;">QTY</th>
+                                <th style="width: 90px;">Model</th>
+                                <th>Rough Opening (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_0"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">8" × 4"</td>
+                                <td class="cfm-cell">80 CFM</td>
+                                <td><input type="text" name="mudin_qty_15"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">18" × 30"</td>
+                                <td class="cfm-cell">1,350 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_1"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">10" × 8"</td>
+                                <td class="cfm-cell">200 CFM</td>
+                                <td><input type="text" name="mudin_qty_16"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">20" × 20"</td>
+                                <td class="cfm-cell">1,000 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_2"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">10" × 10"</td>
+                                <td class="cfm-cell">250 CFM</td>
+                                <td><input type="text" name="mudin_qty_17"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">20" × 25"</td>
+                                <td class="cfm-cell">1,250 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_3"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">12" × 4"</td>
+                                <td class="cfm-cell">120 CFM</td>
+                                <td><input type="text" name="mudin_qty_18"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">24" × 4"</td>
+                                <td class="cfm-cell">240 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_4"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">12" × 6"</td>
+                                <td class="cfm-cell">180 CFM</td>
+                                <td><input type="text" name="mudin_qty_19"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">24" × 12"</td>
+                                <td class="cfm-cell">720 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_5"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">12" × 12"</td>
+                                <td class="cfm-cell">360 CFM</td>
+                                <td><input type="text" name="mudin_qty_20"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">24" × 14"</td>
+                                <td class="cfm-cell">840 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_6"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">12" × 24"</td>
+                                <td class="cfm-cell">720 CFM</td>
+                                <td><input type="text" name="mudin_qty_21"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">25" × 16"</td>
+                                <td class="cfm-cell">1,000 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_7"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 6"</td>
+                                <td class="cfm-cell">210 CFM</td>
+                                <td><input type="text" name="mudin_qty_22"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 12"</td>
+                                <td class="cfm-cell">900 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_8"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 8"</td>
+                                <td class="cfm-cell">280 CFM</td>
+                                <td><input type="text" name="mudin_qty_23"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 14"</td>
+                                <td class="cfm-cell">1,050 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_9"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 24"</td>
+                                <td class="cfm-cell">840 CFM</td>
+                                <td><input type="text" name="mudin_qty_24"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 16"</td>
+                                <td class="cfm-cell">1,200 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_10"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 30"</td>
+                                <td class="cfm-cell">1,050 CFM</td>
+                                <td><input type="text" name="mudin_qty_25"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 18"</td>
+                                <td class="cfm-cell">1,350 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_11"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">16" × 4"</td>
+                                <td class="cfm-cell">160 CFM</td>
+                                <td><input type="text" name="mudin_qty_26"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">36" × 4"</td>
+                                <td class="cfm-cell">360 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_12"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">16" × 6"</td>
+                                <td class="cfm-cell">240 CFM</td>
+                                <td><input type="text" name="mudin_qty_27"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">36" × 20"</td>
+                                <td class="cfm-cell">1,800 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_13"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">16" × 30"</td>
+                                <td class="cfm-cell">1,200 CFM</td>
+                                <td><input type="text" name="mudin_qty_28"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">36" × 24"</td>
+                                <td class="cfm-cell">2,160 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_qty_14"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">18" × 4"</td>
+                                <td class="cfm-cell">180 CFM</td>
+                                <td><input type="text" name="mudin_qty_29"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">48" × 4"</td>
+                                <td class="cfm-cell">480 CFM</td>
+                            </tr>
+                            <tr><td colspan="8" style="background:#e8f4e8; font-weight:bold; font-size:0.85em; color:#1a5276; padding:4px 8px;">CUSTOM SIZES (write-in)</td></tr>
+                            <tr>
+                                <td><input type="text" name="mudin_custom_qty_0"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="mudin_custom_size_0" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_cfm_0" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_qty_1"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="mudin_custom_size_1" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_cfm_1" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_custom_qty_2"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="mudin_custom_size_2" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_cfm_2" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_qty_3"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="mudin_custom_size_3" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_cfm_3" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="mudin_custom_qty_4"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="mudin_custom_size_4" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_cfm_4" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_qty_5"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="mudin_custom_size_5" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="mudin_custom_cfm_5" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Surface Mount Grilles (Model 49-240) -->
+                <div class="grille-section">
+                    <div class="grille-header">
+                        <h3>Surface Mount Linear Bar Grille (Model 49-240)</h3>
+                        <div class="options-note">Options: A-Frame Type A, AW-Appliance White, A-Aluminum OBD, MM-Mitered</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">QTY</th>
+                                <th style="width: 90px;">Model</th>
+                                <th>Size (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                                <th style="width: 80px;">QTY</th>
+                                <th style="width: 90px;">Model</th>
+                                <th>Size (L×W)</th>
+                                <th style="width: 100px;">Est. CFM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="surface_qty_0"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">8" × 4"</td>
+                                <td class="cfm-cell">80 CFM</td>
+                                <td><input type="text" name="surface_qty_11"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">20" × 25"</td>
+                                <td class="cfm-cell">1,250 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_1"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">10" × 8"</td>
+                                <td class="cfm-cell">200 CFM</td>
+                                <td><input type="text" name="surface_qty_12"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">24" × 12"</td>
+                                <td class="cfm-cell">720 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_2"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">10" × 10"</td>
+                                <td class="cfm-cell">250 CFM</td>
+                                <td><input type="text" name="surface_qty_13"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">24" × 14"</td>
+                                <td class="cfm-cell">840 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_3"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">12" × 12"</td>
+                                <td class="cfm-cell">360 CFM</td>
+                                <td><input type="text" name="surface_qty_14"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">25" × 16"</td>
+                                <td class="cfm-cell">1,000 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_4"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">12" × 24"</td>
+                                <td class="cfm-cell">720 CFM</td>
+                                <td><input type="text" name="surface_qty_15"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 12"</td>
+                                <td class="cfm-cell">900 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_5"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 8"</td>
+                                <td class="cfm-cell">280 CFM</td>
+                                <td><input type="text" name="surface_qty_16"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 14"</td>
+                                <td class="cfm-cell">1,050 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_6"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 24"</td>
+                                <td class="cfm-cell">840 CFM</td>
+                                <td><input type="text" name="surface_qty_17"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 16"</td>
+                                <td class="cfm-cell">1,200 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_7"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">14" × 30"</td>
+                                <td class="cfm-cell">1,050 CFM</td>
+                                <td><input type="text" name="surface_qty_18"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">30" × 18"</td>
+                                <td class="cfm-cell">1,350 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_8"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">16" × 30"</td>
+                                <td class="cfm-cell">1,200 CFM</td>
+                                <td><input type="text" name="surface_qty_19"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">36" × 20"</td>
+                                <td class="cfm-cell">1,800 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_9"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">18" × 30"</td>
+                                <td class="cfm-cell">1,350 CFM</td>
+                                <td><input type="text" name="surface_qty_20"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">36" × 24"</td>
+                                <td class="cfm-cell">2,160 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_qty_10"></td>
+                                <td class="model-cell">49-240</td>
+                                <td class="size-cell">20" × 20"</td>
+                                <td class="cfm-cell">1,000 CFM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr><td colspan="8" style="background:#e8f4e8; font-weight:bold; font-size:0.85em; color:#1a5276; padding:4px 8px;">CUSTOM SIZES (write-in)</td></tr>
+                            <tr>
+                                <td><input type="text" name="surface_custom_qty_0"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="surface_custom_size_0" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_cfm_0" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_qty_1"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="surface_custom_size_1" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_cfm_1" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_custom_qty_2"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="surface_custom_size_2" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_cfm_2" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_qty_3"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="surface_custom_size_3" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_cfm_3" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="surface_custom_qty_4"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="surface_custom_size_4" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_cfm_4" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_qty_5"></td>
+                                <td class="model-cell">49-240</td>
+                                <td><input type="text" name="surface_custom_size_5" placeholder="__&quot; x __&quot;" style="width:100%;text-align:center;"></td>
+                                <td><input type="text" name="surface_custom_cfm_5" placeholder="CFM" style="width:100%;text-align:center;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PAGE 2: TEXAS BUILDMART -->
+                <div class="form-section" style="margin-top: 40px; padding-top: 30px; border-top: 3px solid #c0392b;">
+                    <h2 style="font-size: 1.5em; color: #922B21; border-bottom: 3px solid #c0392b;">Texas Buildmart Surface Mount Grille Order Form</h2>
+                    <p style="color: #666; margin-top: 5px;">Woods Comfort Systems | TACLA16934C</p>
+                </div>
+                
+                <!-- Texas Buildmart 2-Slot Linear Diffusers -->
+                <div class="grille-section">
+                    <div class="grille-header" style="background: linear-gradient(135deg, #922B21 0%, #c0392b 100%);">
+                        <h3>2-Slot Linear Slot Diffuser - Surface Mount (White)</h3>
+                        <div class="options-note">Double Slot - 3/4" Slot Width</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">QTY</th>
+                                <th>Size</th>
+                                <th>CFM</th>
+                                <th>Neck Size</th>
+                                <th>Face Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="tbm_slot_qty_0"></td>
+                                <td class="size-cell">12"</td>
+                                <td class="cfm-cell">145 CFM</td>
+                                <td>11 7/8" × 3 1/8"</td>
+                                <td>13 1/4" × 4 5/8"</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_slot_qty_1"></td>
+                                <td class="size-cell">18"</td>
+                                <td class="cfm-cell">174 CFM</td>
+                                <td>17 3/4" × 3 1/8"</td>
+                                <td>19 1/8" × 4 5/8"</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_slot_qty_2"></td>
+                                <td class="size-cell">24"</td>
+                                <td class="cfm-cell">199 CFM</td>
+                                <td>23 5/8" × 3 1/8"</td>
+                                <td>25 1/16" × 4 5/8"</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_slot_qty_3"></td>
+                                <td class="size-cell">36"</td>
+                                <td class="cfm-cell">302 CFM</td>
+                                <td>35 3/8" × 3 1/8"</td>
+                                <td>36 3/4" × 4 1/2"</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_slot_qty_4"></td>
+                                <td class="size-cell">48"</td>
+                                <td class="cfm-cell">401 CFM</td>
+                                <td>47 1/4" × 3 1/8"</td>
+                                <td>48 3/4" × 4 1/2"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Texas Buildmart Standard Air Vent Covers -->
+                <div class="grille-section">
+                    <div class="grille-header" style="background: linear-gradient(135deg, #922B21 0%, #c0392b 100%);">
+                        <h3>Modern AC Vent Cover - Surface Mount (White)</h3>
+                        <div class="options-note">Decorative Air Vent - All Standard Sizes</div>
+                    </div>
+                    <table class="grille-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">QTY</th>
+                                <th>Size</th>
+                                <th>CFM</th>
+                                <th style="width: 80px;">QTY</th>
+                                <th>Size</th>
+                                <th>CFM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_0"></td>
+                                <td class="size-cell">6" × 6"</td>
+                                <td class="cfm-cell">148 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_11"></td>
+                                <td class="size-cell">24" × 14"</td>
+                                <td class="cfm-cell">445 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_1"></td>
+                                <td class="size-cell">8" × 4"</td>
+                                <td class="cfm-cell">138 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_12"></td>
+                                <td class="size-cell">24" × 16"</td>
+                                <td class="cfm-cell">508 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_2"></td>
+                                <td class="size-cell">8" × 8"</td>
+                                <td class="cfm-cell">218 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_13"></td>
+                                <td class="size-cell">24" × 20"</td>
+                                <td class="cfm-cell">636 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_3"></td>
+                                <td class="size-cell">10" × 8"</td>
+                                <td class="cfm-cell">228 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_14"></td>
+                                <td class="size-cell">24" × 24"</td>
+                                <td class="cfm-cell">763 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_4"></td>
+                                <td class="size-cell">10" × 10"</td>
+                                <td class="cfm-cell">243 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_15"></td>
+                                <td class="size-cell">30" × 12"</td>
+                                <td class="cfm-cell">411 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_5"></td>
+                                <td class="size-cell">12" × 6"</td>
+                                <td class="cfm-cell">233 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_16"></td>
+                                <td class="size-cell">30" × 16"</td>
+                                <td class="cfm-cell">593 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_6"></td>
+                                <td class="size-cell">12" × 12"</td>
+                                <td class="cfm-cell">293 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_17"></td>
+                                <td class="size-cell">30" × 18"</td>
+                                <td class="cfm-cell">678 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_7"></td>
+                                <td class="size-cell">14" × 6"</td>
+                                <td class="cfm-cell">254 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_18"></td>
+                                <td class="size-cell">30" × 20"</td>
+                                <td class="cfm-cell">753 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_8"></td>
+                                <td class="size-cell">14" × 8"</td>
+                                <td class="cfm-cell">255 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_19"></td>
+                                <td class="size-cell">30" × 24"</td>
+                                <td class="cfm-cell">908 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_9"></td>
+                                <td class="size-cell">14" × 14"</td>
+                                <td class="cfm-cell">328 CFM</td>
+                                <td><input type="text" name="tbm_vent_qty_20"></td>
+                                <td class="size-cell">36" × 10"</td>
+                                <td class="cfm-cell">449 CFM</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="tbm_vent_qty_10"></td>
+                                <td class="size-cell">24" × 12"</td>
+                                <td class="cfm-cell">366 CFM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Notes -->
+                <div class="form-section">
+                    <h2>Notes</h2>
+                    <textarea name="notes" class="notes-box" placeholder="Special instructions, custom sizes, or additional notes..."></textarea>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit">📄 Generate PDF</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

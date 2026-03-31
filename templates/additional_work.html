@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Work / Change Order - Woods Comfort Systems</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #1e293b;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 24px rgba(0,0,0,.08);
+        }
+
+        .header {
+            background: #1e3a5f;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 14px 14px 0 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+            color: #cbd5e1;
+        }
+        .header .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255,255,255,.85);
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color .15s;
+        }
+        .back-link:hover { color: #ffffff; }
+
+        .form-content {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .form-section h2 {
+            color: #ffffff;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #1e3a5f;
+            margin: -20px -20px 18px -20px;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-row.single { grid-template-columns: 1fr; }
+        .form-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+        .form-row.four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        .form-row.two-col { grid-template-columns: 1fr 1fr; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            font-size: 0.88em;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95em;
+            background: #ffffff;
+            color: #1e293b;
+            transition: border-color .15s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .checkbox-item:hover { background: #f0f4ff; }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+        .checkbox-item label {
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #374151;
+        }
+        .checkbox-group input[type="checkbox"],
+        .checkbox-group input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+        .checkbox-group.bid label { color: #16a34a; }
+        .checkbox-group.quote label { color: #fbbf24; }
+
+        .material-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .material-table th, .material-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            text-align: left;
+        }
+        .material-table th {
+            background: #1e3a5f;
+            color: #ffffff;
+            font-size: 0.85em;
+        }
+        .material-table td { background: #ffffff; }
+        .material-table input {
+            width: 100%;
+            border: none;
+            padding: 5px;
+            font-size: 0.9em;
+            background: transparent;
+            color: #1e293b;
+        }
+        .material-table input:focus { outline: none; background: rgba(59,130,246,.05); }
+        .material-table input::placeholder { color: #9ca3af; }
+
+        .hours-table { width: 100%; border-collapse: collapse; }
+        .hours-table td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .hours-table .phase-label { font-weight: 500; color: #64748b; width: 100px; }
+        .hours-table input {
+            width: 70px;
+            padding: 5px;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            text-align: center;
+            background: #ffffff;
+            color: #1e293b;
+        }
+        .hours-table input::placeholder { color: #9ca3af; }
+
+        .two-col-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .note-text { font-size: 0.8em; color: #64748b; font-style: italic; margin-top: 3px; }
+
+        textarea { resize: vertical; min-height: 60px; }
+
+        .submit-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(59,130,246,.3);
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59,130,246,.5);
+        }
+        .btn-submit:active { transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .form-row.three-col { grid-template-columns: 1fr; }
+            .form-row.four-col { grid-template-columns: 1fr; }
+            .two-col-section { grid-template-columns: 1fr; }
+            .checkbox-group { flex-direction: column; align-items: flex-start; }
+        }
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>ADDITIONAL WORK / CHANGE ORDER</h1>
+            <p>Woods Comfort Systems | TACLA16934C</p>
+        </div>
+        
+        <div class="form-content">
+            <form action="/generate-additional-work-pdf" method="POST">
+                
+                <!-- JOB INFORMATION -->
+                <div class="form-section">
+                    <h2>JOB INFORMATION</h2>
+                    <div class="form-row">
+                        <div class="form-group"><label for="builder_name">Builder Name:</label><input type="text" id="builder_name" name="builder_name"></div>
+                        <div class="form-group"><label for="job_number">Job Number:</label><input type="text" id="job_number" name="job_number"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="job_location">Job Location:</label><input type="text" id="job_location" name="job_location"></div>
+                        <div class="form-group"><label for="installer">Installer:</label><input type="text" id="installer" name="installer"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="date_requested">Date Requested:</label><input type="date" id="date_requested" name="date_requested"></div>
+                        <div class="form-group"><label for="sub_emp_pay">Sub/Emp Pay:</label><input type="text" id="sub_emp_pay" name="sub_emp_pay"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="builder_rep">Builder Rep:</label><input type="text" id="builder_rep" name="builder_rep"></div>
+                        <div class="form-group"><label for="pay_approval">Pay Approval:</label><input type="text" id="pay_approval" name="pay_approval"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="phone">Phone #:</label><input type="tel" id="phone" name="phone"></div>
+                        <div class="form-group"><label for="plan_number">Plan #:</label><input type="text" id="plan_number" name="plan_number"></div>
+                    </div>
+                </div>
+                
+                <div class="two-col-section">
+                    <!-- MATERIAL NEEDED -->
+                    <div class="form-section">
+                        <h2>MATERIAL NEEDED</h2>
+                        <table class="material-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 70%;">Item Description</th>
+                                    <th style="width: 15%;">Qty Ordered</th>
+                                    <th style="width: 15%;">Qty Pulled</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><input type="text" name="mat_need_desc_0"></td><td><input type="text" name="mat_need_ord_0"></td><td><input type="text" name="mat_need_pull_0"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_1"></td><td><input type="text" name="mat_need_ord_1"></td><td><input type="text" name="mat_need_pull_1"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_2"></td><td><input type="text" name="mat_need_ord_2"></td><td><input type="text" name="mat_need_pull_2"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_3"></td><td><input type="text" name="mat_need_ord_3"></td><td><input type="text" name="mat_need_pull_3"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_4"></td><td><input type="text" name="mat_need_ord_4"></td><td><input type="text" name="mat_need_pull_4"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_5"></td><td><input type="text" name="mat_need_ord_5"></td><td><input type="text" name="mat_need_pull_5"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_6"></td><td><input type="text" name="mat_need_ord_6"></td><td><input type="text" name="mat_need_pull_6"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_7"></td><td><input type="text" name="mat_need_ord_7"></td><td><input type="text" name="mat_need_pull_7"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_8"></td><td><input type="text" name="mat_need_ord_8"></td><td><input type="text" name="mat_need_pull_8"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_9"></td><td><input type="text" name="mat_need_ord_9"></td><td><input type="text" name="mat_need_pull_9"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_10"></td><td><input type="text" name="mat_need_ord_10"></td><td><input type="text" name="mat_need_pull_10"></td></tr>
+                                <tr><td><input type="text" name="mat_need_desc_11"></td><td><input type="text" name="mat_need_ord_11"></td><td><input type="text" name="mat_need_pull_11"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- CHANGE ORDER -->
+                    <div class="form-section">
+                        <h2>CHANGE ORDER</h2>
+                        <div class="checkbox-group" style="margin-bottom: 15px;">
+                            <div class="checkbox-item"><input type="checkbox" id="charge" name="charge"><label for="charge">Charge</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="no_charge" name="no_charge"><label for="no_charge">N/C (No Charge)</label></div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="amount_to_bill">Amount to Bill:</label>
+                            <input type="text" id="amount_to_bill" name="amount_to_bill" placeholder="Enter N/C if No Charge">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="po_number">Purchase Order Number:</label>
+                            <input type="text" id="po_number" name="po_number" placeholder="Enter NA if no PO Required">
+                        </div>
+                        
+                        <label style="font-weight: 600; color: #2c3e50; font-size: 0.85em; display: block; margin-bottom: 10px;">Hours by Phase:</label>
+                        <table class="hours-table">
+                            <tr><td class="phase-label">Rough-25:</td><td><input type="text" name="hours_rough" placeholder="Hrs"></td><td><input type="text" name="amount_rough" placeholder="$"></td></tr>
+                            <tr><td class="phase-label">Finish-45:</td><td><input type="text" name="hours_finish" placeholder="Hrs"></td><td><input type="text" name="amount_finish" placeholder="$"></td></tr>
+                            <tr><td class="phase-label">Sub-41:</td><td><input type="text" name="hours_sub" placeholder="Hrs"></td><td><input type="text" name="amount_sub" placeholder="$"></td></tr>
+                            <tr><td class="phase-label">Material-21:</td><td><input type="text" name="hours_material" placeholder="Hrs"></td><td><input type="text" name="amount_material" placeholder="$"></td></tr>
+                            <tr><td class="phase-label">War Res-00:</td><td><input type="text" name="hours_warres" placeholder="Hrs"></td><td><input type="text" name="amount_warres" placeholder="$"></td></tr>
+                            <tr><td class="phase-label">Permit-00:</td><td><input type="text" name="hours_permit" placeholder="Hrs"></td><td><input type="text" name="amount_permit" placeholder="$"></td></tr>
+                        </table>
+                        
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label for="reason_no_charge">Reason if no charge to customer:</label>
+                            <input type="text" id="reason_no_charge" name="reason_no_charge">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WORK NEEDED -->
+                <div class="form-section">
+                    <h2>WORK NEEDED</h2>
+                    <div class="form-group">
+                        <textarea id="work_needed" name="work_needed" rows="5" placeholder="Describe the work needed..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- WAS WORK COMPLETED -->
+                <div class="form-section">
+                    <h2>WAS WORK COMPLETED</h2>
+                    <div class="form-group">
+                        <textarea id="work_completed" name="work_completed" rows="4" placeholder="Describe work completed..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- SIGNATURES -->
+                <div class="form-section">
+                    <h2>SIGNATURES</h2>
+                    <div class="form-row three-col">
+                        <div class="form-group"><label for="sub_sign">Sub Contractor or Employee:</label><input type="text" id="sub_sign" name="sub_sign"></div>
+                        <div class="form-group"><label for="supervisor_sign">Field Supervisor:</label><input type="text" id="supervisor_sign" name="supervisor_sign"></div>
+                        <div class="form-group"><label for="sign_date">Date:</label><input type="date" id="sign_date" name="sign_date"></div>
+                    </div>
+                    <p class="note-text" style="text-align: center; margin-top: 10px;">Piece pay includes loading and unloading of material and drive to and from job.</p>
+                </div>
+                
+                <div class="submit-section"><button type="submit" class="btn-submit">📄 Generate PDF</button></div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

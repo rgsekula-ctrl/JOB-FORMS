@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBid - Woods Comfort Systems</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #1e293b;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 24px rgba(0,0,0,.08);
+        }
+
+        .header {
+            background: #1e3a5f;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 14px 14px 0 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+            color: #cbd5e1;
+        }
+        .header .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255,255,255,.85);
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color .15s;
+        }
+        .back-link:hover { color: #ffffff; }
+
+        .form-content {
+            padding: 30px;
+        }
+
+        .section {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #f8fafc;
+        }
+        .section h2 {
+            color: #1e3a5f;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3b82f6;
+        }
+        .section.purple { border-color: rgba(139,92,246,.3); background: #f5f3ff; }
+        .section.purple h2 { color: #7c3aed; border-color: #8b5cf6; }
+        .section.green { border-color: rgba(34,197,94,.3); background: #f0fdf4; }
+        .section.green h2 { color: #16a34a; border-color: #22c55e; }
+        .section.blue { border-color: rgba(59,130,246,.3); background: #eff6ff; }
+        .section.blue h2 { color: #2563eb; border-color: #3b82f6; }
+        .section.orange { border-color: rgba(251,146,60,.3); background: #fff7ed; }
+        .section.orange h2 { color: #ea580c; border-color: #f97316; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-row.single { grid-template-columns: 1fr; }
+        .form-row.four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        .form-row.two-col { grid-template-columns: 1fr 1fr; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            font-size: 0.88em;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95em;
+            background: #ffffff;
+            color: #1e293b;
+            transition: border-color .15s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .system-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .system-table th {
+            background: #1e3a5f;
+            color: #ffffff;
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .system-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+        .system-table td strong { color: #374151; }
+        .system-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.9em;
+            background: #ffffff;
+            color: #1e293b;
+        }
+        .system-table input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .system-table input::placeholder { color: #9ca3af; }
+        .system-label { font-weight: bold; color: #374151; font-size: 0.9em; }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.85em;
+            border: 1px solid #e2e8f0;
+        }
+        .detail-table th {
+            background: #1e3a5f;
+            color: #ffffff;
+            padding: 8px 6px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .detail-table td {
+            padding: 4px 6px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #374151;
+        }
+        .detail-table input[type="number"] {
+            width: 75px;
+            padding: 5px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.9em;
+            text-align: right;
+            background: #ffffff;
+            color: #1e293b;
+        }
+        .detail-table input[type="number"]:focus { outline: none; border-color: #3b82f6; }
+        .detail-table .item-name { font-weight: 500; color: #1e293b; }
+        .detail-table .auto-tag { font-size: 0.75em; color: #64748b; font-style: italic; }
+        .detail-table .row-total { font-weight: 600; text-align: right; padding-right: 10px; min-width: 70px; color: #1e293b; }
+        .detail-table .subtotal-row td { background: #eff6ff; font-weight: 700; border-top: 2px solid #3b82f6; color: #1d4ed8; }
+
+        .info-note {
+            background: rgba(59,130,246,.05);
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #1d4ed8;
+        }
+
+        .ai-import-box {
+            background: rgba(139,92,246,.08);
+            border: 2px dashed rgba(139,92,246,.4);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .ai-import-box textarea {
+            width: 100%;
+            height: 100px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.85em;
+            background: #f9fafb;
+            color: #1e293b;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        .ai-import-box textarea:focus { outline: none; border-color: #8b5cf6; }
+        .ai-import-box .instructions { font-size: 0.9em; color: #64748b; margin-bottom: 10px; }
+        .ai-import-box .instructions strong { color: #7c3aed; }
+        .import-btn {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all .2s;
+        }
+        .import-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4); }
+        .import-success { color: #16a34a; font-weight: bold; margin-top: 10px; display: none; }
+        .import-error { color: #f87171; font-weight: bold; margin-top: 10px; display: none; }
+
+        .totals-section {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .totals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .total-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,255,255,.05);
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .total-item label { display: block; font-size: 0.8em; opacity: 0.7; margin-bottom: 5px; color: #64748b; }
+        .total-item .value { font-size: 1.3em; font-weight: bold; color: white; }
+        .total-item.grand { background: rgba(59,130,246,.15); grid-column: span 1; border-color: rgba(59,130,246,.3); }
+        .total-item.grand .value { font-size: 1.8em; color: #16a34a; }
+
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #374151;
+        }
+        .collapsible-header:after { content: '▼'; font-size: 0.8em; color: #64748b; }
+        .collapsible-header.collapsed:after { content: '►'; }
+        .collapsible-content { display: block; }
+        .collapsible-content.hidden { display: none; }
+
+        .price-found { background-color: rgba(34,197,94,.15) !important; border-color: #22c55e !important; }
+        .price-lookup-info { font-size: 0.75em; color: #16a34a; margin-top: 2px; }
+
+        @keyframes highlight { 0% { background-color: rgba(34,197,94,.2); } 100% { background-color: transparent; } }
+        .highlighted { animation: highlight 2s ease-out; }
+
+        textarea { resize: vertical; min-height: 60px; }
+
+        .submit-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(59,130,246,.3);
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59,130,246,.5);
+        }
+        .btn-submit:active { transform: translateY(0); }
+
+        .btn {
+            padding: 12px 35px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0 8px;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(59,130,246,.4); }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn-secondary:hover { background: #64748b; }
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(34,197,94,.4); }
+
+        .button-row { display: flex; gap: 15px; justify-content: center; margin-top: 25px; flex-wrap: wrap; }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .form-row.four-col { grid-template-columns: 1fr; }
+        }
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Forms</a>
+            <h1>🚀 QuickBid - Smart HVAC Estimator</h1>
+            <p>AI-powered extraction + Full bid details + Lennox pricing database + PDF proposal generation</p>
+        </div>
+        
+        <div class="form-content">
+            <form id="bidForm">
+                
+                <!-- AI IMPORT SECTION -->
+                <div class="section purple">
+                    <h2>🤖 AI Import - Paste from Claude</h2>
+                    <div class="ai-import-box">
+                        <div class="instructions">
+                            <strong>Step 1:</strong> Upload your Manual J PDF to Claude chat &nbsp;|&nbsp;
+                            <strong>Step 2:</strong> Ask "extract this for QuickBid" &nbsp;|&nbsp;
+                            <strong>Step 3:</strong> Paste JSON below
+                        </div>
+                        <textarea id="jsonInput" placeholder='Paste JSON here, e.g.: {"builder": "Garner Homes", "project": "Henderson Res.", "options": [...]}'></textarea>
+                        <button type="button" class="import-btn" onclick="importJSON()">📥 Import & Auto-Fill</button>
+                        <div class="import-success" id="importSuccess">✅ Data imported! Fields highlighted in green.</div>
+                        <div class="import-error" id="importError">❌ Invalid JSON format</div>
+                    </div>
+                </div>
+                
+                <!-- JOB INFORMATION -->
+                <div class="section">
+                    <h2>📋 JOB & PROPOSAL INFORMATION</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Builder:</label>
+                            <input type="text" id="builder" name="builder" placeholder="e.g. Garner Homes">
+                        </div>
+                        <div class="form-group">
+                            <label>Job/Project Name:</label>
+                            <input type="text" id="job_name" name="job_name" placeholder="e.g. Henderson Res.">
+                        </div>
+                        <div class="form-group">
+                            <label>Date:</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Job Address:</label>
+                            <input type="text" id="job_address" name="job_address" placeholder="e.g. 132 Acker">
+                        </div>
+                        <div class="form-group">
+                            <label>City:</label>
+                            <input type="text" id="city" name="city" placeholder="e.g. Wimberley">
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP:</label>
+                            <input type="text" id="zip" name="zip" placeholder="78676">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Sales:</label>
+                            <input type="text" id="sales" name="sales" value="Ryan Sekula">
+                        </div>
+                        <div class="form-group">
+                            <label>Design:</label>
+                            <input type="text" id="design" name="design">
+                        </div>
+                        <div class="form-group">
+                            <label>Insulation:</label>
+                            <select id="insulation_type" name="insulation_type">
+                                <option value="Spray Foam Insulation @ Roof Deck">Spray Foam @ Roof Deck</option>
+                                <option value="Blown Insulation">Blown Insulation</option>
+                                <option value="Batt Insulation">Batt Insulation</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Number of Systems:</label>
+                            <input type="number" id="num_systems" name="num_systems" min="1" max="6" value="1" onchange="calculateTotals()">
+                        </div>
+                        <div class="form-group">
+                            <label>Brand:</label>
+                            <select id="brand" name="brand">
+                                <option value="Lennox">Lennox</option>
+                                <option value="Carrier">Carrier</option>
+                                <option value="Trane">Trane</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Refrigerant:</label>
+                            <select id="refrigerant" name="refrigerant">
+                                <option value="R454B">R454B (A2L)</option>
+                                <option value="R410A">R410A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Heat Type:</label>
+                            <select id="heat_type" name="heat_type" onchange="calculateTotals()">
+                                <option value="Heat Pump & Electric">Heat Pump & Electric</option>
+                                <option value="AC & Gas">AC & Gas</option>
+                                <option value="AC & LP Gas">AC & LP Gas</option>
+                                <option value="AC & Electric">AC & Electric</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>AFUE (Gas):</label>
+                            <select id="afue" name="afue" onchange="calculateTotals()">
+                                <option value="">N/A</option>
+                                <option value="0.80">80%</option>
+                                <option value="0.95">95%</option>
+                                <option value="0.96">96%</option>
+                                <option value="0.97">97%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Square Footage:</label>
+                            <input type="number" id="sqft" name="sqft" placeholder="2500">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SYSTEM CONFIGURATION -->
+                <div class="section green">
+                    <h2>🔧 SYSTEM CONFIGURATION</h2>
+                    <div class="info-note">
+                        💡 <strong>Lennox Price Lookup:</strong> Enter a model number and tab out - price will auto-fill from database (303 items). Green = found in database.
+                    </div>
+                    
+                    <table class="system-table">
+                        <thead>
+                            <tr>
+                                <th style="width:70px;">System</th>
+                                <th style="width:70px;">Tons</th>
+                                <th style="width:110px;">SEER2</th>
+                                <th>Zone/Area</th>
+                                <th>Outdoor Model</th>
+                                <th>Indoor Model</th>
+                                <th style="width:100px;">Equip Cost $</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="system-label">Sys 1</td>
+                                <td><input type="number" id="sys1_tonnage" name="sys1_tonnage" step="0.5" placeholder="2.0" onchange="calculateTotals()"></td>
+                                <td><input type="text" id="sys1_seer" name="sys1_seer" placeholder="18.0"></td>
+                                <td><input type="text" id="sys1_zone" name="sys1_zone" placeholder="Main Floor"></td>
+                                <td><input type="text" id="sys1_outdoor" name="sys1_outdoor" placeholder="EL19KPV-024" onblur="lookupPrice(1)"></td>
+                                <td><input type="text" id="sys1_indoor" name="sys1_indoor" placeholder="CBK48MVT-030" onblur="lookupPrice(1)"></td>
+                                <td><input type="number" id="sys1_cost" name="sys1_cost" placeholder="12000" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 2</td>
+                                <td><input type="number" id="sys2_tonnage" name="sys2_tonnage" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="text" id="sys2_seer" name="sys2_seer"></td>
+                                <td><input type="text" id="sys2_zone" name="sys2_zone"></td>
+                                <td><input type="text" id="sys2_outdoor" name="sys2_outdoor" onblur="lookupPrice(2)"></td>
+                                <td><input type="text" id="sys2_indoor" name="sys2_indoor" onblur="lookupPrice(2)"></td>
+                                <td><input type="number" id="sys2_cost" name="sys2_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 3</td>
+                                <td><input type="number" id="sys3_tonnage" name="sys3_tonnage" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="text" id="sys3_seer" name="sys3_seer"></td>
+                                <td><input type="text" id="sys3_zone" name="sys3_zone"></td>
+                                <td><input type="text" id="sys3_outdoor" name="sys3_outdoor" onblur="lookupPrice(3)"></td>
+                                <td><input type="text" id="sys3_indoor" name="sys3_indoor" onblur="lookupPrice(3)"></td>
+                                <td><input type="number" id="sys3_cost" name="sys3_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 4</td>
+                                <td><input type="number" id="sys4_tonnage" name="sys4_tonnage" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="text" id="sys4_seer" name="sys4_seer"></td>
+                                <td><input type="text" id="sys4_zone" name="sys4_zone"></td>
+                                <td><input type="text" id="sys4_outdoor" name="sys4_outdoor" onblur="lookupPrice(4)"></td>
+                                <td><input type="text" id="sys4_indoor" name="sys4_indoor" onblur="lookupPrice(4)"></td>
+                                <td><input type="number" id="sys4_cost" name="sys4_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 5</td>
+                                <td><input type="number" id="sys5_tonnage" name="sys5_tonnage" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="text" id="sys5_seer" name="sys5_seer"></td>
+                                <td><input type="text" id="sys5_zone" name="sys5_zone"></td>
+                                <td><input type="text" id="sys5_outdoor" name="sys5_outdoor" onblur="lookupPrice(5)"></td>
+                                <td><input type="text" id="sys5_indoor" name="sys5_indoor" onblur="lookupPrice(5)"></td>
+                                <td><input type="number" id="sys5_cost" name="sys5_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td class="system-label">Sys 6</td>
+                                <td><input type="number" id="sys6_tonnage" name="sys6_tonnage" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="text" id="sys6_seer" name="sys6_seer"></td>
+                                <td><input type="text" id="sys6_zone" name="sys6_zone"></td>
+                                <td><input type="text" id="sys6_outdoor" name="sys6_outdoor" onblur="lookupPrice(6)"></td>
+                                <td><input type="text" id="sys6_indoor" name="sys6_indoor" onblur="lookupPrice(6)"></td>
+                                <td><input type="number" id="sys6_cost" name="sys6_cost" onchange="calculateTotals()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- MATERIALS -->
+                <div class="section blue">
+                    <h2>📦 MATERIALS</h2>
+                    <div class="info-note">
+                        💡 <strong>Auto-qty</strong> items calculate from your system count/settings. All quantities and unit prices are editable.
+                    </div>
+                    <table class="detail-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40%;">Item</th>
+                                <th style="width:15%;">Qty</th>
+                                <th style="width:20%;">Unit $</th>
+                                <th style="width:25%; text-align:right;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="item-name">Concentric Kit <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_concentric_qty" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_concentric_price" value="72.24" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_concentric_total">$0</td></tr>
+                            <tr><td class="item-name">LP Kit <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_lp_qty" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_lp_price" value="50.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_lp_total">$0</td></tr>
+                            <tr><td class="item-name">Drain Line <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_drain_qty" value="1" step="0.1" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_drain_price" value="77.76" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_drain_total">$0</td></tr>
+                            <tr><td class="item-name">Tape/Mastic/Strap/Blocks <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_tape_qty" value="1" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_tape_price" value="75.93" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_tape_total">$0</td></tr>
+                            <tr><td class="item-name">Flue/Gas Line <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_flue_qty" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_flue_price" value="101.08" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_flue_total">$0</td></tr>
+                            <tr><td class="item-name">Low Voltage <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_lowvolt_qty" value="1" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_lowvolt_price" value="56.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_lowvolt_total">$0</td></tr>
+                            <tr><td class="item-name">Plenums & Triangles (sheets) <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_plenums_qty" value="2" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_plenums_price" value="37.34" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_plenums_total">$0</td></tr>
+                            <tr><td class="item-name">Extra Duct Board (R6 sheets)</td>
+                                <td><input type="number" id="extra_duct_board" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_ductboard_price" value="37.34" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_ductboard_total">$0</td></tr>
+                            <tr><td class="item-name">Media Filter (Honeywell F100) <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="mat_media_qty" value="1" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_media_price" value="90.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_media_total">$0</td></tr>
+                            <tr><td colspan="4" style="background:#e8f0fe; font-weight:600; color:#007bff; padding:6px;">— Outlets / Ducts / Vents —</td></tr>
+                            <tr><td class="item-name">2-Story Adder</td>
+                                <td><input type="number" id="two_story_adder" name="two_story_adder" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_twostory_price" value="100.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_twostory_total">$0</td></tr>
+                            <tr><td class="item-name">Supply Outlets</td>
+                                <td><input type="number" id="supply_outlets" name="supply_outlets" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_supply_price" value="90.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_supply_total">$0</td></tr>
+                            <tr><td class="item-name">Returns</td>
+                                <td><input type="number" id="returns" name="returns" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_returns_price" value="150.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_returns_total">$0</td></tr>
+                            <tr><td class="item-name">Jumper Duct Returns</td>
+                                <td><input type="number" id="jumper_returns" name="jumper_returns" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_jumper_price" value="90.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_jumper_total">$0</td></tr>
+                            <tr><td class="item-name">Vent Fans (Panasonic/Broan)</td>
+                                <td><input type="number" id="panasonic_fans" name="panasonic_fans" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_fans_price" value="122.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_fans_total">$0</td></tr>
+                            <tr><td class="item-name">Range Vent</td>
+                                <td><input type="number" id="range_vent" name="range_vent" value="1" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_range_price" value="70.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_range_total">$0</td></tr>
+                            <tr><td class="item-name">Dryer Vent</td>
+                                <td><input type="number" id="dryer_vent" name="dryer_vent" value="1" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_dryer_price" value="70.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_dryer_total">$0</td></tr>
+                            <tr><td colspan="4" style="background:#e8f0fe; font-weight:600; color:#007bff; padding:6px;">— Equipment Add-ons —</td></tr>
+                            <tr><td class="item-name">Thermostat (Ecobee/Honeywell)</td>
+                                <td><input type="number" id="ecobee_pro" name="ecobee_pro" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_ecobee_price" value="220.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_ecobee_total">$0</td></tr>
+                            <tr><td class="item-name">Fresh Air (FIN180)</td>
+                                <td><input type="number" id="fresh_air" name="fresh_air" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_freshair_price" value="425.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_freshair_total">$0</td></tr>
+                            <tr><td class="item-name">Makeup Air (MD8TU)</td>
+                                <td><input type="number" id="makeup_air" name="makeup_air" value="0" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="mat_makeup_price" value="265.00" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_makeup_total">$0</td></tr>
+                            <tr><td class="item-name">Miscellaneous</td>
+                                <td></td>
+                                <td><input type="number" id="misc_material" name="misc_material" value="0" step="0.01" onchange="calculateTotals()"></td>
+                                <td class="row-total" id="mat_misc_total">$0</td></tr>
+                            <tr class="subtotal-row">
+                                <td colspan="3"><strong>MATERIAL SUBTOTAL</strong> (incl. linesets)</td>
+                                <td class="row-total" id="mat_subtotal">$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- LABOR & PRICING -->
+                <div class="section orange">
+                    <h2>💰 LABOR & PRICING</h2>
+                    <div class="info-note">
+                        💡 <strong>Auto-calculated</strong> items compute from your systems. All rates, hours, and costs are editable.
+                    </div>
+                    <table class="detail-table">
+                        <thead>
+                            <tr>
+                                <th style="width:35%;">Item</th>
+                                <th style="width:15%;">Rate $/hr</th>
+                                <th style="width:15%;">Hrs/System</th>
+                                <th style="width:10%;">Qty</th>
+                                <th style="width:25%; text-align:right;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="item-name">Shop <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="labor_shop_rate" value="22" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="labor_shop_hrs" value="2" step="0.5" onchange="calculateTotals()"></td>
+                                <td id="labor_shop_qty">1</td>
+                                <td class="row-total" id="labor_shop_total">$0</td></tr>
+                            <tr><td class="item-name">Rough-In <span class="auto-tag">(per system — see note)</span></td>
+                                <td colspan="2" style="font-size:0.8em; color:#666;">$700 single / $900 2-story / $1000 4-ton / $1100 5-ton</td>
+                                <td id="labor_rough_qty">0</td>
+                                <td class="row-total" id="labor_rough_total">$0</td></tr>
+                            <tr><td class="item-name">Check/Test/Fire <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="labor_check_rate" value="30" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="labor_check_hrs" value="5" step="0.5" onchange="calculateTotals()"></td>
+                                <td id="labor_check_qty">1</td>
+                                <td class="row-total" id="labor_check_total">$0</td></tr>
+                            <tr><td class="item-name">Air Balance/Testing <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="labor_balance_rate" value="30" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="labor_balance_hrs" value="3" step="0.5" onchange="calculateTotals()"></td>
+                                <td id="labor_balance_qty">1</td>
+                                <td class="row-total" id="labor_balance_total">$0</td></tr>
+                            <tr><td class="item-name">Trim <span class="auto-tag">(auto)</span></td>
+                                <td><input type="number" id="labor_trim_rate" value="25" step="0.5" onchange="calculateTotals()"></td>
+                                <td><input type="number" id="labor_trim_hrs" value="5" step="0.5" onchange="calculateTotals()"></td>
+                                <td id="labor_trim_qty">1</td>
+                                <td class="row-total" id="labor_trim_total">$0</td></tr>
+                            <tr><td colspan="5" style="background:#fff3e0; font-weight:600; color:#fd7e14; padding:6px;">— Manual Adds —</td></tr>
+                            <tr><td class="item-name">Travel</td>
+                                <td colspan="3"></td>
+                                <td><input type="number" id="travel_cost" name="travel_cost" value="0" style="width:100%;" onchange="calculateTotals()"></td></tr>
+                            <tr><td class="item-name">Permit Pickup</td>
+                                <td colspan="3"></td>
+                                <td><input type="number" id="permit_pickup" name="permit_pickup" value="0" style="width:100%;" onchange="calculateTotals()"></td></tr>
+                            <tr><td class="item-name">Miscellaneous Labor</td>
+                                <td colspan="3"></td>
+                                <td><input type="number" id="misc_labor" name="misc_labor" value="0" style="width:100%;" onchange="calculateTotals()"></td></tr>
+                            <tr class="subtotal-row">
+                                <td colspan="4"><strong>LABOR SUBTOTAL</strong></td>
+                                <td class="row-total" id="labor_subtotal">$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top:15px;">
+                        <table class="detail-table">
+                            <thead>
+                                <tr><th colspan="2" style="background:#e65100;">MARGIN & BURDENS</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="item-name">Material Burden</td>
+                                    <td style="width:30%;"><input type="number" id="material_burden_pct" value="2" step="0.5" min="0" max="100" onchange="calculateTotals()" style="width:60px;"> % &nbsp; = &nbsp; <span id="burden_mat_val">$0</span></td></tr>
+                                <tr><td class="item-name">Labor Burden</td>
+                                    <td><input type="number" id="labor_burden_pct" value="30" step="0.5" min="0" max="100" onchange="calculateTotals()" style="width:60px;"> % &nbsp; = &nbsp; <span id="burden_labor_val">$0</span></td></tr>
+                                <tr><td class="item-name">Punch</td>
+                                    <td><input type="number" id="punch_pct" value="2" step="0.5" min="0" max="100" onchange="calculateTotals()" style="width:60px;"> % of job cost &nbsp; = &nbsp; <span id="burden_punch_val">$0</span></td></tr>
+                                <tr><td class="item-name">Margin</td>
+                                    <td><input type="number" id="margin_percent" name="margin_percent" value="35" step="1" min="0" max="100" onchange="calculateTotals()" style="width:60px;"> % &nbsp; = &nbsp; <span id="margin_dollar_val">$0</span></td></tr>
+                                <tr><td class="item-name">Warranty</td>
+                                    <td><input type="number" id="warranty_pct" value="2" step="0.5" min="0" max="100" onchange="calculateTotals()" style="width:60px;"> % &nbsp; = &nbsp; <span id="warranty_val">$0</span></td></tr>
+                                <tr><td class="item-name">Misc Cost</td>
+                                    <td><input type="number" id="misc_cost" name="misc_cost" value="0" onchange="calculateTotals()" style="width:90px;"></td></tr>
+                                <tr><td class="item-name">Discount</td>
+                                    <td><input type="number" id="discount" name="discount" value="0" onchange="calculateTotals()" style="width:90px;"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- ADD-ON OPTIONS for Proposal -->
+                <div class="section">
+                    <h2 class="collapsible-header" onclick="toggleCollapse(this)">⚡ ADD-ON OPTIONS (For Proposal PDF)</h2>
+                    <div class="collapsible-content">
+                        <div class="form-row four-col">
+                            <div class="form-group">
+                                <label><input type="checkbox" id="addon_zoning"> 2-Zone Damper</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Price: $<input type="number" id="addon_zoning_price" value="1865" style="width:80px;"></label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" id="addon_dehumid"> Dehumidifier</label>
+                            </div>
+                            <div class="form-group">
+                                <label>Price: $<input type="number" id="addon_dehumid_price" value="4263" style="width:80px;"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TOTALS -->
+                <div class="totals-section">
+                    <div class="totals-grid">
+                        <div class="total-item">
+                            <label>Equipment</label>
+                            <div class="value" id="equip_total_display">$0</div>
+                        </div>
+                        <div class="total-item">
+                            <label>Materials + Linesets</label>
+                            <div class="value" id="material_total_display">$0</div>
+                        </div>
+                        <div class="total-item">
+                            <label>Labor</label>
+                            <div class="value" id="labor_total_display">$0</div>
+                        </div>
+                        <div class="total-item">
+                            <label>Sales Tax (8.25%)</label>
+                            <div class="value" id="tax_display">$0</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.2);">
+                        <div class="totals-grid">
+                            <div class="total-item">
+                                <label>Job Cost</label>
+                                <div class="value" id="job_cost_display">$0</div>
+                            </div>
+                            <div class="total-item">
+                                <label>Burdens</label>
+                                <div class="value" id="burdens_display">$0</div>
+                            </div>
+                            <div class="total-item">
+                                <label>Cost/Ton</label>
+                                <div class="value" id="cost_per_ton_display">$0</div>
+                            </div>
+                            <div class="total-item grand">
+                                <label>SELLING PRICE</label>
+                                <div class="value" id="grand_total_display">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-row">
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">🗑️ Clear</button>
+                    <button type="button" class="btn btn-primary" onclick="calculateTotals()">🧮 Calculate</button>
+                    <button type="button" class="btn btn-success" onclick="generatePDF()">📄 Generate Proposal PDF</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Lennox Pricing Database (extracted from your Excel files)
+        const lennoxPricing = {
+            // Condensers/Heat Pumps - System Prices
+            "EL19KPV-024": { price: 3245, system_price: 12143, tonnage: 2.0 },
+            "EL19KPV-036": { price: 3567, system_price: 14256, tonnage: 3.0 },
+            "EL19KPV-048": { price: 3890, system_price: 16450, tonnage: 4.0 },
+            "EL19KPV-060": { price: 4215, system_price: 18650, tonnage: 5.0 },
+            "EL21KLV-024": { price: 3650, system_price: 15134, tonnage: 2.0 },
+            "EL22KCV-024": { price: 3456, system_price: 15321, tonnage: 2.0 },
+            "EL22KCV-036": { price: 3890, system_price: 17450, tonnage: 3.0 },
+            "EL18KCV-024": { price: 2890, system_price: 13100, tonnage: 2.0 },
+            "EL18KCV-036": { price: 3245, system_price: 15200, tonnage: 3.0 },
+            "ML14KC-024": { price: 1496, tonnage: 2.0 },
+            "ML14KC-036": { price: 1823, tonnage: 3.0 },
+            "ML14KC-048": { price: 2156, tonnage: 4.0 },
+            "ML14KC-060": { price: 2534, tonnage: 5.0 },
+            "ML14KP1-024": { price: 1650, system_price: 11195, tonnage: 2.0 },
+            "ML14KP1-030": { price: 1890, system_price: 11195, tonnage: 2.5 },
+            "ML17XC-024": { price: 2345, tonnage: 2.0 },
+            "ML17XC-036": { price: 2678, tonnage: 3.0 },
+            
+            // Air Handlers
+            "CBK48MVT-024": { price: 1245 },
+            "CBK48MVT-030": { price: 1356 },
+            "CBK48MVT-036": { price: 1467 },
+            "CBK45UHVT-036": { price: 1534 },
+            "CBK45UHVT-048": { price: 1689 },
+            "CBK45UHVT-060": { price: 1845 },
+            
+            // Gas Furnaces
+            "ML297UH-045": { price: 1245 },
+            "ML297UH-070": { price: 1456 },
+            "ML297UH-090": { price: 1623 },
+            "ML296UH-045": { price: 1156 },
+            "ML296UH-070": { price: 1345 },
+            "ML196UH-045": { price: 956 },
+            "ML196UH-070": { price: 1123 },
+            "ML180UH-045": { price: 756 },
+            "ML180UH-070": { price: 923 },
+        };
+        
+        // Set today's date
+        document.getElementById('date').value = new Date().toISOString().split('T')[0];
+        
+        function toggleCollapse(header) {
+            header.classList.toggle('collapsed');
+            header.nextElementSibling.classList.toggle('hidden');
+        }
+        
+        function lookupPrice(sysNum) {
+            const outdoorInput = document.getElementById(`sys${sysNum}_outdoor`);
+            const indoorInput = document.getElementById(`sys${sysNum}_indoor`);
+            const costInput = document.getElementById(`sys${sysNum}_cost`);
+            const tonnageInput = document.getElementById(`sys${sysNum}_tonnage`);
+            
+            const outdoorModel = outdoorInput.value.toUpperCase().trim();
+            const indoorModel = indoorInput.value.toUpperCase().trim();
+            
+            let totalPrice = 0;
+            let found = false;
+            
+            // Look up outdoor unit
+            if (outdoorModel) {
+                // Try exact match first, then partial
+                let match = lennoxPricing[outdoorModel];
+                if (!match) {
+                    // Try partial match
+                    for (let key in lennoxPricing) {
+                        if (outdoorModel.includes(key.split('-')[0]) || key.includes(outdoorModel.split('-')[0])) {
+                            match = lennoxPricing[key];
+                            break;
+                        }
+                    }
+                }
+                
+                if (match) {
+                    found = true;
+                    outdoorInput.classList.add('price-found');
+                    
+                    // Use system price if available
+                    if (match.system_price) {
+                        totalPrice = match.system_price;
+                    } else {
+                        totalPrice += match.price || 0;
+                    }
+                    
+                    // Auto-fill tonnage
+                    if (match.tonnage && !tonnageInput.value) {
+                        tonnageInput.value = match.tonnage;
+                    }
+                } else {
+                    outdoorInput.classList.remove('price-found');
+                }
+            }
+            
+            // If no system price, add indoor unit price
+            if (!lennoxPricing[outdoorModel]?.system_price && indoorModel) {
+                let match = lennoxPricing[indoorModel];
+                if (!match) {
+                    for (let key in lennoxPricing) {
+                        if (indoorModel.includes(key.split('-')[0])) {
+                            match = lennoxPricing[key];
+                            break;
+                        }
+                    }
+                }
+                
+                if (match) {
+                    found = true;
+                    indoorInput.classList.add('price-found');
+                    totalPrice += match.price || 0;
+                } else {
+                    indoorInput.classList.remove('price-found');
+                }
+            }
+            
+            if (found && totalPrice > 0) {
+                costInput.value = totalPrice;
+                costInput.classList.add('price-found');
+            }
+            
+            calculateTotals();
+        }
+        
+        function importJSON() {
+            const jsonText = document.getElementById('jsonInput').value.trim();
+            const successMsg = document.getElementById('importSuccess');
+            const errorMsg = document.getElementById('importError');
+            
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            try {
+                const data = JSON.parse(jsonText);
+                
+                // Fill job info
+                if (data.builder) { document.getElementById('builder').value = data.builder; highlightField('builder'); }
+                if (data.project || data.project_name || data.job_name) { 
+                    document.getElementById('job_name').value = data.project || data.project_name || data.job_name; 
+                    highlightField('job_name'); 
+                }
+                if (data.address || data.job_address) { 
+                    document.getElementById('job_address').value = data.address || data.job_address; 
+                    highlightField('job_address'); 
+                }
+                if (data.city) { document.getElementById('city').value = data.city; highlightField('city'); }
+                if (data.sqft) { document.getElementById('sqft').value = data.sqft; highlightField('sqft'); }
+                
+                // Fill systems from options array
+                if (data.options && data.options.length > 0) {
+                    document.getElementById('num_systems').value = data.options.length;
+                    
+                    data.options.forEach((opt, idx) => {
+                        const sysNum = idx + 1;
+                        if (sysNum <= 6) {
+                            if (opt.condenser || opt.heat_pump || opt.outdoor) {
+                                document.getElementById(`sys${sysNum}_outdoor`).value = opt.condenser || opt.heat_pump || opt.outdoor;
+                                highlightField(`sys${sysNum}_outdoor`);
+                            }
+                            if (opt.airhandler || opt.air_handler || opt.furnace || opt.indoor) {
+                                document.getElementById(`sys${sysNum}_indoor`).value = opt.airhandler || opt.air_handler || opt.furnace || opt.indoor;
+                                highlightField(`sys${sysNum}_indoor`);
+                            }
+                            if (opt.price) {
+                                document.getElementById(`sys${sysNum}_cost`).value = opt.price;
+                                highlightField(`sys${sysNum}_cost`);
+                            }
+                            if (opt.zones && opt.zones[0]) {
+                                document.getElementById(`sys${sysNum}_zone`).value = opt.zones[0].name || '';
+                                document.getElementById(`sys${sysNum}_tonnage`).value = opt.zones[0].tonnage || '';
+                                document.getElementById(`sys${sysNum}_seer`).value = opt.zones[0].seer || '';
+                                highlightField(`sys${sysNum}_zone`);
+                            }
+                            
+                            // Try price lookup
+                            lookupPrice(sysNum);
+                        }
+                    });
+                }
+                
+                // Fill material counts if provided
+                if (data.supply_boots) { document.getElementById('supply_outlets').value = data.supply_boots; }
+                if (data.bathrooms) { document.getElementById('panasonic_fans').value = data.bathrooms; }
+                if (data.jumper_rooms) { document.getElementById('jumper_returns').value = data.jumper_rooms; }
+                
+                calculateTotals();
+                successMsg.style.display = 'block';
+                document.getElementById('builder').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+            } catch (e) {
+                console.error('JSON parse error:', e);
+                errorMsg.textContent = '❌ Invalid JSON: ' + e.message;
+                errorMsg.style.display = 'block';
+            }
+        }
+        
+        function highlightField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.add('highlighted');
+                setTimeout(() => field.classList.remove('highlighted'), 2000);
+            }
+        }
+        
+        function calculateTotals() {
+            const numSystems = parseInt(document.getElementById('num_systems').value) || 1;
+            const heatType = document.getElementById('heat_type').value;
+            const afue = parseFloat(document.getElementById('afue').value) || 0;
+            const twoStoryAdder = parseInt(document.getElementById('two_story_adder').value) || 0;
+
+            // Helper: read value, update display
+            function matRow(qtyId, priceId, totalId) {
+                const qty = parseFloat(document.getElementById(qtyId).value) || 0;
+                const price = parseFloat(document.getElementById(priceId).value) || 0;
+                const total = qty * price;
+                document.getElementById(totalId).textContent = '$' + Math.round(total).toLocaleString();
+                return total;
+            }
+
+            // ========== EQUIPMENT ==========
+            let equipTotal = 0;
+            let totalTonnage = 0;
+            const systemTonnages = [];
+            for (let i = 1; i <= 6; i++) {
+                const tonnage = parseFloat(document.getElementById(`sys${i}_tonnage`).value) || 0;
+                const cost = parseFloat(document.getElementById(`sys${i}_cost`).value) || 0;
+                systemTonnages.push(tonnage);
+                equipTotal += cost;
+                totalTonnage += tonnage;
+            }
+
+            // ========== LINESETS (auto from tonnage) ==========
+            let linesetTotal = 0;
+            for (let i = 0; i < 6; i++) {
+                const t = systemTonnages[i];
+                if (t > 0) {
+                    if (t < 3.5) linesetTotal += 225;
+                    else if (t < 5) linesetTotal += 260;
+                    else linesetTotal += 325;
+                }
+            }
+
+            // ========== AUTO-SET MATERIAL QUANTITIES ==========
+            // Only auto-set when system config changes (not when user edits a material qty)
+            const supplyOutlets = parseInt(document.getElementById('supply_outlets').value) || 0;
+            const configKey = `${numSystems}-${heatType}-${afue}-${supplyOutlets}`;
+            if (window._lastConfigKey !== configKey) {
+                window._lastConfigKey = configKey;
+                document.getElementById('mat_concentric_qty').value = (afue >= 0.9) ? numSystems : 0;
+                document.getElementById('mat_lp_qty').value = (heatType === "AC & LP Gas") ? numSystems : 0;
+                document.getElementById('mat_drain_qty').value = (numSystems + ((afue >= 0.9) ? numSystems * 0.2 : 0)).toFixed(1);
+                document.getElementById('mat_tape_qty').value = numSystems;
+                document.getElementById('mat_flue_qty').value = (afue === 0.8 || afue === 0.80) ? numSystems : 0;
+                document.getElementById('mat_lowvolt_qty').value = numSystems;
+                document.getElementById('mat_plenums_qty').value = Math.round(supplyOutlets / 3 / 2 + 2 * numSystems);
+                document.getElementById('mat_media_qty').value = numSystems;
+            }
+
+            // ========== MATERIALS — read qty × price from table ==========
+            let materialTotal = 0;
+            materialTotal += matRow('mat_concentric_qty', 'mat_concentric_price', 'mat_concentric_total');
+            materialTotal += matRow('mat_lp_qty', 'mat_lp_price', 'mat_lp_total');
+            materialTotal += matRow('mat_drain_qty', 'mat_drain_price', 'mat_drain_total');
+            materialTotal += matRow('mat_tape_qty', 'mat_tape_price', 'mat_tape_total');
+            materialTotal += matRow('mat_flue_qty', 'mat_flue_price', 'mat_flue_total');
+            materialTotal += matRow('mat_lowvolt_qty', 'mat_lowvolt_price', 'mat_lowvolt_total');
+            materialTotal += matRow('mat_plenums_qty', 'mat_plenums_price', 'mat_plenums_total');
+            materialTotal += matRow('extra_duct_board', 'mat_ductboard_price', 'mat_ductboard_total');
+            materialTotal += matRow('mat_media_qty', 'mat_media_price', 'mat_media_total');
+            materialTotal += matRow('two_story_adder', 'mat_twostory_price', 'mat_twostory_total');
+            materialTotal += matRow('supply_outlets', 'mat_supply_price', 'mat_supply_total');
+            materialTotal += matRow('returns', 'mat_returns_price', 'mat_returns_total');
+            materialTotal += matRow('jumper_returns', 'mat_jumper_price', 'mat_jumper_total');
+            materialTotal += matRow('panasonic_fans', 'mat_fans_price', 'mat_fans_total');
+            materialTotal += matRow('range_vent', 'mat_range_price', 'mat_range_total');
+            materialTotal += matRow('dryer_vent', 'mat_dryer_price', 'mat_dryer_total');
+            materialTotal += matRow('ecobee_pro', 'mat_ecobee_price', 'mat_ecobee_total');
+            materialTotal += matRow('fresh_air', 'mat_freshair_price', 'mat_freshair_total');
+            materialTotal += matRow('makeup_air', 'mat_makeup_price', 'mat_makeup_total');
+
+            // Misc material (flat dollar amount)
+            const miscMaterial = parseFloat(document.getElementById('misc_material').value) || 0;
+            document.getElementById('mat_misc_total').textContent = '$' + Math.round(miscMaterial).toLocaleString();
+            materialTotal += miscMaterial;
+
+            // Add linesets
+            materialTotal += linesetTotal;
+            document.getElementById('mat_subtotal').textContent = '$' + Math.round(materialTotal).toLocaleString();
+
+            // ========== LABOR (read rates/hours from inputs) ==========
+            const shopRate = parseFloat(document.getElementById('labor_shop_rate').value) || 0;
+            const shopHrs = parseFloat(document.getElementById('labor_shop_hrs').value) || 0;
+            const shopLabor = shopRate * shopHrs * numSystems;
+            document.getElementById('labor_shop_qty').textContent = numSystems;
+            document.getElementById('labor_shop_total').textContent = '$' + Math.round(shopLabor).toLocaleString();
+
+            // Rough: graduated by tonnage & story
+            let roughLabor = 0;
+            let roughSystems = 0;
+            for (let i = 0; i < 6; i++) {
+                const t = systemTonnages[i];
+                if (t > 0) {
+                    roughSystems++;
+                    if (t >= 5) roughLabor += 1100;
+                    else if (t >= 4) roughLabor += 1000;
+                    else if (twoStoryAdder > 0) roughLabor += 900;
+                    else roughLabor += 700;
+                }
+            }
+            document.getElementById('labor_rough_qty').textContent = roughSystems;
+            document.getElementById('labor_rough_total').textContent = '$' + Math.round(roughLabor).toLocaleString();
+
+            const checkRate = parseFloat(document.getElementById('labor_check_rate').value) || 0;
+            const checkHrs = parseFloat(document.getElementById('labor_check_hrs').value) || 0;
+            const checkLabor = checkRate * checkHrs * numSystems;
+            document.getElementById('labor_check_qty').textContent = numSystems;
+            document.getElementById('labor_check_total').textContent = '$' + Math.round(checkLabor).toLocaleString();
+
+            const balanceRate = parseFloat(document.getElementById('labor_balance_rate').value) || 0;
+            const balanceHrs = parseFloat(document.getElementById('labor_balance_hrs').value) || 0;
+            const balanceLabor = balanceRate * balanceHrs * numSystems;
+            document.getElementById('labor_balance_qty').textContent = numSystems;
+            document.getElementById('labor_balance_total').textContent = '$' + Math.round(balanceLabor).toLocaleString();
+
+            const trimRate = parseFloat(document.getElementById('labor_trim_rate').value) || 0;
+            const trimHrs = parseFloat(document.getElementById('labor_trim_hrs').value) || 0;
+            const trimLabor = trimRate * trimHrs * numSystems;
+            document.getElementById('labor_trim_qty').textContent = numSystems;
+            document.getElementById('labor_trim_total').textContent = '$' + Math.round(trimLabor).toLocaleString();
+
+            // Manual adds
+            const travelCost = parseFloat(document.getElementById('travel_cost').value) || 0;
+            const permitPickup = parseFloat(document.getElementById('permit_pickup').value) || 0;
+            const miscLabor = parseFloat(document.getElementById('misc_labor').value) || 0;
+
+            const laborTotal = shopLabor + roughLabor + checkLabor + balanceLabor + trimLabor + travelCost + permitPickup + miscLabor;
+            document.getElementById('labor_subtotal').textContent = '$' + Math.round(laborTotal).toLocaleString();
+
+            // ========== JOB COSTING ==========
+            const salesTax = (equipTotal + materialTotal) * 0.0825;
+            const miscCost = parseFloat(document.getElementById('misc_cost').value) || 0;
+            const jobCost = equipTotal + materialTotal + salesTax + laborTotal + miscCost;
+
+            // Burdens (read percentages from inputs)
+            const matBurdenPct = (parseFloat(document.getElementById('material_burden_pct').value) || 0) / 100;
+            const labBurdenPct = (parseFloat(document.getElementById('labor_burden_pct').value) || 0) / 100;
+            const punchPct = (parseFloat(document.getElementById('punch_pct').value) || 0) / 100;
+            const materialBurden = materialTotal * matBurdenPct;
+            const laborBurden = laborTotal * labBurdenPct;
+            const punch = jobCost * punchPct;
+            const totalBurdens = materialBurden + laborBurden + punch;
+
+            document.getElementById('burden_mat_val').textContent = '$' + Math.round(materialBurden).toLocaleString();
+            document.getElementById('burden_labor_val').textContent = '$' + Math.round(laborBurden).toLocaleString();
+            document.getElementById('burden_punch_val').textContent = '$' + Math.round(punch).toLocaleString();
+
+            // Margin
+            const marginPercent = parseFloat(document.getElementById('margin_percent').value) || 35;
+            const marginDecimal = marginPercent / 100;
+            const costPlusBurdens = jobCost + totalBurdens;
+            const marginDollar = costPlusBurdens / (1 - marginDecimal) - costPlusBurdens;
+            document.getElementById('margin_dollar_val').textContent = '$' + Math.round(marginDollar).toLocaleString();
+
+            // Price with burdens + margin
+            const priceWithBurdens = costPlusBurdens + marginDollar;
+
+            // Warranty
+            const warrantyPct = (parseFloat(document.getElementById('warranty_pct').value) || 0) / 100;
+            const warranty = priceWithBurdens * warrantyPct;
+            document.getElementById('warranty_val').textContent = '$' + Math.round(warranty).toLocaleString();
+
+            // Selling price
+            let sellingPrice = priceWithBurdens + warranty;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            sellingPrice -= discount;
+
+            // Cost per ton
+            const costPerTon = totalTonnage > 0 ? sellingPrice / totalTonnage : 0;
+
+            // ========== UPDATE TOTALS BAR ==========
+            document.getElementById('equip_total_display').textContent = '$' + equipTotal.toLocaleString();
+            document.getElementById('material_total_display').textContent = '$' + Math.round(materialTotal).toLocaleString();
+            document.getElementById('labor_total_display').textContent = '$' + Math.round(laborTotal).toLocaleString();
+            document.getElementById('tax_display').textContent = '$' + Math.round(salesTax).toLocaleString();
+            document.getElementById('job_cost_display').textContent = '$' + Math.round(jobCost).toLocaleString();
+            document.getElementById('burdens_display').textContent = '$' + Math.round(totalBurdens).toLocaleString();
+            document.getElementById('cost_per_ton_display').textContent = '$' + Math.round(costPerTon).toLocaleString();
+            document.getElementById('grand_total_display').textContent = '$' + Math.round(sellingPrice).toLocaleString();
+
+            // Store for PDF
+            window._calcData = {
+                equipTotal, materialTotal, linesetTotal, laborTotal, salesTax,
+                jobCost, totalBurdens, marginDollar, warranty, sellingPrice,
+                costPerTon, shopLabor, roughLabor, checkLabor,
+                balanceLabor, trimLabor, materialBurden, laborBurden, punch
+            };
+        }
+        
+        function clearForm() {
+            if (confirm('Clear all form data?')) {
+                document.getElementById('bidForm').reset();
+                document.getElementById('date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('sales').value = 'Ryan Sekula';
+                calculateTotals();
+            }
+        }
+        
+        function generatePDF() {
+            calculateTotals();
+
+            // Collect all form data
+            const form = document.getElementById('bidForm');
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+
+            // Add all calculated totals from the Excel-matching calculation
+            const calc = window._calcData || {};
+            data.equip_total = '$' + (calc.equipTotal || 0).toLocaleString();
+            data.material_total = '$' + Math.round(calc.materialTotal || 0).toLocaleString();
+            data.labor_total = '$' + Math.round(calc.laborTotal || 0).toLocaleString();
+            data.sales_tax = '$' + Math.round(calc.salesTax || 0).toLocaleString();
+            data.job_cost = Math.round(calc.jobCost || 0);
+            data.selling_price = Math.round(calc.sellingPrice || 0);
+            data.cost_per_ton = Math.round(calc.costPerTon || 0);
+            data.grand_total = '$' + Math.round(calc.sellingPrice || 0).toLocaleString();
+            
+            // Submit
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = '/generate-bid-proposal-pdf';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'data';
+            input.value = JSON.stringify(data);
+            hiddenForm.appendChild(input);
+            
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+        }
+        
+        // Initial calculation
+        calculateTotals();
+    </script>
+</body>
+</html>

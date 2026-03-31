@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woods Comfort Systems - Forms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ---- Sidebar ---- */
+        .sidebar {
+            width: 280px;
+            background: #1e3a5f;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            padding: 32px 0;
+            position: fixed;
+            top: 0; bottom: 0;
+            overflow-y: auto;
+        }
+        .sidebar .brand {
+            padding: 0 28px 28px;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+            margin-bottom: 12px;
+        }
+        .sidebar .brand img {
+            height: 36px;
+            /* no filter needed for light mode */
+            margin-bottom: 10px;
+        }
+        .sidebar .brand h1 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: white;
+        }
+        .sidebar .brand p {
+            font-size: .72rem;
+            color: rgba(255,255,255,.5);
+            margin-top: 4px;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+        }
+
+        .sidebar nav {
+            flex: 1;
+            padding: 8px 14px;
+        }
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: rgba(255,255,255,.7);
+            font-size: .88rem;
+            font-weight: 400;
+            transition: background .15s, color .15s;
+            margin-bottom: 2px;
+        }
+        .sidebar nav a:hover {
+            background: rgba(255,255,255,.1);
+            color: #ffffff;
+        }
+        .sidebar nav a .emoji {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar footer {
+            padding: 20px 28px 0;
+            border-top: 1px solid rgba(255,255,255,.15);
+            font-size: .72rem;
+            color: rgba(255,255,255,.5);
+            line-height: 1.5;
+        }
+
+        /* ---- Main content ---- */
+        .main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 48px 52px;
+            min-height: 100vh;
+        }
+
+        .main h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        .main .subtitle {
+            font-size: .9rem;
+            color: #64748b;
+            margin-bottom: 36px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 26px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color .2s, background .2s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .card .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            width: fit-content;
+        }
+        /* badge colour by category */
+        .badge.calc    { background: #eff6ff; color: #2563eb; }
+        .badge.sched   { background: #f0fdf4; color: #16a34a; }
+        .badge.order   { background: #f5f3ff; color: #7c3aed; }
+        .badge.change  { background: #fef2f2; color: #dc2626; }
+        .badge.bid     { background: #fffbeb; color: #d97706; }
+        .badge.design  { background: #f0f9ff; color: #0284c7; }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .card p {
+            font-size: .84rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="brand">
+        <img src="/static/woods_logo.png" alt="Woods Comfort Systems">
+        <h1>Woods Comfort Systems</h1>
+        <p>TACLA16934C</p>
+    </div>
+    <nav>
+        <a href="/bid-info"><span class="emoji">📝</span> Load Calc Request</a>
+        <a href="/scheduling-dispatch"><span class="emoji">📋</span> Scheduling Dispatch</a>
+        <a href="/special-order"><span class="emoji">📦</span> Special Order</a>
+        <a href="/linear-grille"><span class="emoji">🔲</span> Linear Grille Order</a>
+        <a href="/change-order"><span class="emoji">🔄</span> Changes / Upgrades</a>
+        <a href="/additional-work"><span class="emoji">🛠️</span> Additional Work</a>
+
+        <a href="/hvac-bid"><span class="emoji">📊</span> HVAC Bid (Legacy)</a>
+        <a href="/design-walk"><span class="emoji">📐</span> Design Plan Walk</a>
+    </nav>
+    <footer>
+        San Marcos, Texas<br>License TACLA16934C
+    </footer>
+</aside>
+
+<main class="main">
+    <h2>Forms &amp; Tools</h2>
+    <p class="subtitle">Select a form to get started — all forms auto-save to PDF.</p>
+
+    <div class="cards">
+
+        <a class="card" href="/bid-info">
+            <span class="badge calc">Calculation</span>
+            <h3>📝 Load Calculation Request Form</h3>
+            <p>Request Manual J load calculations from design team. Captures construction specs, equipment preferences, ventilation, and IAQ options.</p>
+        </a>
+
+        <a class="card" href="/scheduling-dispatch">
+            <span class="badge sched">Scheduling</span>
+            <h3>📋 New Construction Scheduling Dispatch</h3>
+            <p>Schedule rough-in installations, track job details, and coordinate with GC supervisors.</p>
+        </a>
+
+        <a class="card" href="/special-order">
+            <span class="badge order">Ordering</span>
+            <h3>📦 Special Order Request Form</h3>
+            <p>Request quotes and orders for special equipment and materials with vendor tracking.</p>
+        </a>
+
+        <a class="card" href="/linear-grille">
+            <span class="badge order">Ordering</span>
+            <h3>🔲 Linear Grille Order Form</h3>
+            <p>Order Nailor linear slot supply grilles (5010) and bar return grilles (49-240) — MUD-IN and Surface Mount options.</p>
+        </a>
+
+        <a class="card" href="/change-order">
+            <span class="badge change">Changes</span>
+            <h3>🔄 Changes / Upgrades / Additions</h3>
+            <p>Track equipment changes, upgrades, and returns with model and serial numbers.</p>
+        </a>
+
+        <a class="card" href="/additional-work">
+            <span class="badge change">Changes</span>
+            <h3>🛠️ Additional Work / Change Order</h3>
+            <p>Track additional work requests, material needed/returned, labor hours by phase, and work completion status.</p>
+        </a>
+
+        <a class="card" href="/hvac-bid">
+            <span class="badge bid">Bidding</span>
+            <h3>📊 HVAC Bid Sheet (Legacy)</h3>
+            <p>Original bidding calculator with auto-calculated materials, labor, and pricing.</p>
+        </a>
+
+        <a class="card" href="/design-walk">
+            <span class="badge design">Design</span>
+            <h3>📐 Design Plan Walk Sheet</h3>
+            <p>Equipment specifications and installation planning for takeoffs.</p>
+        </a>
+
+    </div>
+</main>
+
+</body>
+</html>
