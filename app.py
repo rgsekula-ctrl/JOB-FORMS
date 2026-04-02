@@ -1,4 +1,4 @@
-﻿from flask import Flask, render_template, request, send_file, jsonify
+from flask import Flask, render_template, request, send_file, jsonify
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
@@ -1856,7 +1856,7 @@ def generate_additional_work_pdf():
 
     # Triplicate copy definitions: (label, fill_color_rgb, text_color_rgb)
     copies = [
-        ("WHITE COPY: CHANGE ORDER",    (1.0, 1.0, 1.0),     (0.12, 0.23, 0.37)),   # white fill, dark text
+        ("WHITE COPY: CHANGE ORDER",    (0.92, 0.92, 0.95),   (0.12, 0.23, 0.37)),   # light gray fill, dark text
         ("YELLOW COPY: TAKE OFF / COSTING", (1.0, 0.95, 0.7), (0.45, 0.35, 0.0)),    # yellow fill, dark yellow-brown text
         ("PINK COPY: SUB PAY",           (1.0, 0.82, 0.86),   (0.55, 0.1, 0.2)),     # pink fill, dark pink text
     ]
@@ -1865,38 +1865,36 @@ def generate_additional_work_pdf():
         if copy_idx > 0:
             c.showPage()
 
-        # ===== COPY BADGE at top of page =====
-        badge_text = copy_label
-        c.setFont("Helvetica-Bold", 11)
-        text_w = c.stringWidth(badge_text, "Helvetica-Bold", 11)
-        badge_w = text_w + 30
-        badge_h = 26
-        badge_x = (width - badge_w) / 2
-        badge_y = height - 0.45*inch
-
-        # Draw rounded rect fill
+        # ===== FULL-WIDTH COLORED RIBBON HEADER =====
+        # Ribbon covers entire top of page down to the header line
+        ribbon_bottom = height - 1.15*inch
         c.setFillColorRGB(*fill_rgb)
+        c.setStrokeColorRGB(0, 0, 0)
+        c.setLineWidth(0)
+        c.rect(0, ribbon_bottom, width, height - ribbon_bottom, fill=1, stroke=0)
+
+        # Add a thin border line at the bottom of the ribbon
         c.setStrokeColorRGB(*text_rgb)
         c.setLineWidth(1.5)
-        c.roundRect(badge_x, badge_y - 4, badge_w, badge_h, 6, fill=1, stroke=1)
+        c.line(0, ribbon_bottom, width, ribbon_bottom)
 
-        # Badge text
+        # Copy label at top of ribbon
         c.setFillColorRGB(*text_rgb)
-        c.drawCentredString(width/2, badge_y + 3, badge_text)
+        c.setFont("Helvetica-Bold", 11)
+        c.drawCentredString(width/2, height - 0.35*inch, copy_label)
+
+        # Title
+        c.setFont("Helvetica-Bold", 16)
+        c.drawCentredString(width/2, height - 0.65*inch, "ADDITIONAL WORK / CHANGE ORDER")
+
+        # Subtitle
+        c.setFont("Helvetica", 10)
+        c.drawCentredString(width/2, height - 0.85*inch, "Woods Comfort Systems | TACLA16934C")
 
         # Reset colors
         c.setFillColorRGB(0, 0, 0)
         c.setStrokeColorRGB(0, 0, 0)
-
-        # Title
-        c.setFont("Helvetica-Bold", 16)
-        c.drawCentredString(width/2, height - 0.7*inch, "ADDITIONAL WORK / CHANGE ORDER")
-        c.setFont("Helvetica", 10)
-        c.drawCentredString(width/2, height - 0.88*inch, "Woods Comfort Systems | TACLA16934C")
-
-        # Draw horizontal line under title
         c.setLineWidth(1)
-        c.line(0.5*inch, height - 1.0*inch, width - 0.5*inch, height - 1.0*inch)
     
         # ==================== LEFT COLUMN ====================
         left_x = 0.5*inch
@@ -1907,7 +1905,7 @@ def generate_additional_work_pdf():
         left_data_x = 1.55*inch  # Data starts here on left side
         right_data_x = 5.35*inch  # Data starts here on right side
 
-        y = height - 1.25*inch
+        y = height - 1.40*inch
         c.setFont("Helvetica-Bold", 10)
         c.drawString(left_x, y, "Builder Name")
         c.line(left_data_x, y - 2, 3.8*inch, y - 2)
