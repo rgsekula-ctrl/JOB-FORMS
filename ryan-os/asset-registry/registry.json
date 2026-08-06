@@ -309,6 +309,19 @@
       "last_verified": "2026-08-06"
     },
     {
+      "asset_id": "ryan-os-handoff",
+      "name": "Ryan OS Handoff",
+      "category": "reference",
+      "status": "authoritative",
+      "what_it_is": "The pick-it-up-cold document: current state, how to verify it in 30 seconds, open decisions awaiting Ryan, ranked next actions, and known weaknesses stated plainly.",
+      "where_it_is": {"kind": "repo", "path": "ryan-os/HANDOFF.md", "detail": "Read this first when starting a new session on Ryan OS."},
+      "owner": "Ryan Sekula",
+      "use_when": "Starting a new session, onboarding a new agent, or returning to Ryan OS after a gap.",
+      "keywords": ["handoff", "where do I start", "status", "current state", "next steps", "open decisions", "pick up", "onboarding", "what is left"],
+      "related": ["ryan-os-governance", "playbook-orchestrator-loop"],
+      "last_verified": "2026-08-06"
+    },
+    {
       "asset_id": "ryan-os-governance",
       "name": "Ryan OS Governance",
       "category": "reference",

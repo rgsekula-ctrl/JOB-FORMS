@@ -12,6 +12,9 @@ Its first job: turn a new HVAC bid request sitting in Outlook into an internal
 Load & Bid turnover email, fast enough that the estimating team is working on
 the Manual J within minutes.
 
+> **Picking this up cold?** Start with [`HANDOFF.md`](HANDOFF.md) — current
+> state, open decisions awaiting Ryan, next actions, and known weaknesses.
+
 ---
 
 ## The governing principles
