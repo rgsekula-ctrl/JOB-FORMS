@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Registry - Ryan OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter','Segoe UI',sans-serif; background: #f5f7fa; color: #1e293b; padding: 32px 20px; }
+        .wrap { max-width: 1000px; margin: 0 auto; }
+        .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        h1 { font-size: 24px; font-weight: 700; color: #1e3a5f; }
+        .back { color: #64748b; text-decoration: none; font-size: 14px; }
+        .back:hover { color: #1e3a5f; }
+        .subtitle { color: #64748b; font-size: 14px; margin-bottom: 22px; }
+
+        .searchbar { display: flex; gap: 10px; margin-bottom: 18px; }
+        input[type=text] {
+            flex: 1; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 7px;
+            font-family: inherit; font-size: 15px;
+        }
+        input[type=text]:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,.08); }
+        button {
+            padding: 11px 20px; background: #1e3a5f; color: #fff; border: none; border-radius: 7px;
+            font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+        button:hover { background: #16304f; }
+        button.ghost { background: #e2e8f0; color: #334155; }
+        button.ghost:hover { background: #cbd5e1; }
+
+        .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .chip {
+            padding: 5px 12px; border-radius: 999px; border: 1px solid #cbd5e1; background: #fff;
+            font-size: 12px; font-weight: 600; color: #475569; cursor: pointer;
+        }
+        .chip.on { background: #1e3a5f; color: #fff; border-color: #1e3a5f; }
+
+        .resolution { padding: 14px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; }
+        .resolution h4 { font-size: 13px; margin-bottom: 5px; }
+        .resolution .action { margin-top: 8px; font-weight: 600; }
+        .r-found { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+        .r-gap   { background: #fef9c3; border: 1px solid #fde047; color: #854d0e; }
+        .r-none  { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+
+        .asset {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 9px;
+            padding: 16px 18px; margin-bottom: 12px;
+        }
+        .asset .hd { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        .asset h3 { font-size: 15px; font-weight: 600; }
+        .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: .04em; }
+        .b-authoritative { background: #dcfce7; color: #166534; }
+        .b-candidate     { background: #e0f2fe; color: #075985; }
+        .b-deprecated    { background: #f1f5f9; color: #64748b; }
+        .b-gap           { background: #fef9c3; color: #854d0e; }
+        .cat { font-size: 11px; color: #94a3b8; }
+        .asset dl { display: grid; grid-template-columns: 100px 1fr; gap: 4px 12px; font-size: 13px; }
+        .asset dt { color: #94a3b8; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; padding-top: 2px; }
+        .asset dd { color: #475569; }
+        .asset code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+        .gapfix { color: #854d0e; }
+        .empty { text-align: center; color: #94a3b8; padding: 50px 20px; font-size: 14px; }
+        .warn { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; padding: 14px; border-radius: 7px; font-size: 13px; }
+        .note { background: #f1f5f9; border-left: 3px solid #1e3a5f; padding: 12px 14px; font-size: 12px; color: #475569; border-radius: 0 6px 6px 0; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="top">
+        <h1>Asset Registry</h1>
+        <a class="back" href="/">&larr; Back to Forms</a>
+    </div>
+    <p class="subtitle">Ryan OS &mdash; the authoritative directory of operational resources</p>
+
+    {% if not registry_available %}
+    <div class="warn">The Asset Registry is not available in this build. Run the app from the repository so <code>ryan-os/</code> is present.</div>
+    {% else %}
+
+    <div class="note">
+        Consult this <strong>before</strong> searching anywhere else. If a resource has no authoritative
+        entry, that gap gets flagged &mdash; it never gets quietly filled with another version.
+    </div>
+
+    <div class="searchbar">
+        <input type="text" id="q" placeholder="What do you need? e.g. proposal template, pricing, job folder">
+        <button id="go">Search</button>
+        <button class="ghost" id="clear">Clear</button>
+    </div>
+
+    <div class="filters" id="filters"></div>
+    <div id="resolution"></div>
+    <div id="results"><p class="empty">Loading registry&hellip;</p></div>
+    {% endif %}
+</div>
+
+<script>
+const qEl = document.getElementById('q');
+const resultsEl = document.getElementById('results');
+const resolutionEl = document.getElementById('resolution');
+const filtersEl = document.getElementById('filters');
+
+let allAssets = [];
+let activeCategory = null;
+
+async function load(query) {
+    const url = query ? `/api/assets?q=${encodeURIComponent(query)}` : '/api/assets';
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!res.ok) {
+        resultsEl.innerHTML = `<div class="warn">${esc(data.error || 'Failed to load registry')}</div>`;
+        return;
+    }
+
+    allAssets = data.assets || [];
+    renderFilters(data);
+    renderResolution(data.resolution);
+    renderAssets();
+}
+
+function renderFilters(data) {
+    if (filtersEl.dataset.built) return;
+    const cats = data.categories || [];
+    filtersEl.innerHTML =
+        `<span class="chip on" data-cat="">All (${data.counts.total})</span>` +
+        `<span class="chip" data-cat="__gaps">Gaps (${data.counts.gaps})</span>` +
+        cats.map(c => `<span class="chip" data-cat="${esc(c)}">${esc(c)}</span>`).join('');
+    filtersEl.dataset.built = '1';
+
+    filtersEl.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            filtersEl.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+            chip.classList.add('on');
+            activeCategory = chip.dataset.cat || null;
+            renderAssets();
+        });
+    });
+}
+
+function renderResolution(r) {
+    if (!r) { resolutionEl.innerHTML = ''; return; }
+    let cls = 'r-found';
+    if (r.outcome === 'GAP_FLAGGED') cls = 'r-gap';
+    if (r.outcome === 'NOT_REGISTERED' || r.outcome === 'FOUND_DEPRECATED') cls = 'r-none';
+
+    resolutionEl.innerHTML =
+        `<div class="resolution ${cls}"><h4>${esc(r.outcome)}</h4>` +
+        `<div>${esc(r.message)}</div>` +
+        `<div class="action">${esc(r.action_required)}</div></div>`;
+}
+
+function renderAssets() {
+    let list = allAssets;
+    if (activeCategory === '__gaps') list = list.filter(a => a.status === 'gap');
+    else if (activeCategory) list = list.filter(a => a.category === activeCategory);
+
+    if (!list.length) {
+        resultsEl.innerHTML = '<p class="empty">Nothing registered here yet.</p>';
+        return;
+    }
+
+    resultsEl.innerHTML = list.map(a => {
+        const where = a.status === 'gap'
+            ? '<span class="gapfix">not registered</span>'
+            : `<code>${esc(a.location)}</code>`;
+        const detail = (a.where_it_is && a.where_it_is.detail)
+            ? `<dd style="grid-column:2">${esc(a.where_it_is.detail)}</dd><dt></dt>` : '';
+        return `<div class="asset">
+            <div class="hd">
+                <h3>${esc(a.name)}</h3>
+                <span class="badge b-${esc(a.status)}">${esc(a.status).toUpperCase()}</span>
+                <span class="cat">${esc(a.category)}</span>
+            </div>
+            <dl>
+                <dt>What</dt><dd>${esc(a.what_it_is)}</dd>
+                <dt>Where</dt><dd>${where}</dd>${detail}
+                <dt>Owner</dt><dd>${esc(a.owner)}</dd>
+                <dt>Use when</dt><dd>${esc(a.use_when)}</dd>
+                ${a.do_not_use_when ? `<dt>Not when</dt><dd>${esc(a.do_not_use_when)}</dd>` : ''}
+                ${a.replaced_by ? `<dt>Replaced by</dt><dd><code>${esc(a.replaced_by)}</code></dd>` : ''}
+                ${a.gap_recommendation ? `<dt>Fix</dt><dd class="gapfix">${esc(a.gap_recommendation)}</dd>` : ''}
+            </dl>
+        </div>`;
+    }).join('');
+}
+
+function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+}
+
+document.getElementById('go').addEventListener('click', () => load(qEl.value.trim()));
+document.getElementById('clear').addEventListener('click', () => { qEl.value = ''; load(''); });
+qEl.addEventListener('keydown', e => { if (e.key === 'Enter') load(qEl.value.trim()); });
+
+load('');
+</script>
+</body>
+</html>

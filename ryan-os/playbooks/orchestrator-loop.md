@@ -1,7 +1,8 @@
 # Playbook: The Orchestrator Loop
 
-The Operations Orchestrator is the operational interface to Ryan OS. Phase 1
-delivers one component of it — the Bid Turnover Decision Engine. This document
+The Operations Orchestrator is the operational interface to Ryan OS. It is built
+from two components: the **Bid Turnover Decision Engine** (what should I do?)
+and the **Asset Registry** (where is the authoritative resource?). This document
 describes the whole loop, marks what is built, and defines the interfaces the
 remaining pieces will plug into.
 
@@ -13,51 +14,60 @@ remaining pieces will plug into.
 Outlook
    |
    v
-[1] Detect new work            .................. Phase 2
+[1] Detect new work             ................. NOT BUILT (needs a persistent runtime)
    |
    v
-[2] Classify the email         .................. BUILT (playbook, manual trigger)
+[2] Classify the email          ................. BUILT (playbook, manual trigger)
    |
    v
-[3] Consult the Builder Library .................. BUILT
+[3] Consult the Builder Library ................. BUILT
+   |     no profile? -> recommend + one-action create .... BUILT (Phase 2)
+   v
+[4] Apply governed defaults     ................. BUILT
    |
    v
-[4] Apply governed defaults    .................. BUILT
+[5] Resolve authoritative resources ............. BUILT (Phase 2 - Asset Registry)
    |
    v
-[5] Draft / send the turnover  .................. BUILT (draft + send by agent)
+[6] Draft / send the turnover   ................. BUILT (draft + send by agent)
    |
    v
-[6] Track Manual J progress    .................. Phase 2
+[7] Track Manual J progress     ................. NOT BUILT
    |
    v
-[7] Track bid progress         .................. Phase 2
+[8] Track bid progress          ................. NOT BUILT
    |
    v
-[8] Feed the dashboard         .................. Phase 3
+[9] Feed the dashboard          ................. NOT BUILT
    |
    v
-[9] Escalate only when needed  .................. BUILT
+[10] Escalate only when needed  ................. BUILT
 ```
+
+**The two questions the Orchestrator can now answer for any agent:**
+
+| Question | Answered by |
+|---|---|
+| What should I do? | Decision Engine — governed defaults, confidence, escalation |
+| Where is the authoritative resource? | Asset Registry — `asset.py where "..."` |
 
 ---
 
-## What Phase 1 delivers
+## What is delivered today
 
-Steps 2 through 5 and step 9, executed by an agent session with Outlook access.
+Steps 2 through 6 and step 10, executed by an agent session with Outlook access.
 
 The agent is the runtime. The engine is the decision-maker. That split is
 deliberate: the parts that must be identical across Claude, Codex, and ChatGPT
 live in deterministic Python, and only the parts that genuinely need judgment —
 reading an email, reading a plan set — live in the model.
 
-**Steps 1, 6, 7, and 8 still depend on a human starting a session.** That is the
-honest state of Phase 1: the decision-making is automated, the triggering is
-not.
+**Steps 1, 7, 8, and 9 still depend on a human starting a session.** That is the
+honest state today: the decision-making is automated, the triggering is not.
 
 ---
 
-## Running Phase 1
+## Running it today
 
 Ryan or an agent opens a session and says:
 
@@ -68,8 +78,9 @@ The agent then, per inbox pass:
 1. Lists unread mail.
 2. Classifies each per `email-classification.md`.
 3. For each `BID_REQUEST`, runs `bid-turnover.md` end to end.
-4. Batches everything `UNCERTAIN` into one summary for Ryan.
-5. Reports: turnovers sent, escalations held, items needing Ryan.
+4. For any unknown builder, presents the profile recommendation (never a question).
+5. Batches everything `UNCERTAIN` into one summary for Ryan.
+6. Reports: turnovers sent, escalations held, profiles created, items needing Ryan.
 
 A reasonable cadence is twice a day — first thing and mid-afternoon. Bid
 requests are not usually minute-sensitive; they are *hour*-sensitive, and twice
@@ -77,19 +88,19 @@ daily keeps the worst case under half a day without anyone babysitting an inbox.
 
 ---
 
-## Phase 2 — automatic detection and tracking
+## What is left: detection, tracking, and the dashboard
 
 ### Step 1: detect new work
 
 Needs a durable Outlook connection — Graph API subscription, an IMAP poller, or
 a scheduled agent session. **Requires a Class C architecture decision** (a new
-service, credentials, a persistent runtime), so it is out of Phase 1 scope by
-design.
+service, credentials, a persistent runtime), so it has been deliberately left
+out until Ryan decides.
 
 Interim: a scheduled session on a cron trigger, running the loop above. Most of
 the benefit, none of the new infrastructure.
 
-### Steps 6 and 7: track Manual J and bid progress
+### Steps 7 and 8: track Manual J and bid progress
 
 The tracking hook already exists in the email standard. Every turnover ends with:
 
@@ -116,12 +127,12 @@ What is missing is somewhere to write the state. Proposed minimum:
 ```
 
 One JSON file per job under `ryan-os/jobs/` would be enough to start, and is a
-Class A data pattern rather than an architecture change. **Not implemented in
-Phase 1** — it needs one decision from Ryan first: whether job state belongs in
-git (auditable, diffable, but noisy commits) or in a database (cleaner, but new
+Class A data pattern rather than an architecture change. **Not implemented
+yet** — it needs one decision from Ryan first: whether job state belongs in git
+(auditable, diffable, but noisy commits) or in a database (cleaner, but new
 infrastructure). That is a Class C call.
 
-### Step 8: the dashboard
+### Step 9: the dashboard
 
 Once job state exists, the existing Flask app is the natural host — it already
 serves the forms the estimating team uses. A `/dashboard` route reading
@@ -135,7 +146,7 @@ would be a screen full of zeros.
 
 ## Where operational knowledge still lives in Ryan's head
 
-The point of the sprint was to find these. Phase 1 closed the first four:
+The point of the sprint was to find these. Phases 1 and 2 closed most of them:
 
 | Knowledge | Status |
 |---|---|
@@ -143,13 +154,25 @@ The point of the sprint was to find these. Phase 1 closed the first four:
 | What margin to use | **Closed** — governed defaults + Builder Library |
 | How many systems | **Closed** — the four-priority decision order |
 | What options always get priced | **Closed** — the always-include list |
-| Which builders are which type | **Open** — the Builder Library is empty. Highest-value next task. |
+| How to classify an unknown builder | **Closed (Phase 2)** — ranked recommendation with reasoning |
+| How to capture a new builder's settings | **Closed (Phase 2)** — one-action profile creation |
+| Which form/template/app to use for a task | **Closed (Phase 2)** — Asset Registry |
+| Which builders are which type | **Open** — the Builder Library is still nearly empty. |
 | Real contracted margins per builder | **Open** — same. |
 | Jurisdiction and permit handling per builder | **Open** — same. |
+| Where pricing, job folders, Drive, and the server live | **Open** — six registered Asset Registry gaps. |
 | When a request is worth Ryan's attention | **Closed** — the four hard stops |
-| Whether a job is stuck | **Open** — needs Phase 2 tracking |
+| Whether a job is stuck | **Open** — needs job-state tracking |
 
-**The single highest-value next action is populating the Builder Library with
-real profiles for active builders.** It is a Class A data task, it needs no code
-and no approval, and every profile added converts MEDIUM assumptions to HIGH —
-which is literally the system getting faster and safer at the same time.
+Phase 2 changed the shape of the Builder Library problem. It is no longer a data
+entry chore — the library now fills itself as work arrives, one approval per new
+builder. The remaining manual task is the **existing** active builders, whose
+real contracted margins are still only in Ryan's head.
+
+**The two highest-value next actions:**
+
+1. **Register the six Asset Registry gaps** — pricing workbook, job folder
+   template, Drive root, server root, Manual J software, Outlook mailbox. Every
+   one is a question agents currently cannot answer. `python3 ryan-os/cli/asset.py gaps`
+2. **Add profiles for the active production builders**, where the 35% fallback
+   is furthest from their real contracted margin.

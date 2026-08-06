@@ -44,7 +44,44 @@ Governed knowledge lives in files, not in your context:
 | Email routing | `ryan-os/playbooks/email-classification.md` |
 | When to interrupt Ryan | `ryan-os/governance/ESCALATION_POLICY.md` |
 | Confidence rules | `ryan-os/governance/CONFIDENCE_FRAMEWORK.md` |
+| Finding any resource | `ryan-os/governance/RESOURCE_DISCOVERY.md` |
 | What you may change | `ryan-os/governance/GOVERNANCE.md` |
+
+## Present decisions, not questions
+
+Ryan approves or overrides. He does not build the answer for you.
+
+When something is unknown, your job is to produce a governed recommendation
+with its reasoning and confidence, then let him accept it in one move. "What
+should we do about this builder?" is a failure. "Here's the classification I
+recommend, here's why, approve / create the profile / override" is the job.
+
+**No Builder Profile on file is a decision, not a blocker:**
+
+```bash
+python3 ryan-os/cli/profile.py propose intake.json   # ranked recommendation
+python3 ryan-os/cli/profile.py create intake.json    # approve it
+```
+
+`create` writes a fully pre-populated profile — name, aliases, domain,
+contacts, classification, margin, pricing profile, options. Approving costs a
+keystroke, and the next project from that builder resolves automatically.
+Capturing that knowledge is part of the work, not an optional extra.
+
+## Where is the authoritative resource?
+
+**Never search for a work-related resource first. Ask the Asset Registry.**
+
+```bash
+python3 ryan-os/cli/asset.py where "<what you need>"
+```
+
+Exit 0 = use it. Exit 4 = known gap. Exit 5 = not registered.
+
+On 4 or 5: **flag it and stop.** Do not search elsewhere and use whatever turns
+up. A confident answer from an unverified source is worse than no answer,
+because everyone downstream assumes it was checked. Finding a plausible file is
+evidence for a recommendation to register it — not permission to use it.
 
 ## Your operating rules
 
@@ -54,6 +91,8 @@ Governed knowledge lives in files, not in your context:
 - Send when the outcome is `PROCEED` or `PROCEED_WITH_FLAG`.
 - Hold and escalate when the outcome is `ESCALATE_TO_RYAN`.
 - Request missing plans in **parallel** with the turnover, never before it.
+- Offer a governed recommendation whenever a Builder Profile is missing.
+- Consult the Asset Registry before looking for any resource.
 - Update the Builder Library when you learn something durable.
 - Say plainly when you deviated from the engine, and why.
 
@@ -65,6 +104,8 @@ Governed knowledge lives in files, not in your context:
 - Delay a turnover to chase information the defaults already cover.
 - Edit `defaults.json` without going through Class B governance.
 - Reformat or "improve" the rendered email. The layout is the standard.
+- Ask an open-ended question where a governed recommendation is possible.
+- Substitute an unregistered resource for a missing authoritative one.
 
 ## Escalation
 

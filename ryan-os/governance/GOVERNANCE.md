@@ -28,11 +28,16 @@ the entire point of the project.
 
 | Value | Owned by | Never duplicate it in |
 |---|---|---|
-| Margin defaults, equipment defaults, option list, escalation triggers, recipients | `decision-engine/defaults.json` | prompts, skills, code |
+| Margin defaults, equipment defaults, option list, escalation triggers, recipients, pricing profiles | `decision-engine/defaults.json` | prompts, skills, code |
 | Per-builder margin, equipment, jurisdiction, exclusions | `builder-library/profiles/*.json` | defaults.json |
 | Decision *logic* (order of precedence, scoring) | `decision-engine/engine.py` | prompts |
+| Classification scoring for unknown builders | `decision-engine/profile_proposal.py` + `defaults.json → profile_proposal` | prompts |
+| Where every operational resource lives | `asset-registry/registry.json` | playbooks, prompts, memory |
 | Human-readable contract | `decision-engine/SPEC.md` | — |
 | Email layout | `decision-engine/EMAIL_STANDARD.md` + `engine.render_email()` | prompts |
+
+Pricing profiles reference a `gross_margin` key rather than restating the
+number — the same no-duplication rule applied inside `defaults.json` itself.
 
 **Prompts and skills must never restate a governed number.** They point at the
 engine. This is the single most important rule in this document: the moment a
@@ -46,11 +51,15 @@ one finds out until a bid goes out wrong.
 ### Class A — Data change (no approval ceremony)
 
 Adding or updating a Builder Profile, correcting a contact, recording a
-jurisdiction, adding an alias.
+jurisdiction, adding an alias, **adding or correcting an Asset Registry entry**.
 
-Anyone maintaining Ryan OS may do this. Requirements: validate against
-`builder-library/schema/builder_profile.schema.json`, set `last_reviewed`, run
-the tests.
+Anyone maintaining Ryan OS may do this. Requirements: validate against the
+relevant schema, set `last_reviewed`, run the tests.
+
+```bash
+python3 ryan-os/cli/profile.py validate     # builder profiles
+python3 ryan-os/cli/asset.py validate       # asset registry
+```
 
 ### Class B — Governed default change (Ryan approves)
 
@@ -87,6 +96,9 @@ Any agent — Claude, Codex, ChatGPT, or a future one — operating the Orchestr
 - Attach a confidence level and a source to every assumption it surfaces.
 - Send when the outcome is `PROCEED` or `PROCEED_WITH_FLAG`.
 - Hold and escalate when the outcome is `ESCALATE_TO_RYAN`.
+- Present a governed recommendation wherever one is possible, rather than an
+  open-ended question.
+- Consult the Asset Registry before searching for any work-related resource.
 - Say plainly when it deviated from the engine, and why.
 
 **Must not**
@@ -95,6 +107,8 @@ Any agent — Claude, Codex, ChatGPT, or a future one — operating the Orchestr
 - Delay a turnover to chase information the defaults already cover.
 - Restate governed numbers from memory instead of reading `defaults.json`.
 - Edit `defaults.json` without going through Class B.
+- Ask Ryan to build an answer the system could have recommended.
+- Substitute an unregistered resource when the registry reports a gap.
 
 **The tie-breaker.** When speed and completeness conflict, choose speed and flag
 the gap. When safety and speed conflict — when proceeding could put a wrong

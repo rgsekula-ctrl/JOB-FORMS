@@ -111,6 +111,36 @@ Do not send to Veston or estimating3. Message Ryan with exactly four things:
 The bar: Ryan resolves it in a single reply. If it would take a
 back-and-forth, gather more first.
 
+## Step 6.5 — No Builder Profile? Recommend, don't ask
+
+If `profile_id` is null, the builder has no profile. That is not a question for
+Ryan — it is a recommendation to present.
+
+```bash
+python3 ryan-os/cli/profile.py propose /tmp/intake.json
+```
+
+You get a ranked classification (New Custom Builder / New Production Builder /
+Homeowner / Existing Builder with profile missing), each with confidence, the
+reasoning that produced it, recommended equipment, gross margin, pricing
+profile, and the standard option set — plus a fully pre-populated profile.
+
+Present exactly three choices:
+
+| Choice | What it means | Command |
+|---|---|---|
+| **Approve for this project only** | Use these settings now, create nothing | nothing to run — the turnover already used them |
+| **Create the Builder Profile** | Save it; the next job is automatic | `python3 ryan-os/cli/profile.py create /tmp/intake.json` |
+| **Override** | Different classification or values | `create --classification new_production --margin 32` |
+
+Or do all of it from the **Bid Turnover** page in the Woods Forms App, which
+shows the ranked candidates and a **Create Builder Profile** button.
+
+**Never write "what should we do with this builder?"** The recommendation is
+the answer. Ryan's job is to approve or correct it, which takes seconds;
+building it from scratch takes minutes and is exactly the thinking this system
+exists to remove.
+
 ## Step 7 — Update the Builder Library
 
 This is what stops the same question from being asked twice, and it is the step
@@ -152,3 +182,5 @@ question that the governed defaults already answer. Send it and flag it.
 | Treating `PROCEED_WITH_FLAG` as a stop | It means send. |
 | Asking Ryan about a jurisdiction or a story count | Neither is a hard stop. Flag it. |
 | Editing `defaults.json` to fit one job | That is a Class B governance change. Use the Builder Profile instead. |
+| Asking "what should we do with this new builder?" | Present the ranked recommendation instead. Step 6.5. |
+| Hunting the filesystem or Drive for a template | Ask the Asset Registry first. See `../governance/RESOURCE_DISCOVERY.md`. |

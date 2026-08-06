@@ -64,7 +64,25 @@ mode this system exists to prevent.
 6. **Request missing attachments in parallel** — a separate short reply to the
    builder, never a reason to hold the turnover.
 
-7. **Update the Builder Library** with anything durable. Every MEDIUM converted
+7. **If the builder has no profile, present the recommendation — never a question.**
+
+   ```bash
+   python3 ryan-os/cli/profile.py propose /tmp/intake.json
+   ```
+
+   This returns a ranked classification (New Custom / New Production /
+   Homeowner / Existing-profile-missing) with confidence, reasoning,
+   recommended equipment, margin, pricing profile, and options — plus a fully
+   pre-populated profile. Give Ryan the three choices:
+
+   - **Approve for this project only** — the turnover already used these settings.
+   - **Create the Builder Profile** — `python3 ryan-os/cli/profile.py create /tmp/intake.json`
+   - **Override** — `--classification <key>`, `--margin`, `--equipment`
+
+   Never ask "what should we do with this builder?" The recommendation is the
+   answer; Ryan approves or overrides it.
+
+8. **Update the Builder Library** with anything durable. Every MEDIUM converted
    to HIGH is a question never asked again.
 
 ## Escalate only for these four
@@ -89,6 +107,7 @@ builder, and rush deadlines are **not** escalations. They flag and send.
 | Escalation policy | `ryan-os/governance/ESCALATION_POLICY.md` |
 | Confidence levels | `ryan-os/governance/CONFIDENCE_FRAMEWORK.md` |
 | Adding a builder | `ryan-os/builder-library/README.md` |
+| Finding any resource | `ryan-os/governance/RESOURCE_DISCOVERY.md` (or the `asset-registry` skill) |
 
 Changing a governed default is a governance action, not an edit — see
 `ryan-os/governance/GOVERNANCE.md`. Use a Builder Profile to handle a

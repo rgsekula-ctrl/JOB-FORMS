@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ryanos.wahoocomfortsolutions.com/schema/asset.schema.json",
+  "title": "Ryan OS Asset",
+  "description": "One operational resource in the Ryan OS Asset Registry. Every asset must answer five questions: what is it, where is it, who owns it, when should it be used, and what does it replace.",
+  "type": "object",
+  "required": ["asset_id", "name", "category", "status", "what_it_is", "where_it_is", "owner", "use_when"],
+  "additionalProperties": false,
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Stable slug. Referenced by playbooks and other assets - do not change it once published."
+    },
+    "name": {"type": "string", "description": "Human name as people actually refer to it."},
+
+    "category": {
+      "type": "string",
+      "enum": [
+        "form", "proposal-template", "bid-template", "application", "builder-library",
+        "pricing-workbook", "job-folder-template", "server-location", "drive-location",
+        "decision-engine", "playbook", "prompt", "skill", "schedule-template", "reference"
+      ]
+    },
+
+    "status": {
+      "type": "string",
+      "enum": ["authoritative", "candidate", "deprecated", "gap"],
+      "description": "authoritative = the one true version, use it. candidate = exists but not yet blessed. deprecated = superseded, do not use. gap = Ryan OS knows this resource should exist but has no authoritative version on file."
+    },
+
+    "what_it_is": {"type": "string", "description": "One or two sentences. What the thing actually is."},
+
+    "where_it_is": {
+      "type": "object",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "description": "Where to find it. A gap asset may have kind 'unknown'.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["repo", "url", "google-drive", "server", "local-app", "desktop", "outlook", "unknown"]
+        },
+        "path": {"type": "string", "description": "Repo-relative path, URL, Drive path, UNC path, or launch command."},
+        "detail": {"type": "string", "description": "How to actually get to it - which route, which menu, which share."}
+      }
+    },
+
+    "owner": {"type": "string", "description": "Person or role accountable for keeping it correct."},
+
+    "use_when": {"type": "string", "description": "The trigger. When should an agent or a person reach for this?"},
+
+    "do_not_use_when": {"type": "string", "description": "Boundaries. Prevents an asset being stretched past what it is good for."},
+
+    "replaces": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Asset ids or free-text names this supersedes. This is how old versions stop circulating."
+    },
+    "replaced_by": {
+      "type": "string",
+      "description": "Required when status is deprecated. The asset_id that took over."
+    },
+
+    "keywords": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Search terms an agent might use. Add the wrong-but-common names too - that is how lookups succeed."
+    },
+
+    "related": {"type": "array", "items": {"type": "string"}, "description": "Related asset ids."},
+
+    "gap_recommendation": {
+      "type": "string",
+      "description": "Required when status is gap. What Ryan should add, and why it matters."
+    },
+
+    "last_verified": {"type": "string", "description": "YYYY-MM-DD. When someone last confirmed this is still true."},
+    "notes": {"type": "string"}
+  }
+}

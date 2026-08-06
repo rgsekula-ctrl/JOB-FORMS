@@ -31,14 +31,22 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 # ---------------------------------------------------------------------------
 _app_base = sys._MEIPASS if getattr(sys, 'frozen', False) else os.path.dirname(os.path.abspath(__file__))
 RYAN_OS_DIR = os.path.join(_app_base, 'ryan-os')
-_engine_dir = os.path.join(RYAN_OS_DIR, 'decision-engine')
-if os.path.isdir(_engine_dir) and _engine_dir not in sys.path:
-    sys.path.insert(0, _engine_dir)
+for _sub in ('decision-engine', 'asset-registry'):
+    _dir = os.path.join(RYAN_OS_DIR, _sub)
+    if os.path.isdir(_dir) and _dir not in sys.path:
+        sys.path.insert(0, _dir)
 
 try:
     import engine as turnover_engine
+    import profile_proposal
 except ImportError:
     turnover_engine = None
+    profile_proposal = None
+
+try:
+    from registry import AssetRegistry
+except ImportError:
+    AssetRegistry = None
 
 @app.route('/')
 def index():
@@ -172,8 +180,37 @@ def generate_bid_turnover():
     except Exception as exc:  # surface engine errors to the browser rather than a 500 page
         return jsonify({'error': f'Decision engine error: {exc}'}), 500
 
+    # Phase 2: when no Builder Profile exists, return a governed recommendation
+    # alongside the email rather than leaving Ryan with an open question.
+    proposal_payload = None
+    if profile_proposal is not None and decision.profile_id is None:
+        try:
+            proposal = profile_proposal.propose_profile(intake)
+            proposal_payload = {
+                'text': profile_proposal.render_proposal(proposal),
+                'builder_display': proposal.builder_display,
+                'prefilled_profile': proposal.prefilled_profile,
+                'needs_confirmation': proposal.needs_confirmation,
+                'candidates': [
+                    {
+                        'key': c.key,
+                        'label': c.label,
+                        'confidence': c.confidence,
+                        'recommended': c.key == proposal.primary.key,
+                        'reasoning': c.reasoning,
+                        'equipment': c.equipment.get('system', ''),
+                        'gross_margin': c.gross_margin_display,
+                        'pricing_profile': c.pricing_profile_label,
+                    }
+                    for c in proposal.candidates
+                ],
+            }
+        except Exception:
+            proposal_payload = None
+
     return jsonify({
         'email': email_text,
+        'profile_proposal': proposal_payload,
         'outcome': decision.outcome,
         'blocked': decision.blocked,
         'subject': decision.subject,
@@ -191,6 +228,110 @@ def generate_bid_turnover():
         'engine_version': decision.engine_version,
         'defaults_version': decision.defaults_version,
     })
+
+
+@app.route('/create-builder-profile', methods=['POST'])
+def create_builder_profile():
+    """Approve a proposed Builder Profile and write it to the Builder Library.
+
+    Phase 2: this is the 'Create Builder Profile' action. The profile arrives
+    already pre-populated from the proposal, so approving costs a click.
+    """
+    if profile_proposal is None:
+        return jsonify({'error': 'The Ryan OS decision engine is not available in this build.'}), 503
+
+    payload = request.get_json(silent=True) or {}
+    profile = payload.get('profile')
+    if not isinstance(profile, dict) or not profile.get('builder_id'):
+        return jsonify({'error': 'No profile supplied.'}), 400
+
+    sys.path.insert(0, os.path.join(RYAN_OS_DIR, 'cli'))
+    try:
+        import profile as profile_cli
+    except ImportError:
+        return jsonify({'error': 'Profile tooling unavailable.'}), 503
+
+    try:
+        with open(profile_cli.SCHEMA_PATH, 'r', encoding='utf-8') as fh:
+            schema = json.load(fh)
+    except OSError as exc:
+        return jsonify({'error': f'Could not read the profile schema: {exc}'}), 500
+
+    errors = profile_cli.validate_profile(profile, schema)
+    if errors:
+        return jsonify({'error': 'Profile failed validation.', 'details': errors}), 400
+
+    profiles_dir = os.path.join(RYAN_OS_DIR, 'builder-library', 'profiles')
+    os.makedirs(profiles_dir, exist_ok=True)
+    path = os.path.join(profiles_dir, f"{profile['builder_id']}.json")
+
+    if os.path.exists(path) and not payload.get('overwrite'):
+        return jsonify({
+            'error': f"A profile named {profile['builder_id']}.json already exists.",
+            'exists': True,
+        }), 409
+
+    try:
+        with open(path, 'w', encoding='utf-8') as fh:
+            json.dump(profile, fh, indent=2)
+            fh.write('\n')
+    except OSError as exc:
+        return jsonify({'error': f'Could not write the profile: {exc}'}), 500
+
+    return jsonify({
+        'created': True,
+        'builder_id': profile['builder_id'],
+        'path': os.path.relpath(path, _app_base),
+        'message': 'Profile saved. The next request from this builder resolves automatically.',
+    })
+
+
+@app.route('/asset-registry')
+def asset_registry_page():
+    """Ryan OS Asset Registry browser"""
+    return render_template('asset_registry.html', registry_available=AssetRegistry is not None)
+
+
+@app.route('/api/assets')
+def api_assets():
+    """Asset Registry data, optionally filtered or resolved against a query."""
+    if AssetRegistry is None:
+        return jsonify({'error': 'The Asset Registry is not available in this build.'}), 503
+
+    try:
+        reg = AssetRegistry.load()
+    except (OSError, ValueError) as exc:
+        return jsonify({'error': f'Could not load the registry: {exc}'}), 500
+
+    query = (request.args.get('q') or '').strip()
+
+    def serialize(a):
+        d = a.to_dict()
+        d['location'] = a.location
+        return d
+
+    payload = {
+        'categories': reg.categories(),
+        'counts': {
+            'total': len(reg.assets),
+            'gaps': len(reg.gaps()),
+        },
+    }
+
+    if query:
+        resolution = reg.resolve(query)
+        payload['resolution'] = {
+            'outcome': resolution.outcome,
+            'usable': resolution.usable,
+            'message': resolution.message,
+            'action_required': resolution.action_required,
+            'asset': serialize(resolution.asset) if resolution.asset else None,
+        }
+        payload['assets'] = [serialize(a) for a in reg.search(query)]
+    else:
+        payload['assets'] = [serialize(a) for a in reg.assets]
+
+    return jsonify(payload)
 
 
 @app.route('/generate-bid-info-pdf', methods=['POST'])

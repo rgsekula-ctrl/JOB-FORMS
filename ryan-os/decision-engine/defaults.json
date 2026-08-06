@@ -102,6 +102,82 @@
     }
   ],
 
+  "pricing_profiles": {
+    "$comment": "Named pricing profiles. They reference a gross_margin key rather than restating the number - duplicating a governed value is how defaults drift. Resolve the number through gross_margin[margin_key].",
+    "existing_builder_standard": {
+      "label": "Existing Builder Standard",
+      "margin_key": "existing_builder",
+      "labor": "Standard WCS labor rate",
+      "burdens": "Standard material and labor burdens",
+      "use_when": "A builder we already work with, where no contracted margin is recorded in the Builder Profile."
+    },
+    "new_builder_standard": {
+      "label": "New Builder Standard",
+      "margin_key": "new_builder",
+      "labor": "Standard WCS labor rate",
+      "burdens": "Standard material and labor burdens",
+      "use_when": "First project with a builder. Revisit the margin once the relationship is established."
+    },
+    "homeowner_direct": {
+      "label": "Homeowner / Direct",
+      "margin_key": "homeowner_direct",
+      "labor": "Standard WCS labor rate",
+      "burdens": "Standard material and labor burdens",
+      "use_when": "Homeowner or one-time direct customer with no builder in the middle."
+    }
+  },
+
+  "profile_proposal": {
+    "$comment": "Phase 2. When no Builder Profile exists, the Orchestrator presents a governed recommendation rather than an open question. These signals rank the classification candidates.",
+    "personal_email_domains": [
+      "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com",
+      "me.com", "aol.com", "msn.com", "live.com", "comcast.net", "att.net",
+      "sbcglobal.net", "verizon.net", "protonmail.com", "proton.me"
+    ],
+    "existing_relationship_signals": [
+      "as usual", "same as last time", "same as always", "our standard",
+      "like we did", "like last time", "the usual", "same setup",
+      "another one for you", "next one", "same as the last", "you did our",
+      "per our standard", "same package"
+    ],
+    "classification_candidates": [
+      {
+        "key": "new_custom",
+        "label": "New Custom Builder",
+        "builder_type": "custom",
+        "customer_type": "builder",
+        "pricing_profile": "new_builder_standard",
+        "equipment_default": "custom_default"
+      },
+      {
+        "key": "new_production",
+        "label": "New Production Builder",
+        "builder_type": "production",
+        "customer_type": "builder",
+        "pricing_profile": "new_builder_standard",
+        "equipment_default": "production_default"
+      },
+      {
+        "key": "homeowner",
+        "label": "Homeowner",
+        "builder_type": "homeowner_direct",
+        "customer_type": "homeowner_direct",
+        "pricing_profile": "homeowner_direct",
+        "equipment_default": "custom_default"
+      },
+      {
+        "key": "existing_missing_profile",
+        "label": "Existing Builder (profile missing)",
+        "builder_type": "custom",
+        "customer_type": "builder",
+        "pricing_profile": "existing_builder_standard",
+        "equipment_default": "custom_default"
+      }
+    ],
+    "tie_break_order": ["new_custom", "new_production", "existing_missing_profile", "homeowner"],
+    "note": "The recommendation is always actionable. Ryan approves for this project only, creates a Builder Profile from it, or overrides - he never builds it from scratch."
+  },
+
   "manual_j_defaults": {
     "house_direction": "Use plot plan if available; if not, assume worst-case orientation",
     "attic_insulation": "Foam attic (R-25 roofline)",
