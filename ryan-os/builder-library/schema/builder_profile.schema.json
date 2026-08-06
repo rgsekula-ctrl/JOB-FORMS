@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ryanos.wahoocomfortsolutions.com/schema/builder_profile.schema.json",
+  "title": "Ryan OS Builder Profile",
+  "description": "One file per builder in ryan-os/builder-library/profiles/. This is the authoritative record of what Ryan OS knows about a builder. Anything set here overrides the governed defaults in decision-engine/defaults.json.",
+  "type": "object",
+  "required": ["builder_id", "display_name", "status", "builder_type", "aliases"],
+  "additionalProperties": false,
+  "properties": {
+    "builder_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Stable slug. Never change it once real jobs reference it."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Exactly how the builder name should appear in the email subject and body."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "flagged", "example"],
+      "description": "flagged = do-not-bid / credit hold / open dispute. A flagged builder is a hard stop and escalates to Ryan."
+    },
+    "flag_reason": {
+      "type": "string",
+      "description": "Required when status is flagged. Shown to Ryan in the escalation notice."
+    },
+    "builder_type": {
+      "type": "string",
+      "enum": ["production", "custom", "semi-custom", "homeowner_direct"],
+      "description": "Drives the equipment default when no explicit standard configuration is set."
+    },
+    "aliases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Every way this builder shows up in Outlook: legal name, DBA, email domain, superintendent shorthand. Matching is case-insensitive. Include the email domain (e.g. 'examplehomes.com') - domain matches are the most reliable signal."
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "role": {"type": "string"},
+          "email": {"type": "string"},
+          "phone": {"type": "string"}
+        }
+      }
+    },
+    "gross_margin": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.9,
+      "description": "Decimal, e.g. 0.22 for 22%. Overrides the governed default. This is where a production builder's contracted margin lives."
+    },
+    "requires_ryan_margin_approval": {
+      "type": "boolean",
+      "default": false,
+      "description": "true = hard stop. The turnover email is drafted but held for Ryan."
+    },
+    "equipment": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The builder's standard configuration. Overrides the production/custom default.",
+      "properties": {
+        "system": {"type": "string", "description": "One-line description used in the email, e.g. 'Carrier 15.2 SEER2 single-speed heat pump'."},
+        "outdoor_unit": {"type": "string"},
+        "indoor_unit": {"type": "string"},
+        "staging": {"type": "string"},
+        "notes": {"type": "string"}
+      }
+    },
+    "system_count_rule": {
+      "type": "string",
+      "description": "Builder-specific override of the one-system-per-floor default, e.g. 'Single system up to 3200 sqft, two above'. Free text - the engine surfaces it to the estimator rather than parsing it."
+    },
+    "jurisdiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "description": "e.g. 'City of San Marcos' or 'Hays County'"},
+        "permit_handled_by": {"type": "string", "enum": ["WCS", "builder", "varies"]},
+        "permit_allowance": {"type": "string", "description": "Dollar allowance or 'per job'"},
+        "notes": {"type": "string"}
+      }
+    },
+    "manual_j_overrides": {
+      "type": "object",
+      "description": "Builder-standard envelope specs that beat the Ryan OS Manual J defaults. Any key from defaults.json manual_j_defaults.",
+      "additionalProperties": {"type": "string"}
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Per-option control over the always-include list. Keys match defaults.json always_include keys.",
+      "properties": {
+        "exclude": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Option keys this builder has told us to stop including. Excluding an item requires a reason in exclude_reasons."
+        },
+        "exclude_reasons": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
+        "additional": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Extra options this builder always wants priced."
+        }
+      }
+    },
+    "standing_instructions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Anything the estimating team must know every single time. Rendered verbatim in the email."
+    },
+    "attachments_expected": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "What this builder normally sends, e.g. 'architectural PDF', 'plot plan', 'energy report'. Used to detect what is missing."
+    },
+    "first_job_date": {"type": "string"},
+    "last_reviewed": {"type": "string", "description": "YYYY-MM-DD. Review profiles at least annually."},
+    "notes": {"type": "string"}
+  }
+}

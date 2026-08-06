@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ryanos.wahoocomfortsolutions.com/schema/intake.schema.json",
+  "title": "Ryan OS Bid Turnover Intake",
+  "description": "The structured reading of one inbound Outlook bid request. Every field is optional except builder_name/from_email and project - the engine is designed to produce a usable turnover email from very little. Fill in what the email actually says; do not invent values. Unknowns become governed defaults with a confidence level, which is the correct behavior.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "$comment": {"type": "string"},
+
+    "received_at": {"type": "string", "description": "ISO timestamp the request landed in Outlook."},
+
+    "builder_name": {"type": "string", "description": "Builder or company name as written in the email."},
+    "from_email": {"type": "string", "description": "Sender address. The domain is the strongest Builder Library match signal - always include it."},
+    "customer_type": {
+      "type": "string",
+      "enum": ["builder", "homeowner_direct"],
+      "default": "builder",
+      "description": "homeowner_direct = a homeowner or one-time direct customer, not a builder account."
+    },
+
+    "project": {"type": "string", "description": "Address, lot, or project name. Goes in the subject line."},
+    "project_type": {
+      "type": "string",
+      "default": "new construction",
+      "description": "Anything other than new construction triggers a scope review escalation."
+    },
+    "jurisdiction": {"type": "string", "description": "City or county, if stated. Drives the permit confidence level."},
+    "stories": {"type": ["integer", "null"], "description": "Story count. Feeds the one-system-per-floor default. Null is fine - it just lowers confidence."},
+    "conditioned_sqft": {"type": ["integer", "null"], "description": "Also used as a production-vs-custom signal for new builders."},
+
+    "email_subject": {"type": "string"},
+    "email_body": {"type": "string", "description": "Paste the builder's message. The engine scans it for rush language, out-of-scope keywords, and explicit system counts."},
+
+    "attachments": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Attachment filenames exactly as they appear in Outlook."
+    },
+    "plans": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "architectural": {"type": "boolean"},
+        "mechanical": {"type": "boolean"},
+        "plot": {"type": "boolean"}
+      }
+    },
+
+    "mechanical_plan_system_count": {
+      "type": ["integer", "null"],
+      "description": "System count read off the mechanical plans. Priority 2 - only used when plans.mechanical is true."
+    },
+    "ai_plan_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Priority 3. Only used when plans.architectural is true.",
+      "properties": {
+        "system_count": {"type": ["integer", "null"]},
+        "notes": {"type": "string", "description": "Short reasoning. Rendered into the email so the estimator can sanity-check the recommendation."}
+      }
+    },
+
+    "manual_j": {
+      "type": "object",
+      "description": "Envelope specs the builder actually supplied. Any key from defaults.json manual_j_defaults: house_direction, attic_insulation, walls, roof_type, windows, foundation, duct_location. Supplied values are HIGH confidence and beat both profile overrides and Ryan OS defaults.",
+      "additionalProperties": {"type": "string"}
+    },
+
+    "explicit": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Things the builder stated in writing. These carry HIGH confidence, so only fill them in when the email genuinely says so.",
+      "properties": {
+        "system_count": {"type": ["integer", "null"]},
+        "equipment": {"type": "string"},
+        "gross_margin": {"type": ["number", "null"], "description": "Accepts 28 or 0.28."},
+        "deadline": {"type": "string", "description": "Any stated due date. Sets the RUSH subject prefix."}
+      }
+    },
+
+    "notes": {"type": "string", "description": "Anything the agent wants to pass to a human. Not rendered into the email."}
+  }
+}

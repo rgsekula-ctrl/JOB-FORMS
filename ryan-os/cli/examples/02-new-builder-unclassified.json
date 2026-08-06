@@ -1,0 +1,26 @@
+{
+  "$comment": "The speed test. Unknown builder, almost no information, no plans. Expect: custom default flagged LOW, 30% new-builder margin, 1 system flagged LOW, missing plans flagged - and STILL sends.",
+  "received_at": "2026-08-06T09:02:00",
+  "builder_name": "Ridgeline Development Group",
+  "from_email": "mike@ridgelinedev.com",
+  "project": "Barton Creek project",
+  "project_type": "new construction",
+  "customer_type": "builder",
+  "jurisdiction": "",
+  "stories": null,
+  "conditioned_sqft": null,
+  "email_subject": "HVAC pricing request",
+  "email_body": "Hi, we were referred to you by a framer. We have a house coming up in Barton Creek and need an HVAC number. What do you need from us?",
+  "attachments": [],
+  "plans": {"architectural": false, "mechanical": false, "plot": false},
+  "mechanical_plan_system_count": null,
+  "ai_plan_review": {"system_count": null, "notes": ""},
+  "manual_j": {},
+  "explicit": {
+    "system_count": null,
+    "equipment": "",
+    "gross_margin": null,
+    "deadline": ""
+  },
+  "notes": "First contact - no Builder Profile exists yet."
+}

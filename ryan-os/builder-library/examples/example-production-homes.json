@@ -1,0 +1,61 @@
+{
+  "builder_id": "example-production-homes",
+  "display_name": "Example Production Homes",
+  "status": "example",
+  "builder_type": "production",
+  "aliases": [
+    "Example Production Homes",
+    "EPH",
+    "exampleproduction.com"
+  ],
+  "contacts": [
+    {
+      "name": "Sample Superintendent",
+      "role": "Superintendent",
+      "email": "super@exampleproduction.com",
+      "phone": ""
+    }
+  ],
+  "gross_margin": 0.2,
+  "requires_ryan_margin_approval": false,
+  "equipment": {
+    "system": "Carrier 15.2 SEER2 single-speed heat pump - EPH standard production package",
+    "outdoor_unit": "Carrier production-series single-speed heat pump",
+    "indoor_unit": "Matching Carrier air handler with 10kW strip heat",
+    "staging": "Single speed",
+    "notes": "EPH standard package - do not substitute brands without Ryan approval."
+  },
+  "system_count_rule": "One system up to 3,000 sqft conditioned; two systems above 3,000 sqft.",
+  "jurisdiction": {
+    "name": "Hays County",
+    "permit_handled_by": "builder",
+    "permit_allowance": "$0 - builder pulls mechanical permit",
+    "notes": "Confirm per subdivision; a few EPH sections are inside city limits."
+  },
+  "manual_j_overrides": {
+    "attic_insulation": "Blown R-38 at ceiling, vented attic",
+    "walls": "R-13 batt"
+  },
+  "options": {
+    "exclude": [
+      "decorative_grilles"
+    ],
+    "exclude_reasons": {
+      "decorative_grilles": "EPH uses builder-standard stamped grilles on every plan; the upgrade option is never taken."
+    },
+    "additional": [
+      "Price a media filter cabinet upgrade as a separate option."
+    ]
+  },
+  "standing_instructions": [
+    "EPH requires the bid broken out by plan number, not by lot.",
+    "Duct layout must keep all equipment out of the garage attic."
+  ],
+  "attachments_expected": [
+    "architectural plans",
+    "lot list"
+  ],
+  "first_job_date": "2024-01-01",
+  "last_reviewed": "2026-08-06",
+  "notes": "EXAMPLE PROFILE - shipped for tests and onboarding. Not a real builder. Do not use in production."
+}

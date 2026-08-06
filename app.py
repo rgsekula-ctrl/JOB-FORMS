@@ -24,6 +24,22 @@ else:
 # Disable template caching for development
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+# ---------------------------------------------------------------------------
+# Ryan OS - Bid Turnover Decision Engine
+# Optional import: the forms app must still run if ryan-os/ is absent (for
+# example in an older packaged .exe build).
+# ---------------------------------------------------------------------------
+_app_base = sys._MEIPASS if getattr(sys, 'frozen', False) else os.path.dirname(os.path.abspath(__file__))
+RYAN_OS_DIR = os.path.join(_app_base, 'ryan-os')
+_engine_dir = os.path.join(RYAN_OS_DIR, 'decision-engine')
+if os.path.isdir(_engine_dir) and _engine_dir not in sys.path:
+    sys.path.insert(0, _engine_dir)
+
+try:
+    import engine as turnover_engine
+except ImportError:
+    turnover_engine = None
+
 @app.route('/')
 def index():
     """Home page with list of available forms"""
@@ -84,6 +100,98 @@ def linear_grille():
     """Linear Grille Order Form"""
     today = datetime.now().strftime('%Y-%m-%d')
     return render_template('linear_grille.html', today=today)
+
+@app.route('/bid-turnover')
+def bid_turnover():
+    """Ryan OS - Bid Turnover Decision Engine"""
+    return render_template('bid_turnover.html', engine_available=turnover_engine is not None)
+
+
+@app.route('/generate-bid-turnover', methods=['POST'])
+def generate_bid_turnover():
+    """Run the Bid Turnover Decision Engine and return the turnover email.
+
+    Thin wrapper: all decision logic lives in ryan-os/decision-engine/engine.py
+    so the web form, the CLI, and every agent produce the identical result.
+    """
+    if turnover_engine is None:
+        return jsonify({
+            'error': 'The Ryan OS decision engine is not available in this build. '
+                     'Run the app from the repository so ryan-os/ is present.'
+        }), 503
+
+    form = request.form
+
+    def as_int(name):
+        raw = (form.get(name) or '').strip()
+        try:
+            return int(raw) if raw else None
+        except ValueError:
+            return None
+
+    def as_float(name):
+        raw = (form.get(name) or '').strip()
+        try:
+            return float(raw) if raw else None
+        except ValueError:
+            return None
+
+    intake = {
+        'builder_name': (form.get('builder_name') or '').strip(),
+        'from_email': (form.get('from_email') or '').strip(),
+        'project': (form.get('project') or '').strip(),
+        'project_type': (form.get('project_type') or 'new construction').strip(),
+        'customer_type': form.get('customer_type') or 'builder',
+        'jurisdiction': (form.get('jurisdiction') or '').strip(),
+        'stories': as_int('stories'),
+        'conditioned_sqft': as_int('conditioned_sqft'),
+        'email_subject': (form.get('email_subject') or '').strip(),
+        'email_body': (form.get('email_body') or '').strip(),
+        'attachments': [a.strip() for a in (form.get('attachments') or '').splitlines() if a.strip()],
+        'plans': {
+            'architectural': form.get('plans_architectural') == 'on',
+            'mechanical': form.get('plans_mechanical') == 'on',
+            'plot': form.get('plans_plot') == 'on',
+        },
+        'mechanical_plan_system_count': as_int('mechanical_plan_system_count'),
+        'ai_plan_review': {
+            'system_count': as_int('ai_system_count'),
+            'notes': (form.get('ai_notes') or '').strip(),
+        },
+        'explicit': {
+            'system_count': as_int('explicit_system_count'),
+            'equipment': (form.get('explicit_equipment') or '').strip(),
+            'gross_margin': as_float('explicit_gross_margin'),
+            'deadline': (form.get('explicit_deadline') or '').strip(),
+        },
+    }
+
+    try:
+        decision = turnover_engine.decide(intake)
+        email_text = turnover_engine.render_email(decision)
+    except Exception as exc:  # surface engine errors to the browser rather than a 500 page
+        return jsonify({'error': f'Decision engine error: {exc}'}), 500
+
+    return jsonify({
+        'email': email_text,
+        'outcome': decision.outcome,
+        'blocked': decision.blocked,
+        'subject': decision.subject,
+        'recipients': decision.recipients,
+        'builder_status': decision.builder_status,
+        'profile_id': decision.profile_id,
+        'rush': decision.rush,
+        'assumptions': [
+            {'field': a.field, 'value': a.value, 'confidence': a.confidence, 'source': a.source}
+            for a in decision.assumptions
+        ],
+        'known_unknowns': decision.known_unknowns,
+        'escalations': [e.reason for e in decision.escalations],
+        'missing_attachments': decision.missing_attachments,
+        'engine_version': decision.engine_version,
+        'defaults_version': decision.defaults_version,
+    })
+
 
 @app.route('/generate-bid-info-pdf', methods=['POST'])
 def generate_bid_info_pdf():

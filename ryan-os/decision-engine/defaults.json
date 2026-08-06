@@ -1,0 +1,180 @@
+{
+  "$comment": "GOVERNED DEFAULTS - single source of truth for the Bid Turnover Decision Engine. Human-readable spec: ../decision-engine/SPEC.md. Changes require the process in ../governance/GOVERNANCE.md.",
+  "schema_version": "1.0.0",
+  "governed_defaults_version": "1.0.0",
+  "effective_date": "2026-08-06",
+  "owner": "Ryan Sekula",
+
+  "recipients": {
+    "to": [
+      "ryan@wahoocomfortsolutions.com",
+      "veston@wahoocomfortsolutions.com",
+      "estimating3@wahoocomfortsolutions.com"
+    ],
+    "note": "Ryan, Veston, and estimating3 are always on the internal turnover email. Verify ryan@ / veston@ addresses against Outlook contacts on first production send; correct in this file, not in prompts."
+  },
+
+  "subject": {
+    "format": "LOAD AND BID NEEDED: {builder} & {project}",
+    "rush_prefix": "RUSH - ",
+    "escalation_prefix": "HOLD - RYAN REVIEW - "
+  },
+
+  "closing_line": "Please reply all when the Manual J is complete and again when the bid is complete.",
+
+  "equipment": {
+    "production_default": {
+      "system": "Carrier production equipment, builder standard production configuration",
+      "outdoor_unit": "Carrier production-series condenser / heat pump per builder standard",
+      "indoor_unit": "Matching Carrier air handler or furnace/coil per builder standard",
+      "staging": "Single-speed unless the Builder Profile specifies otherwise"
+    },
+    "custom_default": {
+      "system": "Lennox EL19KPV non-communicating variable-speed heat pump",
+      "outdoor_unit": "Lennox EL19KPV variable-speed heat pump (non-communicating)",
+      "indoor_unit": "Matching Lennox variable-speed air handler",
+      "staging": "Variable speed"
+    },
+    "uncertain_new_builder_rule": "When a new builder cannot be classified production vs custom, use the Ryan OS custom default and flag the assumption. Never delay the turnover for classification."
+  },
+
+  "gross_margin": {
+    "existing_builder": 0.35,
+    "new_builder": 0.30,
+    "homeowner_direct": 0.35,
+    "never_blank": true,
+    "blank_allowed_only_when": "The Builder Profile sets requires_ryan_margin_approval = true, or governance explicitly requires Ryan approval for this builder.",
+    "note": "A Builder Profile gross_margin value always overrides these defaults. Production builders under contract routinely run below 35% - that number lives in the profile, not here."
+  },
+
+  "system_count": {
+    "decision_order": [
+      {"priority": 1, "source": "Explicit builder instruction in the email", "confidence": "HIGH"},
+      {"priority": 2, "source": "Mechanical / HVAC plans", "confidence": "HIGH"},
+      {"priority": 3, "source": "AI recommendation from architectural plans", "confidence": "MEDIUM"},
+      {"priority": 4, "source": "Ryan OS default (one system per floor)", "confidence": "MEDIUM"}
+    ],
+    "default_rule": "one_system_per_floor",
+    "unknown_story_count_fallback": 1,
+    "mandatory_note": "System count is a starting assumption. The Manual J may change the final design - estimator to flag any change before the bid is finalized."
+  },
+
+  "always_include": [
+    {
+      "key": "dehumidifier",
+      "label": "Dehumidifier option(s)",
+      "default_text": "Price a whole-home dehumidifier as a separate line-item option (not in base)."
+    },
+    {
+      "key": "decorative_grilles",
+      "label": "Decorative grille options",
+      "default_text": "Price decorative / linear grille upgrade as a separate line-item option."
+    },
+    {
+      "key": "fresh_air",
+      "label": "Fresh air assumptions",
+      "default_text": "Assume code-minimum mechanical fresh air (ASHRAE 62.2) via ducted fresh air intake with motorized damper, unless plans or builder specify an ERV/HRV."
+    },
+    {
+      "key": "exhaust_fans",
+      "label": "Exhaust fan options where applicable",
+      "default_text": "Include bath exhaust fans per plan fixture count. Price an upgraded/quiet fan option where applicable."
+    },
+    {
+      "key": "permits",
+      "label": "Permit assumptions",
+      "default_text": "Include a standard permit allowance. Confirm jurisdiction before the bid is finalized."
+    },
+    {
+      "key": "standard_labor",
+      "label": "Standard labor",
+      "default_text": "Standard WCS labor rate."
+    },
+    {
+      "key": "standard_burdens",
+      "label": "Standard burdens",
+      "default_text": "Standard material and labor burdens."
+    },
+    {
+      "key": "design_concern_flag",
+      "label": "Design concern flag-back",
+      "default_text": "Estimator: flag any design concerns (equipment fit, duct routing, return path, zoning, clearances) to Ryan BEFORE the final bid goes out."
+    }
+  ],
+
+  "manual_j_defaults": {
+    "house_direction": "Use plot plan if available; if not, assume worst-case orientation",
+    "attic_insulation": "Foam attic (R-25 roofline)",
+    "walls": "R-15 batt",
+    "roof_type": "Shingles",
+    "windows": "U-0.30 / SHGC-0.25",
+    "foundation": "Slab on grade",
+    "duct_location": "Conditioned attic",
+    "note": "Manual J envelope defaults carry over from the WCS bid-request standard. They are LOW-risk assumptions - the load calc is re-run if the builder supplies real specs."
+  },
+
+  "confidence": {
+    "levels": ["HIGH", "MEDIUM", "LOW"],
+    "definitions": {
+      "HIGH": "Confirmed for THIS builder / THIS project from an authoritative source: Builder Profile, explicit written builder instruction, or mechanical plans.",
+      "MEDIUM": "A governed Ryan OS default or an AI plan reading that reliably applies to this class of project, but is not confirmed for this specific project.",
+      "LOW": "Unconfirmed external fact or a guess used only to avoid delaying work. Always appears under Known Unknowns."
+    }
+  },
+
+  "escalation": {
+    "principle": "Ryan is interrupted only when meaningful business judgment is required. Everything else is a flag inside the email, not a stop.",
+    "hard_stops": [
+      {
+        "key": "margin_approval_required",
+        "reason": "Builder Profile requires Ryan approval for gross margin."
+      },
+      {
+        "key": "builder_flagged",
+        "reason": "Builder is flagged in the Builder Library (do-not-bid, credit hold, open pricing dispute)."
+      },
+      {
+        "key": "out_of_governed_scope",
+        "reason": "Project type is outside the governed residential new-construction scope (commercial, multifamily, geothermal, hydronic/radiant, VRF, or a replacement/retrofit with unknown existing conditions)."
+      },
+      {
+        "key": "instruction_conflicts_with_profile",
+        "reason": "The builder's written instruction materially contradicts the Builder Profile on equipment or margin."
+      }
+    ],
+    "never_a_hard_stop": [
+      "Missing plans or attachments - send the turnover and request the plans in parallel.",
+      "Unknown jurisdiction or permit cost.",
+      "Unknown story count or square footage.",
+      "New builder that cannot be classified production vs custom.",
+      "Rush deadline - mark the subject RUSH and send."
+    ]
+  },
+
+  "scope_triggers": {
+    "out_of_scope_keywords": [
+      "commercial", "retail build-out", "tenant finish", "warehouse",
+      "multifamily", "apartment", "condo tower", "mid-rise",
+      "geothermal", "ground source",
+      "hydronic", "radiant floor", "boiler", "chiller",
+      "vrf", "vrv", "mini-split system design",
+      "change out", "changeout", "replacement", "retrofit", "existing system"
+    ],
+    "rush_keywords": ["asap", "urgent", "rush", "today", "tomorrow", "end of day", "eod", "by friday", "need this quick", "time sensitive"]
+  },
+
+  "builder_classification": {
+    "production_signals": [
+      "plan name", "plan #", "plan no", "elevation", "lot ", "phase ", "section ",
+      "spec home", "spec house", "production", "tract", "model home", "subdivision",
+      "standard plan", "repeat plan"
+    ],
+    "custom_signals": [
+      "custom", "one-off", "architect", "designer", "homeowner",
+      "custom home", "estate", "unique", "semi-custom"
+    ],
+    "sqft_custom_threshold": 3500,
+    "sqft_production_threshold": 3000,
+    "tie_break": "custom"
+  }
+}

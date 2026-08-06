@@ -1,0 +1,26 @@
+{
+  "$comment": "Known production builder with a deadline and mechanical plans. Expect: profile equipment and 20% margin at HIGH, 2 systems from mechanical plans, decorative grilles excluded per profile, RUSH subject prefix, send immediately.",
+  "received_at": "2026-08-06T07:40:00",
+  "builder_name": "EPH",
+  "from_email": "super@exampleproduction.com",
+  "project": "Plan 2210 - Lot 44 Cypress Point",
+  "project_type": "new construction",
+  "customer_type": "builder",
+  "jurisdiction": "",
+  "stories": 2,
+  "conditioned_sqft": 2850,
+  "email_subject": "Plan 2210 Lot 44 - need pricing",
+  "email_body": "Need this one back by end of day Friday, we are closing the budget. Mechanical plans attached, standard 2210 layout.",
+  "attachments": ["Plan2210_Architectural.pdf", "Plan2210_Mechanical.pdf", "Lot_list.xlsx"],
+  "plans": {"architectural": true, "mechanical": true, "plot": false},
+  "mechanical_plan_system_count": 2,
+  "ai_plan_review": {"system_count": null, "notes": ""},
+  "manual_j": {},
+  "explicit": {
+    "system_count": null,
+    "equipment": "",
+    "gross_margin": null,
+    "deadline": "Friday end of day"
+  },
+  "notes": ""
+}

@@ -1,0 +1,29 @@
+{
+  "$comment": "Homeowner / one-time direct customer with an AI plan read. Expect: 35% margin, Lennox custom default at MEDIUM, 2 systems from AI plan review at MEDIUM.",
+  "received_at": "2026-08-06T11:05:00",
+  "builder_name": "Sarah Whitfield",
+  "from_email": "swhitfield@gmail.com",
+  "project": "Whitfield Residence - 1420 Oak Hollow",
+  "project_type": "new construction",
+  "customer_type": "homeowner_direct",
+  "jurisdiction": "City of San Marcos",
+  "stories": 2,
+  "conditioned_sqft": 3900,
+  "email_subject": "HVAC bid for our new home",
+  "email_body": "We are building on Oak Hollow and our architect sent over the drawings. Could you put together a bid for the HVAC?",
+  "attachments": ["Whitfield_Architectural_Set.pdf"],
+  "plans": {"architectural": true, "mechanical": false, "plot": false},
+  "mechanical_plan_system_count": null,
+  "ai_plan_review": {
+    "system_count": 2,
+    "notes": "Plan review: upstairs is 1,540 sqft over a 2,360 sqft main floor with a hard separation at the stair. Two systems recommended."
+  },
+  "manual_j": {},
+  "explicit": {
+    "system_count": null,
+    "equipment": "",
+    "gross_margin": null,
+    "deadline": ""
+  },
+  "notes": ""
+}

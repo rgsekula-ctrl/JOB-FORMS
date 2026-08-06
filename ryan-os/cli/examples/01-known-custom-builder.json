@@ -1,0 +1,26 @@
+{
+  "$comment": "Happy path. Known custom builder, two-story, plans attached. Expect: Lennox custom default, 35% margin, 2 systems from one-per-floor, send immediately.",
+  "received_at": "2026-08-06T08:14:00",
+  "builder_name": "Example Custom Builders",
+  "from_email": "owner@examplecustom.com",
+  "project": "Lot 7 Hillside - Thompson Residence",
+  "project_type": "new construction",
+  "customer_type": "builder",
+  "jurisdiction": "",
+  "stories": 2,
+  "conditioned_sqft": 4150,
+  "email_subject": "New house - need HVAC pricing",
+  "email_body": "Ryan, attached are the plans for the Thompson house on Lot 7. Two story, let me know what you need from me.",
+  "attachments": ["Thompson_Architectural_Plans.pdf", "Plot_Plan.pdf"],
+  "plans": {"architectural": true, "mechanical": false, "plot": true},
+  "mechanical_plan_system_count": null,
+  "ai_plan_review": {"system_count": null, "notes": ""},
+  "manual_j": {},
+  "explicit": {
+    "system_count": null,
+    "equipment": "",
+    "gross_margin": null,
+    "deadline": ""
+  },
+  "notes": ""
+}

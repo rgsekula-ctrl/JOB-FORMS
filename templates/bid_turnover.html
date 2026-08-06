@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Turnover - Ryan OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f5f7fa; color: #1e293b; padding: 32px 20px;
+        }
+        .wrap { max-width: 1120px; margin: 0 auto; }
+        .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        h1 { font-size: 24px; font-weight: 700; color: #1e3a5f; }
+        .back { color: #64748b; text-decoration: none; font-size: 14px; }
+        .back:hover { color: #1e3a5f; }
+        .subtitle { color: #64748b; font-size: 14px; margin-bottom: 24px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+        @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+            padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.04);
+        }
+        fieldset { border: none; margin-bottom: 22px; }
+        legend {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: .06em; color: #1e3a5f; margin-bottom: 12px;
+            padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; width: 100%;
+        }
+        label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 5px; }
+        .hint { font-weight: 400; color: #94a3b8; }
+        input[type=text], input[type=number], input[type=email], select, textarea {
+            width: 100%; padding: 9px 11px; border: 1px solid #cbd5e1; border-radius: 6px;
+            font-family: inherit; font-size: 14px; background: #fff; color: #1e293b;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,.08);
+        }
+        textarea { resize: vertical; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field { margin-bottom: 14px; }
+        .checks { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: #475569; }
+        .checks label { display: flex; align-items: center; gap: 6px; font-weight: 500; margin: 0; }
+
+        button {
+            width: 100%; padding: 13px; background: #1e3a5f; color: #fff; border: none;
+            border-radius: 7px; font-family: inherit; font-size: 15px; font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover { background: #16304f; }
+        button:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        .status { padding: 12px 14px; border-radius: 7px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+        .status.proceed { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .status.flag    { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+        .status.hold    { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .status .sub { display: block; font-weight: 400; margin-top: 4px; }
+
+        pre.email {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 16px;
+            font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 12px;
+            line-height: 1.55; white-space: pre-wrap; word-wrap: break-word;
+            max-height: 620px; overflow-y: auto; color: #1e293b;
+        }
+        .copy {
+            width: auto; padding: 8px 16px; font-size: 13px; background: #475569; margin-bottom: 14px;
+        }
+        .copy:hover { background: #334155; }
+        .placeholder { color: #94a3b8; font-size: 14px; text-align: center; padding: 60px 20px; }
+        .meta { font-size: 11px; color: #94a3b8; margin-top: 12px; }
+        .warn {
+            background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b;
+            padding: 14px; border-radius: 7px; font-size: 13px; margin-bottom: 20px;
+        }
+        .note {
+            background: #f1f5f9; border-left: 3px solid #1e3a5f; padding: 12px 14px;
+            font-size: 12px; color: #475569; border-radius: 0 6px 6px 0; margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="top">
+        <h1>Bid Turnover</h1>
+        <a class="back" href="/">&larr; Back to Forms</a>
+    </div>
+    <p class="subtitle">Ryan OS Operations Orchestrator &mdash; governed Load &amp; Bid turnover email</p>
+
+    {% if not engine_available %}
+    <div class="warn">
+        The decision engine is not available in this build. Run the app from the repository
+        so <code>ryan-os/</code> is present alongside <code>app.py</code>.
+    </div>
+    {% endif %}
+
+    <div class="note">
+        Fill in <strong>only what the builder's email actually says</strong>. Leave the rest blank &mdash;
+        blanks become governed Ryan OS defaults with an honest confidence level, which is correct.
+        The <em>Stated in writing</em> fields carry HIGH confidence, so use them only when the builder
+        really wrote it.
+    </div>
+
+    <div class="grid">
+        <div class="panel">
+            <form id="turnover-form">
+                <fieldset>
+                    <legend>Builder &amp; Project</legend>
+                    <div class="row">
+                        <div class="field">
+                            <label>Builder Name</label>
+                            <input type="text" name="builder_name" placeholder="As written in the email">
+                        </div>
+                        <div class="field">
+                            <label>From Email <span class="hint">&mdash; best match signal</span></label>
+                            <input type="email" name="from_email" placeholder="super@builder.com">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Project <span class="hint">&mdash; goes in the subject line</span></label>
+                        <input type="text" name="project" placeholder="Lot 7 Hillside - Thompson Residence">
+                    </div>
+                    <div class="row">
+                        <div class="field">
+                            <label>Customer Type</label>
+                            <select name="customer_type">
+                                <option value="builder">Builder</option>
+                                <option value="homeowner_direct">Homeowner / one-time direct</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Jurisdiction <span class="hint">&mdash; if stated</span></label>
+                            <input type="text" name="jurisdiction" placeholder="City of San Marcos">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="field">
+                            <label>Stories</label>
+                            <input type="number" name="stories" min="1" max="4" placeholder="blank if unknown">
+                        </div>
+                        <div class="field">
+                            <label>Conditioned Sq Ft</label>
+                            <input type="number" name="conditioned_sqft" placeholder="blank if unknown">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>The Email</legend>
+                    <div class="field">
+                        <label>Subject</label>
+                        <input type="text" name="email_subject">
+                    </div>
+                    <div class="field">
+                        <label>Body <span class="hint">&mdash; paste it; scanned for rush &amp; scope</span></label>
+                        <textarea name="email_body" rows="5"></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Plans &amp; Attachments</legend>
+                    <div class="field">
+                        <label>Attachment Filenames <span class="hint">&mdash; one per line</span></label>
+                        <textarea name="attachments" rows="3" placeholder="Thompson_Architectural_Plans.pdf"></textarea>
+                    </div>
+                    <div class="field">
+                        <div class="checks">
+                            <label><input type="checkbox" name="plans_architectural"> Architectural</label>
+                            <label><input type="checkbox" name="plans_mechanical"> Mechanical</label>
+                            <label><input type="checkbox" name="plans_plot"> Plot plan</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="field">
+                            <label>Systems on Mechanical Plans <span class="hint">&mdash; priority 2</span></label>
+                            <input type="number" name="mechanical_plan_system_count" min="1" max="6">
+                        </div>
+                        <div class="field">
+                            <label>Systems from Plan Review <span class="hint">&mdash; priority 3</span></label>
+                            <input type="number" name="ai_system_count" min="1" max="6">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Plan Review Notes</label>
+                        <input type="text" name="ai_notes" placeholder="1,540 up over 2,360 down, split at the stair">
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Stated in Writing <span class="hint">&mdash; HIGH confidence</span></legend>
+                    <div class="row">
+                        <div class="field">
+                            <label>Systems</label>
+                            <input type="number" name="explicit_system_count" min="1" max="6">
+                        </div>
+                        <div class="field">
+                            <label>Gross Margin % <span class="hint">&mdash; only if directed</span></label>
+                            <input type="number" name="explicit_gross_margin" step="0.5" placeholder="leave blank">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Equipment</label>
+                        <input type="text" name="explicit_equipment" placeholder="only if the builder specified it">
+                    </div>
+                    <div class="field">
+                        <label>Deadline</label>
+                        <input type="text" name="explicit_deadline" placeholder="Friday end of day">
+                    </div>
+                </fieldset>
+
+                <button type="submit" id="run-btn" {% if not engine_available %}disabled{% endif %}>
+                    Generate Turnover Email
+                </button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div id="output">
+                <p class="placeholder">The governed turnover email will appear here.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById('turnover-form');
+const output = document.getElementById('output');
+const runBtn = document.getElementById('run-btn');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    runBtn.disabled = true;
+    runBtn.textContent = 'Running decision engine...';
+
+    try {
+        const res = await fetch('/generate-bid-turnover', {
+            method: 'POST',
+            body: new FormData(form)
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            output.innerHTML = '<div class="status hold">' + escapeHtml(data.error || 'Request failed') + '</div>';
+            return;
+        }
+        render(data);
+    } catch (err) {
+        output.innerHTML = '<div class="status hold">' + escapeHtml(err.message) + '</div>';
+    } finally {
+        runBtn.disabled = false;
+        runBtn.textContent = 'Generate Turnover Email';
+    }
+});
+
+function render(data) {
+    let cls, headline, sub;
+    if (data.outcome === 'ESCALATE_TO_RYAN') {
+        cls = 'hold';
+        headline = 'HOLD — Ryan review required';
+        sub = 'Do not send. ' + data.escalations.join(' ');
+    } else if (data.outcome === 'PROCEED_WITH_FLAG') {
+        cls = 'flag';
+        headline = 'Send now — open items flagged';
+        sub = data.known_unknowns.length + ' item(s) listed under Known Unknowns. This means send.';
+    } else {
+        cls = 'proceed';
+        headline = 'Send now — all assumptions confirmed or governed';
+        sub = 'No open items.';
+    }
+
+    output.innerHTML =
+        '<div class="status ' + cls + '">' + escapeHtml(headline) +
+        '<span class="sub">' + escapeHtml(sub) + '</span></div>' +
+        '<button class="copy" id="copy-btn">Copy email</button>' +
+        '<pre class="email" id="email-text">' + escapeHtml(data.email) + '</pre>' +
+        '<p class="meta">Builder: ' + escapeHtml(data.builder_status) +
+        (data.profile_id ? ' (' + escapeHtml(data.profile_id) + ')' : ' — no profile on file') +
+        ' · engine v' + escapeHtml(data.engine_version) +
+        ' · defaults v' + escapeHtml(data.defaults_version) + '</p>';
+
+    document.getElementById('copy-btn').addEventListener('click', async (e) => {
+        await navigator.clipboard.writeText(document.getElementById('email-text').textContent);
+        e.target.textContent = 'Copied';
+        setTimeout(() => { e.target.textContent = 'Copy email'; }, 1600);
+    });
+}
+
+function escapeHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+}
+</script>
+</body>
+</html>

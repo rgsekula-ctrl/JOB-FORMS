@@ -1,0 +1,43 @@
+{
+  "builder_id": "example-custom-builders",
+  "display_name": "Example Custom Builders",
+  "status": "example",
+  "builder_type": "custom",
+  "aliases": [
+    "Example Custom Builders",
+    "ECB",
+    "examplecustom.com"
+  ],
+  "contacts": [
+    {
+      "name": "Sample Owner",
+      "role": "Owner",
+      "email": "owner@examplecustom.com",
+      "phone": ""
+    }
+  ],
+  "requires_ryan_margin_approval": false,
+  "system_count_rule": "",
+  "jurisdiction": {
+    "name": "City of San Marcos",
+    "permit_handled_by": "WCS",
+    "permit_allowance": "per job",
+    "notes": ""
+  },
+  "manual_j_overrides": {},
+  "options": {
+    "exclude": [],
+    "exclude_reasons": {},
+    "additional": []
+  },
+  "standing_instructions": [
+    "Dehumidifier: ECB wants it priced IN THE BASE BID, not as a separate option. This overrides the standard option treatment listed above."
+  ],
+  "attachments_expected": [
+    "architectural plans",
+    "plot plan"
+  ],
+  "first_job_date": "2023-05-01",
+  "last_reviewed": "2026-08-06",
+  "notes": "EXAMPLE PROFILE - shipped for tests and onboarding. Not a real builder. Deliberately omits gross_margin and equipment so it exercises the existing-builder 35% default and the Lennox custom default."
+}

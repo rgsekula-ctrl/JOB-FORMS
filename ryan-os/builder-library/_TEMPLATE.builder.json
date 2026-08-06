@@ -1,0 +1,40 @@
+{
+  "builder_id": "replace-with-slug",
+  "display_name": "Replace With Builder Name",
+  "status": "active",
+  "builder_type": "custom",
+  "aliases": [
+    "Replace With Builder Name",
+    "replacewithbuilder.com"
+  ],
+  "contacts": [
+    {"name": "", "role": "", "email": "", "phone": ""}
+  ],
+  "gross_margin": 0.35,
+  "requires_ryan_margin_approval": false,
+  "equipment": {
+    "system": "",
+    "outdoor_unit": "",
+    "indoor_unit": "",
+    "staging": "",
+    "notes": "Leave equipment blank to fall back to the governed production/custom default."
+  },
+  "system_count_rule": "",
+  "jurisdiction": {
+    "name": "",
+    "permit_handled_by": "varies",
+    "permit_allowance": "",
+    "notes": ""
+  },
+  "manual_j_overrides": {},
+  "options": {
+    "exclude": [],
+    "exclude_reasons": {},
+    "additional": []
+  },
+  "standing_instructions": [],
+  "attachments_expected": ["architectural plans"],
+  "first_job_date": "",
+  "last_reviewed": "",
+  "notes": ""
+}
